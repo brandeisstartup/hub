@@ -5,7 +5,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
-      <h1 className="text-2xl font-bold mb-4">Competitions</h1>
+      <h1 className="text-2xl font-bold mb-4">Contentful Data Competitions</h1>
 
       {loading ? (
         <p>Loading competitions...</p>
