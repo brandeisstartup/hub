@@ -5,10 +5,11 @@ import {
   useEffect,
   ReactNode
 } from "react";
-import client, {
+import client from "@/lib/contentful";
+import {
   CompetitionEntry,
   CompetitionSkeleton
-} from "@/lib/contentful";
+} from "@/types/used/CompetitionTypes";
 
 type CompetitionContextType = {
   competitions: CompetitionEntry[]; // ✅ Store full Contentful entries
@@ -26,7 +27,6 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function fetchCompetitions() {
       try {
-        // ✅ Fetch entries with correctly typed Contentful response
         const response = await client.getEntries<CompetitionSkeleton>({
           content_type: "competitions"
         });

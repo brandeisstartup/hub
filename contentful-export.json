@@ -1,0 +1,469 @@
+{
+  "contentTypes": [
+    {
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "qjj9zomiveg7"
+          }
+        },
+        "id": "competitions",
+        "type": "ContentType",
+        "createdAt": "2025-01-17T21:14:54.558Z",
+        "updatedAt": "2025-01-17T23:12:15.874Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 5,
+        "publishedAt": "2025-01-17T23:12:15.874Z",
+        "firstPublishedAt": "2025-01-17T21:14:54.859Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "publishedCounter": 3,
+        "version": 6,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/qjj9zomiveg7/environments/master/content_types/competitions"
+      },
+      "displayField": "title",
+      "name": "Competitions",
+      "description": "Data for competitions, grants, and all programs in the Startuphub",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "localized": false,
+          "required": true,
+          "validations": [
+            {
+              "unique": true
+            }
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "showInHub",
+          "name": "Show in Hub",
+          "type": "Boolean",
+          "localized": false,
+          "required": true,
+          "validations": [
+          ],
+          "defaultValue": {
+            "en-US": false
+          },
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "Symbol",
+          "localized": true,
+          "required": true,
+          "validations": [
+          ],
+          "defaultValue": {
+            "en-US": "Sample"
+          },
+          "disabled": false,
+          "omitted": false
+        }
+      ]
+    }
+  ],
+  "tags": [
+  ],
+  "editorInterfaces": [
+    {
+      "sys": {
+        "id": "default",
+        "type": "EditorInterface",
+        "space": {
+          "sys": {
+            "id": "qjj9zomiveg7",
+            "type": "Link",
+            "linkType": "Space"
+          }
+        },
+        "version": 6,
+        "createdAt": "2025-01-17T21:14:54.929Z",
+        "createdBy": {
+          "sys": {
+            "id": "4GHnGEzv123X8XTra2NIFN",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "updatedAt": "2025-01-17T23:12:16.485Z",
+        "updatedBy": {
+          "sys": {
+            "id": "4GHnGEzv123X8XTra2NIFN",
+            "type": "Link",
+            "linkType": "User"
+          }
+        },
+        "contentType": {
+          "sys": {
+            "id": "competitions",
+            "type": "Link",
+            "linkType": "ContentType"
+          }
+        },
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        }
+      },
+      "controls": [
+        {
+          "fieldId": "title",
+          "settings": {
+            "helpText": "The title of the event"
+          },
+          "widgetId": "singleLine",
+          "widgetNamespace": "builtin"
+        },
+        {
+          "fieldId": "showInHub",
+          "settings": {
+            "helpText": "If set to \"Yes\" the event will appear on the hub, if set to \"No\" it will not",
+            "trueLabel": "Yes",
+            "falseLabel": "No"
+          },
+          "widgetId": "boolean",
+          "widgetNamespace": "builtin"
+        },
+        {
+          "fieldId": "description",
+          "widgetId": "singleLine",
+          "widgetNamespace": "builtin"
+        }
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "metadata": {
+        "tags": [
+        ],
+        "concepts": [
+        ]
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "qjj9zomiveg7"
+          }
+        },
+        "id": "4wnWXNcISBDADdplNHYQZ6",
+        "type": "Entry",
+        "createdAt": "2025-01-17T21:15:03.015Z",
+        "updatedAt": "2025-01-17T23:12:28.690Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 6,
+        "publishedAt": "2025-01-17T23:12:28.690Z",
+        "firstPublishedAt": "2025-01-17T21:15:15.022Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "publishedCounter": 3,
+        "version": 7,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "fieldStatus": {
+          "*": {
+            "en-US": "published"
+          }
+        },
+        "automationTags": [
+        ],
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "competitions"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/qjj9zomiveg7/environments/master/entries/4wnWXNcISBDADdplNHYQZ6"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Test 1"
+        },
+        "showInHub": {
+          "en-US": true
+        },
+        "description": {
+          "en-US": "daples"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [
+        ],
+        "concepts": [
+        ]
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "qjj9zomiveg7"
+          }
+        },
+        "id": "2fZnr8XWEKxT5IFwkIx994",
+        "type": "Entry",
+        "createdAt": "2025-01-17T21:18:18.482Z",
+        "updatedAt": "2025-01-17T23:12:22.345Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 6,
+        "publishedAt": "2025-01-17T23:12:22.345Z",
+        "firstPublishedAt": "2025-01-17T21:18:24.260Z",
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "publishedCounter": 3,
+        "version": 7,
+        "publishedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "fieldStatus": {
+          "*": {
+            "en-US": "published"
+          }
+        },
+        "automationTags": [
+        ],
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "competitions"
+          }
+        },
+        "urn": "crn:contentful:::content:spaces/qjj9zomiveg7/environments/master/entries/2fZnr8XWEKxT5IFwkIx994"
+      },
+      "fields": {
+        "title": {
+          "en-US": "Test changed"
+        },
+        "showInHub": {
+          "en-US": false
+        },
+        "description": {
+          "en-US": "Sample"
+        }
+      }
+    }
+  ],
+  "assets": [
+  ],
+  "locales": [
+    {
+      "name": "English (United States)",
+      "code": "en-US",
+      "fallbackCode": null,
+      "default": true,
+      "contentManagementApi": true,
+      "contentDeliveryApi": true,
+      "optional": false,
+      "sys": {
+        "type": "Locale",
+        "id": "4M0rYSX0pwOyIIuXd82bPZ",
+        "version": 1,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "qjj9zomiveg7"
+          }
+        },
+        "environment": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Environment",
+            "id": "master",
+            "uuid": "ba1f963c-eeea-462e-b0ee-39c3bf8f595c"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "createdAt": "2025-01-17T21:11:59Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "updatedAt": "2025-01-17T21:11:59Z"
+      }
+    }
+  ],
+  "webhooks": [
+  ],
+  "roles": [
+    {
+      "name": "Editor",
+      "description": "Allows editing, publishing and archiving of content",
+      "policies": [
+        {
+          "effect": "allow",
+          "actions": "all",
+          "constraint": {
+            "and": [
+              {
+                "equals": [
+                  {
+                    "doc": "sys.type"
+                  },
+                  "Entry"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "effect": "allow",
+          "actions": "all",
+          "constraint": {
+            "and": [
+              {
+                "equals": [
+                  {
+                    "doc": "sys.type"
+                  },
+                  "Asset"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "permissions": {
+        "ContentModel": [
+          "read"
+        ],
+        "Settings": [
+        ],
+        "ContentDelivery": [
+        ],
+        "Environments": [
+        ],
+        "EnvironmentAliases": [
+        ],
+        "Tags": [
+        ]
+      },
+      "sys": {
+        "type": "Role",
+        "id": "4MlVXYB0elHCTcol6FSJCb",
+        "version": 0,
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "qjj9zomiveg7"
+          }
+        },
+        "createdBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "createdAt": "2025-01-17T21:11:59Z",
+        "updatedBy": {
+          "sys": {
+            "type": "Link",
+            "linkType": "User",
+            "id": "4GHnGEzv123X8XTra2NIFN"
+          }
+        },
+        "updatedAt": "2025-01-17T21:11:59Z"
+      }
+    }
+  ]
+}

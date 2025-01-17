@@ -1,16 +1,5 @@
-import { createClient, Entry, EntrySkeletonType } from "contentful";
-
-// ✅ Ensure Contentful expects the correct type
-export interface CompetitionFields {
-  title: string;
-  showInHub: boolean;
-}
-
-// ✅ Define the structure for Contentful API response
-export type CompetitionSkeleton = EntrySkeletonType<CompetitionFields>;
-
-// ✅ Define the typed Contentful Entry
-export type CompetitionEntry = Entry<CompetitionSkeleton>;
+import { createClient } from "contentful";
+import { CompetitionEntry } from "@/types/used/CompetitionTypes"; // ✅ Import types
 
 const client = createClient({
   space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID || "",
