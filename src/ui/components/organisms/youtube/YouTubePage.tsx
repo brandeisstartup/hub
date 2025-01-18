@@ -24,9 +24,15 @@ const YouTubePage: React.FC = () => {
       }
 
       setVideos(data.videos);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error fetching videos:", err);
-      setError(err.message);
+
+      // Ensure we handle only string-based errors safely
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
