@@ -4,16 +4,13 @@ import { Fragment } from "react";
 
 type Props = {
   title: string;
-  description: string;
-  ctaLink?: string;
-  ctaText?: string;
-  backgroundImg?: string;
+  description?: string;
   size?: "small" | "medium" | "large";
   links: any[];
 };
 
 export default function DropDownButton(props: Props) {
-  const { title, description, ctaLink, ctaText, backgroundImg, links } = props;
+  const { title, links } = props;
   return (
     <div className="w-full max-w-sm ">
       <Popover className="relative">
