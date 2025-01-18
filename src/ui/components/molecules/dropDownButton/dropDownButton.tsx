@@ -2,24 +2,6 @@ import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 
-const solutions = [
-  {
-    name: "Insights",
-    description: "Measure actions your users take",
-    href: "##",
-  },
-  {
-    name: "Automations",
-    description: "Create your own targeted content",
-    href: "##",
-  },
-  {
-    name: "Reports",
-    description: "Keep track of your growth",
-    href: "##",
-  },
-];
-
 type Props = {
   title: string;
   description: string;
@@ -35,7 +17,7 @@ export default function DropDownButton(props: Props) {
   return (
     <div className="w-full max-w-sm ">
       <Popover className="relative">
-        {({ open }) => (
+        {({}) => (
           <>
             <Popover.Button
               className={`text-white group inline-flex items-center rounded-md px-3 py-2  font-bold hover:text-white focus:outline-none   overflow-hidden`}>

@@ -6,10 +6,6 @@ import Logo from "@/ui/components/molecules/logo/logo";
 import { navigation } from "@/data/navConfig";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function NavBarSearch() {
   return (
     <nav className="sticky top-0 z-0">
