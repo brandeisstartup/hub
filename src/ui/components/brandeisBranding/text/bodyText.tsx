@@ -1,5 +1,5 @@
 import React from "react";
-import Heading from "@/components/brandeisBranding/headings/heading";
+import Heading from "@/ui/components/brandeisBranding/headings/heading";
 
 interface SectionProps {
   title: string;
