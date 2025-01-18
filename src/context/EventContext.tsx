@@ -6,7 +6,7 @@ import {
   ReactNode
 } from "react";
 import client from "@/lib/contentful";
-import { CompetitionEntry, CompetitionSkeleton, CompetitionFields } from "@/types/used/CompetitionTypes";
+import { CompetitionSkeleton, CompetitionFields } from "@/types/used/CompetitionTypes";
 
 // ✅ Change the context to store `CompetitionFields[]` instead of `CompetitionEntry[]`
 type CompetitionContextType = {
