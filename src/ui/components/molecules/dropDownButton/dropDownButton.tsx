@@ -11,7 +11,7 @@ type Props = {
   title: string;
   description?: string;
   size?: "small" | "medium" | "large";
-  links: LinkItem[]; // ✅ Replaced `any[]` with `LinkItem[]`
+  links: LinkItem[];
 };
 
 export default function DropDownButton(props: Props) {
