@@ -5,6 +5,9 @@ export interface CompetitionFields {
   title: string;
   showInHub: boolean;
   description: string;
+  startDate: string;
+  endDate: string;
+  isGrant: boolean;
 }
 
 // ✅ Ensure the correct `EntrySkeletonType`

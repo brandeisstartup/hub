@@ -42,3 +42,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/b
 # hub
 
 # hub
+
+git branch | grep -v "main" | xargs git branch -D
