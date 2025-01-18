@@ -1,0 +1,118 @@
+/* Hero.css */
+
+.heroContainer {
+ 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.heroImage {
+  width: 100%;
+
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding: 1rem 1rem;
+  width: 100%;
+  width: 100%;
+
+  /* border: 1px solid red; */
+}
+
+.heroTitle {
+  /* font-size: 2rem; */
+  text-shadow: 0.1rem 0.1rem 0.1rem #000;
+}
+
+.heroDescription {
+  line-height: 1.4;
+  text-shadow: 0.1rem 0.1rem 0.1rem #000;
+  font-family: var(--logoFont);
+}
+
+.heroButton {
+  max-width: 250px;
+  border-radius: 0.25rem;
+  color: white;
+  text-decoration: none;
+  /* background-color: #008383 !important; */
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  
+}
+
+.arrow {
+  background-image: url(data:image/svg+xml;charset=utf8,%3Csvg%20fill%3D%22%23fff%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2023.8%2025.2%22%3E%3Cpath%20d%3D%22M20.6%2011.7L10.1%201.2%2011.3%200l12.5%2012.5L11.3%2025l-1.2-1.2%2010.5-10.5H.1v-1.7h20.5z%22%2F%3E%3C%2Fsvg%3E);
+  /* width: 28px;
+    right: .8rem;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%); */
+}
+
+.heroLinks {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .heroTitle {
+    /* font-size: 2rem; */
+    text-shadow: none;
+  }
+  .heroDescription {
+    /* font-size: 2rem; */
+    text-shadow: none;
+  }
+}
+
+@media (min-width: 1024px) {
+
+
+  .heroContainer {
+    height: 100vh;
+  }
+
+
+  .heroButton {
+    max-width: 250px;
+  }
+  .heroImage {
+  }
+  .heroText {
+    color: white;
+  }
+  .heroTitle {
+  }
+
+  .heroDescription {
+    color: white;
+  }
+
+ 
+
+  .heroButton {
+  }
+}
+
+
+@media (min-width: 1024px) {
+  .heroContainer {
+    height: 100vh;
+    background-size: cover; /* Ensure the background covers the container */
+    background-position: center; /* Center the background image */
+  }
+}
