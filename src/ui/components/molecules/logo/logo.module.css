@@ -1,0 +1,44 @@
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.5rem;
+  max-width: var(--maxWidth);
+  margin-right: 1rem;
+  color: var(--white);
+  text-decoration: none;
+}
+.logo {
+  font-family: var(--logoFont);
+  font-size: 1.5rem;
+}
+.bar {
+  height: 25px;
+  width: 2px;
+  background-color: var(--white);
+}
+
+.logoText {
+  width: 120px;
+  font-size: 0.6rem;
+  line-height: 0.75rem;
+  font-weight: var(--font-weight-bolder);
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.white {
+  color: white;
+}
+
+.blue {
+  color: var(--brand);
+}
+
+.bwhite {
+  background-color: white;
+}
+
+.bblue {
+  background-color: var(--brand);
+}
