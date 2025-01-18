@@ -11,7 +11,6 @@ type Props = {
 const Logo = ({ color = "white" }: Props) => {
   const colorClass = color === "white" ? styles.white : styles.blue;
   const mobile = "hidden md:flex";
-  const smallLogo = "md:hidden";
   const backgroundColorClass = color === "white" ? styles.bwhite : styles.bblue;
 
   return (
