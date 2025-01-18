@@ -17,7 +17,7 @@ export default function DropDownButton({ title, links }: Props) {
   return (
     <div className="w-full max-w-sm">
       <Popover className="relative">
-        {({ open }) => (
+        {({}) => (
           <>
             <Popover.Button className="text-white group inline-flex items-center rounded-md px-3 py-2 font-bold hover:text-white focus:outline-none overflow-hidden">
               <span className="truncate max-w-full">{title}</span>
