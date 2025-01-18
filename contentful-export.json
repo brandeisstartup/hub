@@ -12,7 +12,7 @@
         "id": "competitions",
         "type": "ContentType",
         "createdAt": "2025-01-17T21:14:54.558Z",
-        "updatedAt": "2025-01-17T23:12:15.874Z",
+        "updatedAt": "2025-01-18T02:19:58.010Z",
         "environment": {
           "sys": {
             "id": "master",
@@ -20,8 +20,8 @@
             "linkType": "Environment"
           }
         },
-        "publishedVersion": 5,
-        "publishedAt": "2025-01-17T23:12:15.874Z",
+        "publishedVersion": 7,
+        "publishedAt": "2025-01-18T02:19:58.010Z",
         "firstPublishedAt": "2025-01-17T21:14:54.859Z",
         "createdBy": {
           "sys": {
@@ -37,8 +37,8 @@
             "id": "4GHnGEzv123X8XTra2NIFN"
           }
         },
-        "publishedCounter": 3,
-        "version": 6,
+        "publishedCounter": 4,
+        "version": 8,
         "publishedBy": {
           "sys": {
             "type": "Link",
@@ -93,6 +93,42 @@
           },
           "disabled": false,
           "omitted": false
+        },
+        {
+          "id": "startDate",
+          "name": "Start Date",
+          "type": "Date",
+          "localized": false,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "endDate",
+          "name": "End Date",
+          "type": "Date",
+          "localized": false,
+          "required": true,
+          "validations": [
+          ],
+          "disabled": false,
+          "omitted": false
+        },
+        {
+          "id": "isGrant",
+          "name": "Is Grant",
+          "type": "Boolean",
+          "localized": false,
+          "required": true,
+          "validations": [
+          ],
+          "defaultValue": {
+            "en-US": false
+          },
+          "disabled": false,
+          "omitted": false
         }
       ]
     }
@@ -111,7 +147,7 @@
             "linkType": "Space"
           }
         },
-        "version": 6,
+        "version": 8,
         "createdAt": "2025-01-17T21:14:54.929Z",
         "createdBy": {
           "sys": {
@@ -120,7 +156,7 @@
             "linkType": "User"
           }
         },
-        "updatedAt": "2025-01-17T23:12:16.485Z",
+        "updatedAt": "2025-01-18T02:19:58.629Z",
         "updatedBy": {
           "sys": {
             "id": "4GHnGEzv123X8XTra2NIFN",
@@ -165,6 +201,36 @@
         {
           "fieldId": "description",
           "widgetId": "singleLine",
+          "widgetNamespace": "builtin"
+        },
+        {
+          "fieldId": "startDate",
+          "settings": {
+            "ampm": "12",
+            "format": "dateonly",
+            "helpText": "Start date of event"
+          },
+          "widgetId": "datePicker",
+          "widgetNamespace": "builtin"
+        },
+        {
+          "fieldId": "endDate",
+          "settings": {
+            "ampm": "24",
+            "format": "dateonly",
+            "helpText": "End date of event"
+          },
+          "widgetId": "datePicker",
+          "widgetNamespace": "builtin"
+        },
+        {
+          "fieldId": "isGrant",
+          "settings": {
+            "helpText": "Is this event a grant? (i.e. Ain Family Startup Award)",
+            "trueLabel": "Yes, it is a grant",
+            "falseLabel": "No, it is NOT a grant"
+          },
+          "widgetId": "boolean",
           "widgetNamespace": "builtin"
         }
       ]

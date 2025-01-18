@@ -6,13 +6,11 @@ import {
   ReactNode
 } from "react";
 import client from "@/lib/contentful";
-import {
-  CompetitionEntry,
-  CompetitionSkeleton
-} from "@/types/used/CompetitionTypes";
+import { CompetitionEntry, CompetitionSkeleton, CompetitionFields } from "@/types/used/CompetitionTypes";
 
+// ✅ Change the context to store `CompetitionFields[]` instead of `CompetitionEntry[]`
 type CompetitionContextType = {
-  competitions: CompetitionEntry[]; // ✅ Store full Contentful entries
+  competitions: CompetitionFields[];
   loading: boolean;
 };
 
@@ -21,7 +19,7 @@ const CompetitionContext = createContext<CompetitionContextType | undefined>(
 );
 
 export function CompetitionProvider({ children }: { children: ReactNode }) {
-  const [competitions, setCompetitions] = useState<CompetitionEntry[]>([]);
+  const [competitions, setCompetitions] = useState<CompetitionFields[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,7 +31,12 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
 
         console.log("🚀 Raw Contentful Competitions:", response.items);
 
-        setCompetitions(response.items); // ✅ Now correctly typed
+        // ✅ Extract only the `fields` from each entry
+        const formattedCompetitions = response.items.map(
+          (entry) => entry.fields
+        );
+
+        setCompetitions(formattedCompetitions);
       } catch (error) {
         console.error("❌ Error fetching competitions:", error);
       } finally {
