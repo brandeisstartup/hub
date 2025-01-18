@@ -1,26 +1,30 @@
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
+type LinkItem = {
+  name: string;
+  href: string;
+  description?: string;
+};
 
 type Props = {
   title: string;
   description?: string;
   size?: "small" | "medium" | "large";
-  links: any[];
+  links: LinkItem[]; // ✅ Replaced `any[]` with `LinkItem[]`
 };
 
 export default function DropDownButton(props: Props) {
   const { title, links } = props;
   return (
-    <div className="w-full max-w-sm ">
+    <div className="w-full max-w-sm">
       <Popover className="relative">
         {({}) => (
           <>
-            <Popover.Button
-              className={`text-white group inline-flex items-center rounded-md px-3 py-2  font-bold hover:text-white focus:outline-none   overflow-hidden`}>
+            <Popover.Button className="text-white group inline-flex items-center rounded-md px-3 py-2 font-bold hover:text-white focus:outline-none overflow-hidden">
               <span className="truncate max-w-full">{title}</span>
               <ChevronDownIcon
-                className={`ml-2 h-5 w-5 transition duration-150 ease-in-out group-hover:text-gray-100`}
+                className="ml-2 h-5 w-5 transition duration-150 ease-in-out group-hover:text-gray-100"
                 aria-hidden="true"
               />
             </Popover.Button>
@@ -44,27 +48,15 @@ export default function DropDownButton(props: Props) {
                           <p className="text-lg font-bold text-BrandeisBrand">
                             {item.name}
                           </p>
-                          <p className="text-lg text-gray-500">
-                            {item.description}
-                          </p>
+                          {item.description && (
+                            <p className="text-lg text-gray-500">
+                              {item.description}
+                            </p>
+                          )}
                         </div>
                       </a>
                     ))}
                   </div>
-                  {/* <div className="bg-gray-50 p-4">
-                    <a
-                      href="##"
-                      className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50">
-                      <span className="flex items-center">
-                        <span className="text-sm font-bold text-gray-900">
-                          Documentation
-                        </span>
-                      </span>
-                      <span className="block text-sm text-gray-500">
-                        Start integrating products and tools
-                      </span>
-                    </a>
-                  </div> */}
                 </div>
               </Popover.Panel>
             </Transition>
