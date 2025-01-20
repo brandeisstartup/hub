@@ -38,7 +38,7 @@ export default function NavBarSearch() {
       links: grants.map((grant) => ({
         name: grant.title,
         description: grant.description,
-        href: `/grants/${grant.title.toLowerCase().replace(/\s+/g, "-")}`
+        href: `/events/${grant.title.toLowerCase().replace(/\s+/g, "-")}`
       }))
     },
     {
@@ -47,7 +47,7 @@ export default function NavBarSearch() {
       links: competitionsList.map((comp) => ({
         name: comp.title,
         description: comp.description,
-        href: `/competitions/${comp.title.toLowerCase().replace(/\s+/g, "-")}`
+        href: `/events/${comp.title.toLowerCase().replace(/\s+/g, "-")}`
       }))
     },
     {

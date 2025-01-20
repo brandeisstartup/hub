@@ -6,9 +6,11 @@ import {
   ReactNode
 } from "react";
 import client from "@/lib/contentful";
-import { CompetitionSkeleton, CompetitionFields } from "@/types/used/CompetitionTypes";
+import {
+  CompetitionSkeleton,
+  CompetitionFields
+} from "@/types/used/CompetitionTypes";
 
-// ✅ Change the context to store `CompetitionFields[]` instead of `CompetitionEntry[]`
 type CompetitionContextType = {
   competitions: CompetitionFields[];
   loading: boolean;
@@ -30,8 +32,6 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
         });
 
         console.log("🚀 Raw Contentful Competitions:", response.items);
-
-        // ✅ Extract only the `fields` from each entry
         const formattedCompetitions = response.items.map(
           (entry) => entry.fields
         );
