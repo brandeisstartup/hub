@@ -1,8 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from "next";
-import {
-  CompetitionEntry as ImportedCompetitionEntry,
-  CompetitionSkeleton
-} from "@/types/used/CompetitionTypes"; // ✅ Corrected imports
+import { CompetitionSkeleton } from "@/types/used/CompetitionTypes"; // ✅ Corrected imports
 import client from "@/lib/contentful";
 import { ParsedUrlQuery } from "querystring";
 
