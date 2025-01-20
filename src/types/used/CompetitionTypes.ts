@@ -10,8 +10,19 @@ export interface CompetitionFields {
   isGrant: boolean;
 }
 
-// ✅ Ensure the correct `EntrySkeletonType`
-export type CompetitionSkeleton = EntrySkeletonType<CompetitionFields>;
+export interface Competition {
+  fields: CompetitionFields;
+}
+
+export interface Props {
+  competition: Competition;
+}
+
+// ✅ Ensure the correct `EntrySkeletonType` with explicit contentTypeId
+export type CompetitionSkeleton = EntrySkeletonType<
+  CompetitionFields,
+  "competitions"
+>;
 
 // ✅ Define the typed Contentful Entry
 export type CompetitionEntry = Entry<CompetitionSkeleton>;
