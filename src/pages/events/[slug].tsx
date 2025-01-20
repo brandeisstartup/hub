@@ -84,7 +84,7 @@ export default function CompetitionPage({ competition }: Props) {
       <p>
         <strong>End Date:</strong> {competition.fields.endDate}
       </p>
-      {competition.fields.isGrant && <p>💰 This competition offers a grant!</p>}
+      {competition.fields.isGrant && <p> This competition is a grant</p>}
     </div>
   );
 }
