@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
+import { start } from "repl";
 
 export default function NavBarSearch() {
   const { competitions, loading } = useCompetitions();
@@ -38,7 +39,9 @@ export default function NavBarSearch() {
       links: grants.map((grant) => ({
         name: grant.title,
         description: grant.description,
-        href: `/events/${grant.title.toLowerCase().replace(/\s+/g, "-")}`
+        href: `/events/${grant.title.toLowerCase().replace(/\s+/g, "-")}`,
+        startDate: grant.startDate,
+        endDate: grant.endDate
       }))
     },
     {
@@ -47,7 +50,9 @@ export default function NavBarSearch() {
       links: competitionsList.map((comp) => ({
         name: comp.title,
         description: comp.description,
-        href: `/events/${comp.title.toLowerCase().replace(/\s+/g, "-")}`
+        href: `/events/${comp.title.toLowerCase().replace(/\s+/g, "-")}`,
+        startDate: comp.startDate,
+        endDate: comp.endDate
       }))
     },
     {
