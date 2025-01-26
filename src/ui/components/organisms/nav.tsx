@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
-import { start } from "repl";
 
 export default function NavBarSearch() {
   const { competitions, loading } = useCompetitions();
