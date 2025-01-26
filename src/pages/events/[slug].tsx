@@ -76,16 +76,10 @@ export default function CompetitionPage({ competition }: Props) {
 
   return (
     <div className="bg-white">
-      <div>
-        <h1>{competition.fields.title}</h1>
-        <p>{competition.fields.description}</p>
-        <p>
-          <strong>Start Date:</strong> {competition.fields.startDate}
-        </p>
-        <p>
-          <strong>End Date:</strong> {competition.fields.endDate}
-        </p>
-        {competition.fields.isGrant && <p> This competition is a grant</p>}
+      <div className="">
+        <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
+          <Heading label={`${competition.fields.title}`} />
+        </div>
       </div>
 
       <BodyText
