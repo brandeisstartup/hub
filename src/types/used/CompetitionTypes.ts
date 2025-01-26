@@ -10,6 +10,7 @@ export interface CompetitionFields {
   isGrant: boolean;
   faqs: Array<{ question: string; answer: string }>;
   contactInformation: Array<{ name: string; email: string }>;
+  requirements: Array<{ requirement: string; explanation: Array<string> }>;
 }
 
 export interface Competition {
