@@ -8,6 +8,7 @@ export interface CompetitionFields {
   startDate: string;
   endDate: string;
   isGrant: boolean;
+  faqs: Array<{ question: string; answer: string }>;
 }
 
 export interface Competition {
