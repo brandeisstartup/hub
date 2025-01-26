@@ -9,6 +9,7 @@ export interface CompetitionFields {
   endDate: string;
   isGrant: boolean;
   faqs: Array<{ question: string; answer: string }>;
+  contactInformation: Array<{ name: string; email: string }>;
 }
 
 export interface Competition {
