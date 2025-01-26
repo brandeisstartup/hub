@@ -9,6 +9,7 @@ import { Disclosure } from "@headlessui/react";
 import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Link from "next/link";
+import BodyText from "@/ui/components/brandeisBranding/text/bodyText";
 
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
@@ -74,7 +75,7 @@ export default function CompetitionPage({ competition }: Props) {
   }
 
   return (
-    <>
+    <div className="bg-white">
       <div>
         <h1>{competition.fields.title}</h1>
         <p>{competition.fields.description}</p>
@@ -86,6 +87,12 @@ export default function CompetitionPage({ competition }: Props) {
         </p>
         {competition.fields.isGrant && <p> This competition is a grant</p>}
       </div>
+
+      <BodyText
+        title="about"
+        heading={`How this works `}
+        description={competition.fields.about}
+      />
 
       <div className="" id="reqs">
         <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
@@ -207,6 +214,6 @@ export default function CompetitionPage({ competition }: Props) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
