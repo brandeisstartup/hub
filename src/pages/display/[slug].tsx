@@ -5,11 +5,8 @@ import {
 } from "@/types/used/CompetitionTypes"; // ✅ Corrected imports
 import client from "@/lib/contentful";
 import { ParsedUrlQuery } from "querystring";
-import { Disclosure } from "@headlessui/react";
-import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Link from "next/link";
-import BodyText from "@/ui/components/brandeisBranding/text/bodyText";
 
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
