@@ -2,7 +2,7 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import {
   CompetitionSkeleton,
   CompetitionFields
-} from "@/types/used/CompetitionTypes"; // ✅ Corrected imports
+} from "@/types/used/CompetitionTypes";
 import client from "@/lib/contentful";
 import { ParsedUrlQuery } from "querystring";
 import { Disclosure } from "@headlessui/react";
