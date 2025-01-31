@@ -12,6 +12,7 @@ export interface CompetitionFields {
   contactInformation: Array<{ name: string; email: string }>;
   requirements: Array<{ requirement: string; explanation: Array<string> }>;
   about: string;
+  showIntroVideo: boolean;
 }
 
 export interface Competition {
