@@ -268,41 +268,60 @@ export const pitchSummitData = [
 
     schedule: [
       {
-        name: "Dinner and Workshop",
-        description: "How to sell your idea",
-        date: "02/09/2024",
-        dateTime: "5-6 p.m."
+        name: "Sign-in",
+        description: "Must be present to qualify for Airpods MAX raffle.",
+        date: "02/07/2025",
+        dateTime: "5 p.m."
       },
       {
-        name: "Workshop",
-        description: "Leading with Presence Workshop",
-        date: "02/09/2024",
-        dateTime: "6-8:30 p.m."
+        name: "Dinner",
+        description: "Dinner and Networking for the entire group.",
+        date: "02/07/2025",
+        dateTime: "5:15 p.m."
       },
       {
-        name: "Communication Skills workshop",
+        name: "Workshops I",
         description:
           "Communication skills are essential to success in any field. This workshop will help you develop your communication skills.",
-        date: "02/10/2024",
-        dateTime: "10 a.m. - 1:15 a.m."
+        date: "02/07/2025",
+        dateTime: "5:30pm"
       },
       {
-        name: "Team Practice",
-        description: "Time to practice your pitch!",
-        date: "02/10/2024",
-        dateTime: "1:15 p.m. - 4:30 p.m."
+        name: "Deis Hacks Introduced",
+        description: "Learn what you will be pitching during the summit.",
+        date: "02/07/2025",
+        dateTime: "8:30pm"
       },
       {
-        name: "Elimination Round",
-        description: "The top X teams will pitch to the judges.",
-        date: "02/10/2024",
-        dateTime: "4-5 p.m."
+        name: "Breakfast",
+        description: "Must be present to qualify for Airpods MAX raffle.",
+        date: "02/08/2025",
+        dateTime: "9:30am"
       },
       {
-        name: "Final Pitches, Awards Ceremony, and Raffle",
-        description: "Winners will be announced and prizes will be awarded.",
-        date: "02/10/2024",
-        dateTime: "5-5:50 p.m."
+        name: "Workshop IIs",
+        description:
+          "Communication skills are essential to success in any field. This workshop will help you develop your communication skills.",
+        date: "02/08/2025",
+        dateTime: "9:45am"
+      },
+      {
+        name: "Working Lunch",
+        description: "Lunch with team and prerpare your initial pitch.",
+        date: "02/08/2025",
+        dateTime: "12:30pm"
+      },
+      {
+        name: "Pitches with Feedback and competion round I",
+        description: "Work with coaches and mentors to refine your pitch.",
+        date: "02/08/2025",
+        dateTime: "1:30pm"
+      },
+      {
+        name: "Final Competition Round",
+        description: "Finalists pitch. Winners announced.",
+        date: "02/08/2025",
+        dateTime: "5:15pm"
       }
     ],
 
@@ -522,6 +541,25 @@ Ready to join? [Pre-register now]"https://forms.gle/VRPJSRuNSjuCpkG79".`,
         role: "Co-Founder / CEO",
         imageUrl: "/philippe_wells.webp",
         bio: "Philippe Wells is a seasoned entrepreneur in the health and wellness industry. Previously he worked in structured finance at Bain Capital and in strategy consulting at the Boston Consulting Group. Since 2019, Philippe has taught and developed courses at Brandeis International Business School in entrepreneurship, social impact investing, business fundamentals and data analytics for business."
+      }
+    ],
+    judges: [
+      {
+        name: "Alyson B. Popper CFP",
+        imageUrl: "/alysonbcooper.webp",
+        bio: " Alyson and her team, The Popper Group at Morgan Stanley, provide comprehensive financial planning and investment services for individuals, families and small-to-mid size businesses. Delivering conflict-free advice and unbiased solutions, predicated on providing the superior level of attention and service our clients deserve."
+      },
+      {
+        name: "Elan Kawesch",
+        role: "Shmooz",
+        imageUrl: "/elankawesch.webp",
+        bio: "Elan is passionate about early stage SaaS startups. Most recently Elan focused on the application of generative AI to enterprise use cases as a founder, advisor, and executive specializing in product and growth. Previously the Chief Product Officer at the Google-accelerated startup Claira."
+      },
+      {
+        name: "Julie E. Miller",
+        role: "Arbitration Specialist",
+        imageUrl: "/juelimiller.webp",
+        bio: "Julie loves to bring energy to a team and/or process to make it better! Julie's background combines corporate and higher education administration experience at IBM, Monster, Boston College, Babson College, and Brandeis University, and expertise is in career advising, bringing order to operational chaos, and building great teams who produce way more than the sum of their parts."
       }
     ],
 
