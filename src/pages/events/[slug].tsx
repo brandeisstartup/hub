@@ -96,18 +96,19 @@ export default function CompetitionPage({ competition }: Props) {
           description={competition.fields.about}
         />
       )}
-      {competition.fields.showIntroVideo && (
-        <div className="  flex justify-center items-center">
-          <iframe
-            width="888"
-            height="500"
-            src="https://www.youtube.com/embed/hJE88XlFWmU"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen></iframe>
-        </div>
-      )}
+      {competition.fields.showIntroVideo &&
+        competition.fields.introVideoYoutubeId && (
+          <div className="  flex justify-center items-center">
+            <iframe
+              width="888"
+              height="500"
+              src={`https://www.youtube.com/embed/${competition.fields.introVideoYoutubeId}`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen></iframe>
+          </div>
+        )}
 
       {competition.fields.showRequirements && (
         <div className="" id="reqs">
@@ -139,7 +140,7 @@ export default function CompetitionPage({ competition }: Props) {
       )}
       {competition.fields.showSchedule && (
         <div
-          className="bg-gray-400/10 p-20 rounded-lg mx-auto mt-20 max-w-8xl px-6 lg:px-14"
+          className="bg-BrandeisBackgroundAlt p-20 rounded-lg mx-auto mt-20 max-w-8xl px-6 lg:px-14"
           id="dates">
           <div className="font-sans mx-auto max-w-2xl lg:text-center">
             <h2 className="text-base  leading-7 text-blue-600">Schedule</h2>
@@ -148,8 +149,8 @@ export default function CompetitionPage({ competition }: Props) {
             </p>
           </div>
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-8 overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
-            {pitchSummitData[0].schedule.map((item) => (
-              <div key={item.name}>
+            {competition.fields.scheduleEvents.map((item) => (
+              <div key={item.title}>
                 <time
                   dateTime={item.dateTime}
                   className="flex items-center text-sm font-semibold leading-6 text-blue-600">
@@ -166,7 +167,7 @@ export default function CompetitionPage({ competition }: Props) {
                   />
                 </time>
                 <p className="font-sans mt-6 text-lg  leading-8 tracking-tight text-gray-900">
-                  {item.name}
+                  {item.title}
                 </p>
                 <p className="mt-1 text-base leading-7 text-gray-600">
                   {item.description}

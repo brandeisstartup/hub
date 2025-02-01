@@ -9,13 +9,16 @@ export interface CompetitionFields {
   isGrant: boolean;
 
   showIntroVideo: boolean;
+  introVideoYoutubeId: string;
 
   showAbout: boolean;
   about: string;
 
   showRequirements: boolean;
   requirements: Array<{ requirement: string; explanation: Array<string> }>;
+
   showSchedule: boolean;
+  scheduleEvents: ScheduleItem[];
 
   showPersonSpotlight: boolean;
   personSpotlightImage: ImageFile;
@@ -31,6 +34,12 @@ export interface CompetitionFields {
   contactInformation: Array<{ name: string; email: string }>;
 }
 
+export interface ScheduleItem {
+  title: string;
+  description: string;
+  date: string;
+  dateTime: string;
+}
 export interface ImageFile {
   fields: {
     title: string;
