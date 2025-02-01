@@ -7,17 +7,28 @@ export interface CompetitionFields {
   startDate: string;
   endDate: string;
   isGrant: boolean;
-  faqs: Array<{ question: string; answer: string }>;
-  contactInformation: Array<{ name: string; email: string }>;
-  requirements: Array<{ requirement: string; explanation: Array<string> }>;
-  about: string;
+
   showIntroVideo: boolean;
+
+  showAbout: boolean;
+  about: string;
+
+  showRequirements: boolean;
+  requirements: Array<{ requirement: string; explanation: Array<string> }>;
+  showSchedule: boolean;
+
   showPersonSpotlight: boolean;
   personSpotlightImage: ImageFile;
   personSpotlightText: string;
   personSpotlightLInk: string;
   personSpotlightFirstName: string;
   personSpotlightLastName: string;
+
+  showFaq: boolean;
+  faqs: Array<{ question: string; answer: string }>;
+
+  showContactInformation: boolean;
+  contactInformation: Array<{ name: string; email: string }>;
 }
 
 export interface ImageFile {

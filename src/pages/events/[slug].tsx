@@ -12,6 +12,8 @@ import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Link from "next/link";
 import BodyText from "@/ui/components/brandeisBranding/text/bodyText";
 
+import { pitchSummitData } from "@/data/competition";
+
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
 }
@@ -87,11 +89,13 @@ export default function CompetitionPage({ competition }: Props) {
         </div>
       </div>
 
-      <BodyText
-        title="about"
-        heading={`How this works `}
-        description={competition.fields.about}
-      />
+      {competition.fields.showAbout && (
+        <BodyText
+          title="about"
+          heading={`How this works `}
+          description={competition.fields.about}
+        />
+      )}
       {competition.fields.showIntroVideo && (
         <div className="  flex justify-center items-center">
           <iframe
@@ -104,8 +108,77 @@ export default function CompetitionPage({ competition }: Props) {
             allowFullScreen></iframe>
         </div>
       )}
+
+      {competition.fields.showRequirements && (
+        <div className="" id="reqs">
+          <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
+            <Heading label="Requirements" />
+            <dl className="mt-10 space-y-8 divide-y divide-gray-900/10">
+              {competition.fields.requirements.map((req) => (
+                <div
+                  key={req.requirement}
+                  className="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                  <dt className="font-sans text-xl leading-7 text-gray-900 lg:col-span-5">
+                    {" "}
+                    {req.requirement}
+                  </dt>
+                  <dd className="mt-4 lg:col-span-7 lg:mt-0">
+                    <ol className="text-base leading-7 text-gray-600">
+                      {req.explanation.map((exp) => (
+                        <li key={exp} className="">
+                          {exp}
+                        </li>
+                      ))}
+                    </ol>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      )}
+      {competition.fields.showSchedule && (
+        <div
+          className="bg-gray-400/10 p-20 rounded-lg mx-auto mt-20 max-w-8xl px-6 lg:px-14"
+          id="dates">
+          <div className="font-sans mx-auto max-w-2xl lg:text-center">
+            <h2 className="text-base  leading-7 text-blue-600">Schedule</h2>
+            <p className="mt-2 mb-6 text-3xl  tracking-tight text-gray-900 sm:text-4xl">
+              Important times
+            </p>
+          </div>
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-8 overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
+            {pitchSummitData[0].schedule.map((item) => (
+              <div key={item.name}>
+                <time
+                  dateTime={item.dateTime}
+                  className="flex items-center text-sm font-semibold leading-6 text-blue-600">
+                  <svg
+                    viewBox="0 0 4 4"
+                    className="mr-4 h-1 w-1 flex-none"
+                    aria-hidden="true">
+                    <circle cx={2} cy={2} r={2} fill="currentColor" />
+                  </svg>
+                  {item.date}
+                  <div
+                    className="absolute -ml-2 h-px w-screen -translate-x-full bg-gray-900/10 sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
+                    aria-hidden="true"
+                  />
+                </time>
+                <p className="font-sans mt-6 text-lg  leading-8 tracking-tight text-gray-900">
+                  {item.name}
+                </p>
+                <p className="mt-1 text-base leading-7 text-gray-600">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {competition.fields.showPersonSpotlight && (
-        <div className="bg-white py-16">
+        <div className="bg-white ">
           <div className="mx-auto max-w-8xl lg:px-4">
             <div className="mx-auto max-w-2xl lg:mx-0">
               <Heading label={`Meet ${name}`} />
@@ -138,126 +211,106 @@ export default function CompetitionPage({ competition }: Props) {
         </div>
       )}
 
-      <div className="" id="reqs">
-        <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
-          <Heading label="Requirements" />
-          <dl className="mt-10 space-y-8 divide-y divide-gray-900/10">
-            {competition.fields.requirements.map((req) => (
-              <div
-                key={req.requirement}
-                className="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
-                <dt className="font-sans text-xl leading-7 text-gray-900 lg:col-span-5">
-                  {" "}
-                  {req.requirement}
-                </dt>
-                <dd className="mt-4 lg:col-span-7 lg:mt-0">
-                  <ol className="text-base leading-7 text-gray-600">
-                    {req.explanation.map((exp) => (
-                      <li key={exp} className="">
-                        {exp}
-                      </li>
-                    ))}
-                  </ol>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-      <div className="bg-white" id="faq">
-        <div className="mx-auto max-w-8xl px-6 py-24 sm:py-32 lg:px-4 lg:py-16">
-          <div className="mx-auto max-w-8xl">
-            <Heading label="FAQ" />
-            <dl className="mt-10 space-y-3 ">
-              {competition.fields.faqs.map((faq) => (
-                <Disclosure
-                  as="div"
-                  key={faq.question}
-                  className="pt-6 pb-6 px-5 bg-BrandeisBackgroundAlt">
-                  {({ open }) => (
-                    <>
-                      <dt>
-                        <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
-                          <span className="font-sans font-semibold leading-7">
-                            {faq.question}
-                          </span>
-                          <span className="ml-6 flex h-8 items-center">
-                            {open ? (
-                              <MinusSmallIcon
-                                className="h-8 w-8"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <PlusSmallIcon
-                                className="h-8 w-8"
-                                aria-hidden="true"
-                              />
-                            )}
-                          </span>
-                        </Disclosure.Button>
-                      </dt>
-                      <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                        {Array.isArray(faq.answer) ? (
-                          faq.answer.map((item, index) => (
-                            <p
-                              key={index}
-                              className="text-base leading-7 text-gray-600 mb-2">
-                              {index + 1}. {item}
+      {competition.fields.showFaq && (
+        <div className="bg-white" id="faq">
+          <div className="mx-auto max-w-8xl px-6 py-24 sm:py-32 lg:px-4 lg:py-16">
+            <div className="mx-auto max-w-8xl">
+              <Heading label="FAQ" />
+              <dl className="mt-10 space-y-3 ">
+                {competition.fields.faqs.map((faq) => (
+                  <Disclosure
+                    as="div"
+                    key={faq.question}
+                    className="pt-6 pb-6 px-5 bg-BrandeisBackgroundAlt">
+                    {({ open }) => (
+                      <>
+                        <dt>
+                          <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                            <span className="font-sans font-semibold leading-7">
+                              {faq.question}
+                            </span>
+                            <span className="ml-6 flex h-8 items-center">
+                              {open ? (
+                                <MinusSmallIcon
+                                  className="h-8 w-8"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <PlusSmallIcon
+                                  className="h-8 w-8"
+                                  aria-hidden="true"
+                                />
+                              )}
+                            </span>
+                          </Disclosure.Button>
+                        </dt>
+                        <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                          {Array.isArray(faq.answer) ? (
+                            faq.answer.map((item, index) => (
+                              <p
+                                key={index}
+                                className="text-base leading-7 text-gray-600 mb-2">
+                                {index + 1}. {item}
+                              </p>
+                            ))
+                          ) : (
+                            <p className="text-base leading-7 text-gray-600">
+                              {faq.answer}
                             </p>
-                          ))
-                        ) : (
-                          <p className="text-base leading-7 text-gray-600">
-                            {faq.answer}
-                          </p>
-                        )}
-                      </Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
-              ))}
-            </dl>
+                          )}
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
+                ))}
+              </dl>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      <div className="bg-white py-24 sm:py-32">
-        <div className="mx-auto max-w-8xl px-6 lg:px-4">
-          <div className="mx-auto max-w-2xl space-y-16 divide-y divide-gray-100 lg:mx-0 lg:max-w-none">
-            <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-3">
-              <div>
-                <Heading label="Get in touch" />
-                <p className="text-center md:text-left mt-4 leading-7 text-gray-600">
-                  Contact the organizers for any questions
-                </p>
-              </div>
+      {competition.fields.showContactInformation && (
+        <div className="bg-white py-24 sm:py-32">
+          <div className="mx-auto max-w-8xl px-6 lg:px-4">
+            <div className="mx-auto max-w-2xl space-y-16 divide-y divide-gray-100 lg:mx-0 lg:max-w-none">
+              <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-3">
+                <div>
+                  <Heading label="Get in touch" />
+                  <p className="text-center md:text-left mt-4 leading-7 text-gray-600">
+                    Contact the organizers for any questions
+                  </p>
+                </div>
 
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
-                {competition.fields.contactInformation.map((contact, index) => (
-                  <div
-                    key={contact.name + index}
-                    className="rounded-2xl bg-gray-50 p-10">
-                    <h3 className="text-base font-semibold leading-7 text-gray-900">
-                      {contact.name}
-                    </h3>
-                    <dl className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
-                      <div>
-                        <dt className="sr-only">Email</dt>
-                        <dd>
-                          <Link
-                            className="font-semibold text-blue-600"
-                            href={`mailto:${contact.email}`}>
-                            {contact.email}
-                          </Link>
-                        </dd>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
+                  {competition.fields.contactInformation.map(
+                    (contact, index) => (
+                      <div
+                        key={contact.name + index}
+                        className="rounded-2xl bg-gray-50 p-10">
+                        <h3 className="text-base font-semibold leading-7 text-gray-900">
+                          {contact.name}
+                        </h3>
+                        <dl className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
+                          <div>
+                            <dt className="sr-only">Email</dt>
+                            <dd>
+                              <Link
+                                className="font-semibold text-blue-600"
+                                href={`mailto:${contact.email}`}>
+                                {contact.email}
+                              </Link>
+                            </dd>
+                          </div>
+                        </dl>
                       </div>
-                    </dl>
-                  </div>
-                ))}
+                    )
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
