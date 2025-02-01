@@ -1,12 +1,12 @@
 import React from "react";
 
 type Props = {
-  youtubeUrl: string; // Added YouTube URL prop
+  youtubeUrl?: string; // Added YouTube URL prop
   overlayText: string; // Optional prop for custom text
   topLabel: string;
 };
 
-const ResponsiveGridItem = ({ youtubeUrl, overlayText, topLabel }: Props) => {
+const ResponsiveGridItem = ({ overlayText, topLabel }: Props) => {
   return (
     <div className="">
       <div className=" mt-0  mb-0 font-sans flex flex-col justify-center align-middle items-center border shadow-sm">

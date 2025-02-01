@@ -185,6 +185,7 @@ export default function CompetitionPage({ competition }: Props) {
             headingLabel={`${competition.fields.winnersYoutubeGridLabel}`}>
             {competition.fields.winnersYoutubeGrid.map((item) => (
               <ResponsiveGridItem
+                key={item.youtubeUrl}
                 youtubeUrl={item.youtubeUrl}
                 overlayText={item.overlayText}
                 topLabel={item.topLabel}
