@@ -1,4 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from "next";
+import Image from "next/image";
 import {
   CompetitionSkeleton,
   CompetitionFields
@@ -70,6 +71,10 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
 // ✅ Page Component
 export default function CompetitionPage({ competition }: Props) {
+  const name =
+    competition.fields.personSpotlightFirstName +
+    " " +
+    competition.fields.personSpotlightLastName;
   if (!competition || !competition.fields) {
     return <div>Competition data is not available.</div>;
   }
@@ -97,6 +102,39 @@ export default function CompetitionPage({ competition }: Props) {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen></iframe>
+        </div>
+      )}
+      {competition.fields.showPersonSpotlight && (
+        <div className="bg-white py-16">
+          <div className="mx-auto max-w-8xl lg:px-4">
+            <div className="mx-auto max-w-2xl lg:mx-0">
+              <Heading label={`Meet ${name}`} />
+            </div>
+            <div className=" mt-4  overflow-hidden bg-white  text-center   grid grid-cols-1 md:grid-cols-3 gap-2">
+              <Image
+                src={`https:${competition.fields.personSpotlightImage.fields.file.url}`}
+                alt={`https:${competition.fields.personSpotlightImage.fields.title}`}
+                layout="responsive"
+                width={100}
+                height={100}
+                className="h-1/2"
+              />
+              <div className="col-span-1 md:col-span-2  h-full flex flex-col items-start justify-start px-4 gap-4">
+                <p className="text-left ">
+                  {competition.fields.personSpotlightText}
+                </p>
+                <div className="underline text-orange-500">
+                  <a
+                    target="_blank"
+                    href={`${competition.fields.personSpotlightLInk}`}>
+                    Learn more about
+                    {` ${name}`}
+                    &apos;s insipiring story.
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
