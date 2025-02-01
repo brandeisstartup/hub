@@ -1,8 +1,8 @@
 import React from "react";
 
 type Props = {
-  youtubeUrl?: string; // Added YouTube URL prop
-  overlayText: string; // Optional prop for custom text
+  youtubeUrl?: string;
+  overlayText: string;
   topLabel: string;
 };
 
