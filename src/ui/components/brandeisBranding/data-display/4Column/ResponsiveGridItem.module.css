@@ -1,0 +1,14 @@
+/* Add this to your global styles or a CSS module */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  z-index: -1;
+}
+
+
+
+.imageWrapper:hover .overlay {
+  opacity: 1;
+}
