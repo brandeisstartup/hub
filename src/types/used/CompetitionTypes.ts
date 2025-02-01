@@ -1,6 +1,5 @@
 import { Entry, EntrySkeletonType } from "contentful";
 
-// ✅ Define the Contentful Fields separately
 export interface CompetitionFields {
   title: string;
   showInHub: boolean;
@@ -13,6 +12,31 @@ export interface CompetitionFields {
   requirements: Array<{ requirement: string; explanation: Array<string> }>;
   about: string;
   showIntroVideo: boolean;
+  showPersonSpotlight: boolean;
+  personSpotlightImage: ImageFile;
+  personSpotlightText: string;
+  personSpotlightLInk: string;
+  personSpotlightFirstName: string;
+  personSpotlightLastName: string;
+}
+
+export interface ImageFile {
+  fields: {
+    title: string;
+    description: string;
+    file: {
+      url: string;
+      details: {
+        size: number;
+        image: {
+          width: number;
+          height: number;
+        };
+      };
+      fileName: string;
+      contentType: string;
+    };
+  };
 }
 
 export interface Competition {
@@ -23,11 +47,11 @@ export interface Props {
   competition: Competition;
 }
 
-// ✅ Ensure the correct `EntrySkeletonType` with explicit contentTypeId
+// Ensure the correct `EntrySkeletonType` with explicit contentTypeId
 export type CompetitionSkeleton = EntrySkeletonType<
   CompetitionFields,
   "competitions"
 >;
 
-// ✅ Define the typed Contentful Entry
+// Define the typed Contentful Entry
 export type CompetitionEntry = Entry<CompetitionSkeleton>;

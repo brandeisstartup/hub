@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Merriweather&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,6 +13,64 @@
   :root {
     --background: #ededed;
     --foreground: #0a0a0a;
+    --brand: #002e6c;
+    --brandHSLA: 211, 100%, 21%, 1;
+    --brand-tint: #00214d;
+    --IBS-teal: #008383;
+    --brand-shade: #ff1ee5;
+    --white: #ffffff;
+    --textBlack: #1b1b1b;
+
+    --text-100: #ffffff;
+    --text-200: #ffffff;
+    --text-300: #ffffff;
+    --text-400: #ffffff;
+
+    --text-small: 1rem;
+    --text-medium: 1.2rem;
+    --text-large: 1.4rem;
+    --text-display: 1.6rem;
+
+    --padding-small: 0.5rem;
+    --padding-medium: 1rem;
+    --padding-large: 1.5rem;
+    --padding-xlarge: 2rem;
+
+    --margin-small: 0.5rem;
+    --margin-medium: 1rem;
+    --margin-large: 1.5rem;
+    --margin-xlarge: 2rem;
+
+    --verticalSpace-small: 0.5rem;
+    --verticalSpace-medium: 1rem;
+    --verticalSpace-large: 1.5rem;
+    --verticalSpace-xlarge: 2rem;
+
+    --horizontalSpace-small: 0.5rem;
+    --horizontalSpace-medium: 1rem;
+    --horizontalSpace-large: 1.5rem;
+    --horizontalSpace-xlarge: 2rem;
+
+    --componentSpace-small: 2rem;
+    --componentSpace-medium: 4rem;
+    --componentSpace-large: 6rem;
+    --componentSpace-xlarge: 8rem;
+
+    --font-weight-normal: 400;
+    --font-weight-bold: 500;
+    --font-weight-bolder: 600;
+
+    --background-100: #ffffff;
+    --background-200: #ffffff;
+    --background-300: #ffffff;
+    --background-400: #ffffff;
+
+    --border: 1px solid #c4c3c3;
+    --border-100: #ffffff;
+    --maxWidth: 1080px;
+
+    --borderTest: 1px solid red;
+    --logoFont: "Merriweather", serif;
   }
 }
 
