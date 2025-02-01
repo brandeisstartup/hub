@@ -20,12 +20,23 @@ export interface CompetitionFields {
   showSchedule: boolean;
   scheduleEvents: ScheduleItem[];
 
+  showWinnersYoutubeGrid: boolean;
+  winnersYoutubeGridLabel: string;
+  winnersYoutubeGrid: Array<{
+    youtubeUrl: string;
+    overlayText: string;
+    topLabel: string;
+  }>;
+
   showPersonSpotlight: boolean;
   personSpotlightImage: ImageFile;
   personSpotlightText: string;
   personSpotlightLInk: string;
   personSpotlightFirstName: string;
   personSpotlightLastName: string;
+
+  showFinalistYoutubeVideos: boolean;
+  finalistYoutubeVideos: Array<{ youtubeId: string; caption: string }>;
 
   showFaq: boolean;
   faqs: Array<{ question: string; answer: string }>;

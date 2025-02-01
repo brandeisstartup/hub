@@ -11,6 +11,8 @@ import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Link from "next/link";
 import BodyText from "@/ui/components/brandeisBranding/text/bodyText";
+import ResponsiveGrid from "@/ui/components/brandeisBranding/data-display/4Column/ResponsiveGrid";
+import ResponsiveGridItem from "@/ui/components/brandeisBranding/data-display/4Column/ResponsiveGridItem";
 
 // import { pitchSummitData } from "@/data/competition";
 
@@ -88,7 +90,6 @@ export default function CompetitionPage({ competition }: Props) {
           <Heading label={`${competition.fields.title}`} />
         </div>
       </div>
-
       {competition.fields.showAbout && (
         <BodyText
           title="about"
@@ -109,7 +110,6 @@ export default function CompetitionPage({ competition }: Props) {
               allowFullScreen></iframe>
           </div>
         )}
-
       {competition.fields.showRequirements && (
         <div className="" id="reqs">
           <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
@@ -178,7 +178,21 @@ export default function CompetitionPage({ competition }: Props) {
             </div>
           </div>
         )}
-
+      {competition.fields.showWinnersYoutubeGrid &&
+        competition.fields.winnersYoutubeGridLabel &&
+        competition.fields.winnersYoutubeGrid.length >= 1 && (
+          <ResponsiveGrid
+            headingLabel={`${competition.fields.winnersYoutubeGridLabel}`}>
+            {competition.fields.winnersYoutubeGrid.map((item) => (
+              <ResponsiveGridItem
+                key={item.youtubeUrl}
+                youtubeUrl={item.youtubeUrl}
+                overlayText={item.overlayText}
+                topLabel={item.topLabel}
+              />
+            ))}
+          </ResponsiveGrid>
+        )}
       {competition.fields.showPersonSpotlight && (
         <div className="bg-white ">
           <div className="mx-auto max-w-8xl lg:px-4">
@@ -212,7 +226,6 @@ export default function CompetitionPage({ competition }: Props) {
           </div>
         </div>
       )}
-
       {competition.fields.showFaq && (
         <div className="bg-white" id="faq">
           <div className="mx-auto max-w-8xl px-6 py-24 sm:py-32 lg:px-4 lg:py-16">
@@ -270,7 +283,6 @@ export default function CompetitionPage({ competition }: Props) {
           </div>
         </div>
       )}
-
       {competition.fields.showContactInformation && (
         <div className="bg-white py-24 sm:py-32">
           <div className="mx-auto max-w-8xl px-6 lg:px-4">
