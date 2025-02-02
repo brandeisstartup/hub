@@ -86,7 +86,7 @@ export default function CompetitionPage({ competition }: Props) {
   return (
     <div className="bg-white">
       <div className="">
-        <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
+        <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:py-22">
           <Heading label={`${competition.fields.title}`} />
         </div>
       </div>
@@ -226,6 +226,46 @@ export default function CompetitionPage({ competition }: Props) {
           </div>
         </div>
       )}
+
+      {competition.fields.showPeople &&
+        competition.fields.people &&
+        competition.fields.people.length >= 1 && (
+          <div className="bg-white py-24 px- sm:py-32">
+            <div className="mx-auto max-w-8xl px-4">
+              <div className="mx-auto max-w-2xl lg:mx-0">
+                <Heading label={`${competition.fields.peopleSectionLabel}`} />
+              </div>
+              <ul
+                role="list"
+                className=" font-sans mx-auto mt-20 grid  grid-rows-1 gap-x-8 gap-y-16 max-w-7xl   lg:mx-0 lg:max-w-none  ">
+                {competition.fields.people.map((person) => (
+                  <li
+                    key={`${person.fields.firstName} ${person.fields.lastName}`}
+                    className="flex flex-col max-w-5xl md:flex-row gap-8">
+                    <img
+                      className="w-40 h-40 rounded-2xl object-cover"
+                      src={person.fields.image.fields.file.url}
+                      alt={`${person.fields.image.fields.file.details}`}
+                    />
+                    <div>
+                      {" "}
+                      <h3 className=" font-sans text-lg font-semibold leading-8 tracking-tight text-gray-900">
+                        {`${person.fields.firstName} ${person.fields.lastName}`}
+                      </h3>
+                      <h5 className="text-md text-orange-400">
+                        {person.fields.role}
+                      </h5>
+                      <p className=" font-sans text-base leading-7 text-gray-600">
+                        {person.fields.about}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
       {competition.fields.showFaq && (
         <div className="bg-white" id="faq">
           <div className="mx-auto max-w-8xl px-6 py-24 sm:py-32 lg:px-4 lg:py-16">

@@ -40,6 +40,20 @@ export interface CompetitionFields {
 
   showContactInformation: boolean;
   contactInformation: Array<{ name: string; email: string }>;
+
+  showPeople: boolean;
+  peopleSectionLabel: string;
+  people: Person[];
+}
+
+export interface Person {
+  fields: {
+    firstName: string;
+    lastName: string;
+    about: string;
+    role: string;
+    image: ImageFile;
+  };
 }
 
 export interface ScheduleItem {
