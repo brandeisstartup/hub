@@ -9,9 +9,16 @@ import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownBut
 export default function NavBarSearch() {
   const { competitions, loading } = useCompetitions();
 
-  // Filter and categorize competitions
-  const grants = competitions.filter((comp) => comp.isGrant);
   const competitionsList = competitions.filter((comp) => !comp.isGrant);
+  const currentDate = new Date();
+  const threeMonthsLater = new Date();
+  threeMonthsLater.setMonth(currentDate.getMonth() + 3);
+
+  const upcomingEvents = competitions.filter((comp) => {
+    if (!comp.startDate) return false;
+    const eventDate = new Date(comp.startDate);
+    return eventDate >= currentDate && eventDate <= threeMonthsLater;
+  });
 
   // Dynamically build navigation
   const dynamicNavigation = [
@@ -33,19 +40,19 @@ export default function NavBarSearch() {
       ]
     },
     {
-      name: "Grants & Awards",
-      href: "#grants",
-      links: grants.map((grant) => ({
-        name: grant.title,
-        description: grant.description,
-        href: `/events/${grant.title.toLowerCase().replace(/\s+/g, "-")}`,
-        startDate: grant.startDate,
-        endDate: grant.endDate
+      name: "Upcoming Events",
+      href: "#upcoming",
+      links: upcomingEvents.map((event) => ({
+        name: event.title,
+        description: event.description,
+        href: `/events/${event.title.toLowerCase().replace(/\s+/g, "-")}`,
+        startDate: event.startDate,
+        endDate: event.endDate
       }))
     },
     {
-      name: "Competitions",
-      href: "#competitions",
+      name: "Events",
+      href: "#events",
       links: competitionsList.map((comp) => ({
         name: comp.title,
         description: comp.description,
