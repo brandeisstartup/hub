@@ -63,10 +63,6 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
           );
         });
 
-        console.log(
-          "🚀 Filtered Upcoming Events (Including Ongoing):",
-          filteredUpcoming
-        );
         setUpcomingEvents(filteredUpcoming);
       } catch (error) {
         console.error("❌ Error fetching competitions:", error);
