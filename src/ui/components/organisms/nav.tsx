@@ -7,18 +7,9 @@ import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
 
 export default function NavBarSearch() {
-  const { competitions, loading } = useCompetitions();
+  const { competitions, upcomingEvents, loading } = useCompetitions();
 
   const competitionsList = competitions.filter((comp) => !comp.isGrant);
-  const currentDate = new Date();
-  const threeMonthsLater = new Date();
-  threeMonthsLater.setMonth(currentDate.getMonth() + 3);
-
-  const upcomingEvents = competitions.filter((comp) => {
-    if (!comp.startDate) return false;
-    const eventDate = new Date(comp.startDate);
-    return eventDate >= currentDate && eventDate <= threeMonthsLater;
-  });
 
   // Dynamically build navigation
   const dynamicNavigation = [
