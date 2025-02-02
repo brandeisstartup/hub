@@ -35,9 +35,6 @@ export interface CompetitionFields {
   personSpotlightFirstName: string;
   personSpotlightLastName: string;
 
-  showFinalistYoutubeVideos: boolean;
-  finalistYoutubeVideos: Array<{ youtubeId: string; caption: string }>;
-
   showFaq: boolean;
   faqs: Array<{ question: string; answer: string }>;
 

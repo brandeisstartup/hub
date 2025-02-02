@@ -22,8 +22,8 @@ const VideoBox = ({ youtubeUrl, onClose }: VideoBoxProps) => {
         </button>
         <div className="video-container">
           <iframe
-            width="560"
-            height="315"
+            width="800"
+            height="515"
             src={`https://www.youtube.com/embed/${new URL(
               youtubeUrl
             ).searchParams.get("v")}`}
