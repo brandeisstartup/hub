@@ -18,6 +18,7 @@ export interface CompetitionFields {
   requirements: Array<{ requirement: string; explanation: Array<string> }>;
 
   showSchedule: boolean;
+  scheduleLabel: string;
   scheduleEvents: ScheduleItem[];
 
   showWinnersYoutubeGrid: boolean;
