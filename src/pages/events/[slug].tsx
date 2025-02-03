@@ -142,7 +142,10 @@ export default function CompetitionPage({ competition }: Props) {
         competition.fields.scheduleEvents.length > 1 &&
         competition.fields.scheduleLabel != "" && (
           <div className="mx-auto max-w-8xl lg:px-4">
-            <Heading label={`${competition.fields.scheduleLabel}`} centered />
+            <Heading
+              label={`${competition.fields.scheduleLabel}`}
+              alignStart={false}
+            />
             <div
               className=" p-20 rounded-lg mx-auto mt-20 max-w-8xl px-6 lg:px-14"
               id="dates">
@@ -232,9 +235,8 @@ export default function CompetitionPage({ competition }: Props) {
             <div className="mx-auto max-w-8xl px-4">
               <Heading
                 label={`${competition.fields.peopleSectionLabel}`}
-                centered
+                alignStart={false}
               />
-
               <ul
                 role="list"
                 className=" font-sans mx-auto mt-20 grid  grid-rows-1 gap-x-8 gap-y-16 max-w-7xl justify-center  lg:mx-0 lg:max-w-none  ">
