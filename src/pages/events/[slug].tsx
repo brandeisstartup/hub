@@ -154,7 +154,7 @@ export default function CompetitionPage({ competition }: Props) {
                   <div key={item.title}>
                     <time
                       dateTime={item.dateTime}
-                      className="flex items-center text-md font-sans  leading-6 text-blue-600">
+                      className="flex items-center text-lg font-sans  leading-6 text-blue-600">
                       <svg
                         viewBox="0 0 4 4"
                         className="mr-4 h-1 w-1 flex-none"
@@ -170,7 +170,7 @@ export default function CompetitionPage({ competition }: Props) {
                     <p className="font-sans mt-6 text-lg  leading-8 tracking-tight text-gray-900">
                       {item.title}
                     </p>
-                    <p className="mt-1 text-base leading-7 text-gray-600">
+                    <p className="mt-1 leading-7 text-gray-600">
                       {item.description}
                     </p>
                   </div>
@@ -233,13 +233,10 @@ export default function CompetitionPage({ competition }: Props) {
         competition.fields.people.length >= 1 && (
           <div className="bg-white py-24 px- sm:py-32">
             <div className="mx-auto max-w-8xl px-4">
-              <Heading
-                label={`${competition.fields.peopleSectionLabel}`}
-                alignStart={false}
-              />
+              <Heading label={`${competition.fields.peopleSectionLabel}`} />
               <ul
                 role="list"
-                className=" font-sans mx-auto mt-20 grid  grid-rows-1 gap-x-8 gap-y-16 max-w-7xl justify-center  lg:mx-0 lg:max-w-none  ">
+                className=" font-sans mx-auto mt-20 grid  grid-cols-2 gap-x-8 gap-y-16 max-w-7xl justify-center  lg:mx-0 lg:max-w-none  ">
                 {competition.fields.people.map((person) => (
                   <li
                     key={`${person.fields.firstName} ${person.fields.lastName}`}
@@ -254,10 +251,10 @@ export default function CompetitionPage({ competition }: Props) {
                       <h3 className=" font-sans text-lg font-semibold leading-8 tracking-tight text-gray-900">
                         {`${person.fields.firstName} ${person.fields.lastName}`}
                       </h3>
-                      <h5 className="text-md text-orange-400">
+                      <h5 className="text-md text-blue-700">
                         {person.fields.role}
                       </h5>
-                      <p className=" font-sans text-base leading-7 text-gray-600">
+                      <p className=" font-serif text-sm leading-7 text-gray-600">
                         {person.fields.about}
                       </p>
                     </div>
