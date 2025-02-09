@@ -1,6 +1,7 @@
 import React from "react";
 import { Person } from "@/types/used/CompetitionTypes";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
+import Image from "next/image";
 
 type Props = {
   label: string;
@@ -19,10 +20,13 @@ const People = ({ label, people }: Props) => {
             <li
               key={`${person.fields.firstName}-${person.fields.lastName}`}
               className="flex flex-col max-w-5xl md:flex-row gap-8">
-              <img
+              <Image
                 className="w-40 h-40 rounded-2xl object-cover"
                 src={person.fields.image.fields.file.url}
                 alt={`${person.fields.image.fields.file.details}`}
+                layout="responsive"
+                width={100}
+                height={100}
               />
               <div>
                 {" "}

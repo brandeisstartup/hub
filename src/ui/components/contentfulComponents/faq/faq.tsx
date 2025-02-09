@@ -1,7 +1,6 @@
 import React from "react";
 import { Disclosure } from "@headlessui/react";
 import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
-import { Person } from "@/types/used/CompetitionTypes";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 
 type Props = {
