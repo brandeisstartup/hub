@@ -22,14 +22,12 @@ const People = ({ label, people }: Props) => {
               className="flex flex-col max-w-5xl md:flex-row gap-8">
               <Image
                 className="w-40 h-40 rounded-2xl object-cover"
-                src={person.fields.image.fields.file.url}
-                alt={`${person.fields.image.fields.file.details}`}
-                layout="responsive"
+                src={`https:${person.fields.image.fields.file.url}`}
+                alt={person.fields.image.fields.title || "Person image"}
                 width={100}
                 height={100}
               />
               <div>
-                {" "}
                 <h3 className=" font-sans text-lg font-semibold leading-8 tracking-tight text-gray-900">
                   {`${person.fields.firstName} ${person.fields.lastName}`}
                 </h3>
