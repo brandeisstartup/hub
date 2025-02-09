@@ -36,6 +36,10 @@ export interface CompetitionFields {
   personSpotlightFirstName: string;
   personSpotlightLastName: string;
 
+  showPastProjects: boolean;
+  pastProjectTitle: string;
+  projects: Project[];
+
   showFaq: boolean;
   faqs: Array<{ question: string; answer: string }>;
 
@@ -45,6 +49,16 @@ export interface CompetitionFields {
   showPeople: boolean;
   peopleSectionLabel: string;
   people: Person[];
+}
+
+export interface Project {
+  fields: {
+    title: string;
+    tagline: string;
+    about: string;
+    image: ImageFile;
+    members: string[];
+  };
 }
 
 export interface Person {

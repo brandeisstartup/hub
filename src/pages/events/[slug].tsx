@@ -16,6 +16,7 @@ import ResponsiveGridItem from "@/ui/components/brandeisBranding/data-display/4C
 import ContactInfo from "@/ui/components/contentfulComponents/contactInfo/contactInfo";
 import People from "@/ui/components/contentfulComponents/people/people";
 import Faq from "@/ui/components/contentfulComponents/faq/faq";
+import Projects from "@/ui/components/contentfulComponents/projects/projects";
 
 // import { pitchSummitData } from "@/data/competition";
 
@@ -129,6 +130,14 @@ export default function CompetitionPage({ competition }: Props) {
             ))}
           </ResponsiveGrid>
         )}
+
+      {competition.fields.showPastProjects && (
+        <Projects
+          label={"Project Block"}
+          projects={competition.fields.projects}
+          extend={true}
+        />
+      )}
       {competition.fields.showPersonSpotlight && (
         <PersonSpotlight
           label={competition.fields.personSpotlightFirstName}
