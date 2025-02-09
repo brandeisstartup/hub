@@ -15,12 +15,12 @@ const Button = ({ label, color, onClick }: Props) => {
 
   return (
     <button
-      className={`${styles.heroButton} ${bgClass} text-bold text-2xl font-sans hover:underline`}
+      className={`${styles.heroButton} ${bgClass} text-bold text-2xl font-sans hover:underline `}
       onClick={onClick} // Attach the onClick handler
     >
       {label}
       <span>
-        <ArrowRightIcon className="h-8" />
+        <ArrowRightIcon className="h-8 hover:underline" />
       </span>
     </button>
   );
