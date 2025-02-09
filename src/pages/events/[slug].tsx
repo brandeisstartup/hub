@@ -1,5 +1,4 @@
 import { GetStaticProps, GetStaticPaths } from "next";
-import Image from "next/image";
 import {
   CompetitionSkeleton,
   CompetitionFields
@@ -79,10 +78,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
 // ✅ Page Component
 export default function CompetitionPage({ competition }: Props) {
-  const name =
-    competition.fields.personSpotlightFirstName +
-    " " +
-    competition.fields.personSpotlightLastName;
   if (!competition || !competition.fields) {
     return <div>Competition data is not available.</div>;
   }

@@ -30,7 +30,7 @@ const PersonSpotlight = ({
         <div className=" mt-4  overflow-hidden bg-white  text-center   grid grid-cols-1 md:grid-cols-3 gap-2">
           <Image
             src={`https:${imageUrl}`}
-            alt={`https:${title}`}
+            alt={`https:${title} of ${firstName} ${lastName}`}
             layout="responsive"
             width={100}
             height={100}
