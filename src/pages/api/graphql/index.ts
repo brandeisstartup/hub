@@ -1,5 +1,5 @@
 import { ApolloServer, gql } from "apollo-server-micro";
-//@ts-ignore
+// @ts-nocheck
 import { PrismaClient, Projects } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
