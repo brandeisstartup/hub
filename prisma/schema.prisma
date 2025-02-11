@@ -18,8 +18,9 @@ model Projects {
   team_members_emails String[]
 }
 
-model playing_with_neon {
-  id    Int    @id @default(autoincrement())
-  name  String
-  value Float? @db.Real
+model Users {
+  id    Int     @id @default(autoincrement())
+  email String
+  name  String?
+  bio   String
 }
