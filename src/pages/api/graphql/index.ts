@@ -81,6 +81,7 @@ const resolvers = {
 
   Mutation: {
     createProject: async (_: unknown, args: ProjectArgs) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, ...data } = args;
       return prisma.projects.create({ data });
     },
