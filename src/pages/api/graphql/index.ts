@@ -8,6 +8,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 // Initialize Prisma Client
 const prisma = new PrismaClient();
+console.log("DATABASE_URL:", process.env.DATABASE_URL); // Debug
 
 // GraphQL Type Definitions
 const typeDefs = gql`
