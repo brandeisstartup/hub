@@ -1,14 +1,9 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import { PrismaClient } from "@prisma/client";
-type Projects = Awaited<
-  ReturnType<PrismaClient["projects"]["findFirst"]>
-> | null;
-
 import { NextApiRequest, NextApiResponse } from "next";
 
 // Initialize Prisma Client
 const prisma = new PrismaClient();
-console.log("DATABASE_URL:", process.env.DATABASE_URL); // Debug
 
 // GraphQL Type Definitions
 const typeDefs = gql`
@@ -23,9 +18,18 @@ const typeDefs = gql`
     team_members_emails: [String!]!
   }
 
+  type User {
+    id: ID!
+    email: String!
+    name: String
+    bio: String
+  }
+
   type Query {
     projects: [Project!]!
     project(id: ID!): Project
+    users: [User!]! # ✅ Fetch all users
+    user(id: ID!): User # ✅ Fetch user by ID
   }
 
   type Mutation {
@@ -37,6 +41,10 @@ const typeDefs = gql`
       competition: String
       team_members_emails: [String!]!
     ): Project!
+
+    createUser(email: String!, name: String, bio: String): User! # ✅ Create user
+    updateUser(id: ID!, name: String, bio: String): User! # ✅ Update user
+    deleteUser(id: ID!): User! # ✅ Delete user
   }
 `;
 
@@ -51,34 +59,54 @@ interface ProjectArgs {
   team_members_emails: string[];
 }
 
+interface UserArgs {
+  id?: string;
+  email?: string;
+  name?: string;
+  bio?: string;
+}
+
 // GraphQL Resolvers with Typings
 const resolvers = {
   Query: {
-    projects: async (): Promise<Projects[]> => {
-      return await prisma.projects.findMany();
-    },
-    project: async (
-      _: unknown,
-      { id }: { id: string }
-    ): Promise<Projects | null> => {
-      return await prisma.projects.findUnique({
-        where: { id: Number(id) }
-      });
-    }
+    projects: async () => prisma.projects.findMany(),
+    project: async (_: unknown, { id }: { id: string }) =>
+      prisma.projects.findUnique({ where: { id: Number(id) } }),
+
+    // ✅ User Queries
+    users: async () => prisma.users.findMany(),
+    user: async (_: unknown, { id }: { id: string }) =>
+      prisma.users.findUnique({ where: { id: Number(id) } })
   },
+
   Mutation: {
-    createProject: async (_: unknown, args: ProjectArgs): Promise<Projects> => {
-      return await prisma.projects.create({
+    createProject: async (_: unknown, args: ProjectArgs) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...data } = args;
+      return prisma.projects.create({ data });
+    },
+
+    // ✅ User Mutations
+    createUser: async (_: unknown, args: UserArgs) =>
+      prisma.users.create({
         data: {
-          title: args.title,
-          creator_email: args.creator_email,
-          short_description: args.short_description,
-          long_description: args.long_description,
-          competition: args.competition,
-          team_members_emails: args.team_members_emails
+          email: args.email!,
+          name: args.name || "",
+          bio: args.bio || ""
         }
-      });
-    }
+      }),
+
+    updateUser: async (_: unknown, args: UserArgs) =>
+      prisma.users.update({
+        where: { id: Number(args.id) },
+        data: {
+          name: args.name,
+          bio: args.bio
+        }
+      }),
+
+    deleteUser: async (_: unknown, { id }: { id: string }) =>
+      prisma.users.delete({ where: { id: Number(id) } })
   }
 };
 
