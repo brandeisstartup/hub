@@ -10,7 +10,7 @@ const typeDefs = gql`
   type Project {
     id: ID!
     title: String!
-    creationDate: String!
+    created_date: String!
     creator_email: String!
     short_description: String
     long_description: String
