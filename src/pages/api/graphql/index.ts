@@ -1,6 +1,9 @@
 import { ApolloServer, gql } from "apollo-server-micro";
-// @ts-nocheck
-import { PrismaClient, Projects } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+type Projects = Awaited<
+  ReturnType<PrismaClient["projects"]["findFirst"]>
+> | null;
+
 import { NextApiRequest, NextApiResponse } from "next";
 
 // Initialize Prisma Client
