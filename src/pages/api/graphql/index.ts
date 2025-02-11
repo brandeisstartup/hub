@@ -20,7 +20,7 @@ const typeDefs = gql`
     short_description: String
     long_description: String
     competition: String
-    team_member_emails: [String!]!
+    team_members_emails: [String!]!
   }
 
   type Query {
@@ -35,7 +35,7 @@ const typeDefs = gql`
       short_description: String
       long_description: String
       competition: String
-      team_member_emails: [String!]!
+      team_members_emails: [String!]!
     ): Project!
   }
 `;
@@ -48,7 +48,7 @@ interface ProjectArgs {
   short_description?: string;
   long_description?: string;
   competition?: string;
-  team_member_emails: string[];
+  team_members_emails: string[];
 }
 
 // GraphQL Resolvers with Typings
@@ -75,7 +75,7 @@ const resolvers = {
           short_description: args.short_description,
           long_description: args.long_description,
           competition: args.competition,
-          team_members_emails: args.team_member_emails
+          team_members_emails: args.team_members_emails
         }
       });
     }
