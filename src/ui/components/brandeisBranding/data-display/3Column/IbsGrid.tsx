@@ -9,9 +9,29 @@ type Props = {
   label: string;
   href: string;
   data: CompetitionFields[];
+  showButton?: boolean;
+  buttonLabel?: string;
+  buttonLink?: string;
 };
 
-const IbsGrid = ({ label, href, data }: Props) => {
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  }).format(date);
+};
+
+const IbsGrid = ({
+  showButton,
+  buttonLabel,
+  buttonLink,
+  label,
+  href,
+  data
+}: Props) => {
   return (
     <div id={href} className="bg-BrandeisBrandGray flex justify-center">
       <div className="wrapper flex flex-col w-full justify-center md:flex-row pt-20 pb-20 px-4 max-w-8xl">
@@ -29,7 +49,7 @@ const IbsGrid = ({ label, href, data }: Props) => {
               <div className="flex flex-col h-full gap-3">
                 <aside>
                   <span className="text-md font-bold text-white bg-IBSbrand px-2 py-1 font-sans">
-                    {program.isGrant ? "Grant" : "Competition"}
+                    {formatDate(program.startDate)}
                   </span>
                 </aside>
                 <Link
@@ -43,9 +63,11 @@ const IbsGrid = ({ label, href, data }: Props) => {
               </div>
             </section>
           ))}
-          <div className="col-span-full flex justify-start md:justify-start mt-4">
-            <Button label="Learn More" color="blue" link="/" />
-          </div>
+          {showButton && buttonLabel && buttonLink && (
+            <div className="col-span-full flex justify-start md:justify-start mt-4">
+              <Button label={buttonLabel} color="blue" link={buttonLink} />
+            </div>
+          )}
         </div>
       </div>
     </div>
