@@ -1,12 +1,13 @@
 import { useCompetitions } from "@/context/EventContext";
 import YouTubePage from "@/ui/components/organisms/youtube/YouTubePage";
+import IbsGrid from "@/ui/components/brandeisBranding/data-display/ibs-grid/IbsGrid";
 
 export default function Home() {
   const { competitions, loading } = useCompetitions();
 
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-center">
+      {/* <div className="min-h-screen flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold mb-4 text-BrandeisBrand">
           Contentful Data
         </h1>
@@ -27,7 +28,9 @@ export default function Home() {
             ))}
           </ul>
         )}
-      </div>
+      </div> */}
+      <IbsGrid label="Test" href="#programs" data={competitions} />
+
       <YouTubePage />
     </>
   );
