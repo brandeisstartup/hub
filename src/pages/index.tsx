@@ -36,7 +36,7 @@ export default function Home({ homepageContent }: HomePageProps) {
 
   return (
     <>
-      {homepageContent.showAllEventsListBlock && (
+      {!loading && homepageContent.showAllEventsListBlock && (
         <IbsGrid label="Test" href="#programs" data={competitions} />
       )}
       {homepageContent.showYoutubeVideos && <YouTubePage />}
