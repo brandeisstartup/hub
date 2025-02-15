@@ -7,6 +7,12 @@ export default function Home() {
 
   return (
     <>
+      {!loading && (
+        <IbsGrid label="Test" href="#programs" data={competitions} />
+      )}
+
+      <YouTubePage />
+
       {/* <div className="min-h-screen flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold mb-4 text-BrandeisBrand">
           Contentful Data
@@ -29,9 +35,6 @@ export default function Home() {
           </ul>
         )}
       </div> */}
-      <IbsGrid label="Test" href="#programs" data={competitions} />
-
-      <YouTubePage />
     </>
   );
 }

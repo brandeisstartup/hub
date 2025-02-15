@@ -22,7 +22,7 @@ const IbsGrid = ({ label, href, data }: Props) => {
             </h2>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full md:pl-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full md:pl-8">
           {data.map((program) => (
             <section key={program.title} className="w-full flex flex-col mb-6">
               <div className="flex flex-col h-full gap-3">

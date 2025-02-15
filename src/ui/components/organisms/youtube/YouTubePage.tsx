@@ -4,7 +4,7 @@ import { useYouTubeVideos } from "@/hooks/useYouTubeVideos";
 const YouTubePage = () => {
   const { videos, loading, error } = useYouTubeVideos();
 
-  if (loading) return <p>Loading videos...</p>;
+  if (loading) return;
   if (error) return <p>{error}</p>;
 
   return (
