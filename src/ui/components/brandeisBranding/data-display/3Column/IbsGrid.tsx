@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import slugify from "slugify";
 
 import Button from "@/ui/components/brandeisBranding/buttons/link";
 import { CompetitionFields } from "@/types/used/CompetitionTypes";
@@ -32,7 +33,7 @@ const IbsGrid = ({ label, href, data }: Props) => {
                   </span>
                 </aside>
                 <Link
-                  href={program.title}
+                  href={`/events/${slugify(program.title, { lower: true })}`}
                   className="text-2xl font-bold font-sans text-BrandeisBrand mt-2 hover:underline">
                   {program.title}
                 </Link>
