@@ -1,25 +1,11 @@
-// import { useCompetitions } from "@/context/EventContext";
-// import YouTubePage from "@/ui/components/organisms/youtube/YouTubePage";
-// import IbsGrid from "@/ui/components/brandeisBranding/data-display/3Column/IbsGrid";
-
-// export default function Home() {
-//   const { competitions, loading } = useCompetitions();
-
-//   return (
-//     <>
-//       {!loading && (
-//         <IbsGrid label="Test" href="#programs" data={competitions} />
-//       )}
-//       <YouTubePage />
-//     </>
-//   );
-// }
-
 import { GetServerSideProps } from "next";
 import client from "@/lib/contentful";
+
 import { useCompetitions } from "@/context/EventContext";
 import YouTubePage from "@/ui/components/organisms/youtube/YouTubePage";
 import IbsGrid from "@/ui/components/brandeisBranding/data-display/3Column/IbsGrid";
+import SimpleImageGrid from "@/ui/components/brandeisBranding/data-display/4Column/SimpleImageGrid";
+import { home } from "@/data/home";
 
 type HomePageProps = {
   homepageContent: {
@@ -32,13 +18,23 @@ type HomePageProps = {
 
 export default function Home({ homepageContent }: HomePageProps) {
   console.log(homepageContent);
-  const { competitions, loading } = useCompetitions();
+  const { upcomingEvents, competitions, loading } = useCompetitions();
 
   return (
     <>
       {!loading && homepageContent.showAllEventsListBlock && (
-        <IbsGrid label="Test" href="#programs" data={competitions} />
+        <>
+          <IbsGrid
+            label="Up Coming"
+            href="#programs"
+            data={upcomingEvents}
+            showButton={true}
+            buttonLabel={"Learn More"}
+            buttonLink="/about"
+          />
+        </>
       )}
+      <SimpleImageGrid label={"All Events"} projects={competitions} />
       {homepageContent.showYoutubeVideos && <YouTubePage />}
     </>
   );
