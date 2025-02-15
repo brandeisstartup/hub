@@ -7,18 +7,6 @@ import Button from "@/ui/components/brandeisBranding/buttons/button";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import { CompetitionFields } from "@/types/used/CompetitionTypes";
 
-// Define a type for individual project entries
-type Event = {
-  _id: string;
-  title: string;
-  tagline: string;
-  content?: string;
-  year: string;
-  imageUrl?: string;
-  href: string;
-};
-
-// Update the Props type to include an array of projects and the extend flag
 type Props = {
   projects: CompetitionFields[];
   label: string;
@@ -26,7 +14,7 @@ type Props = {
 };
 
 const SimpleImageGrid = ({ projects, label, extend = false }: Props) => {
-  const [displayCount, setDisplayCount] = useState(4); // Start with displaying 4 projects
+  const [displayCount, setDisplayCount] = useState(4);
 
   const loadMoreProjects = () => {
     setDisplayCount((prevCount) => prevCount + 4); // Load 4 more projects each time

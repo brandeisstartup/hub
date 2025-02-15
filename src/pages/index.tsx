@@ -5,7 +5,6 @@ import { useCompetitions } from "@/context/EventContext";
 import YouTubePage from "@/ui/components/organisms/youtube/YouTubePage";
 import IbsGrid from "@/ui/components/brandeisBranding/data-display/3Column/IbsGrid";
 import SimpleImageGrid from "@/ui/components/brandeisBranding/data-display/4Column/SimpleImageGrid";
-import { home } from "@/data/home";
 
 type HomePageProps = {
   homepageContent: {
