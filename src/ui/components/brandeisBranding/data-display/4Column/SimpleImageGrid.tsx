@@ -24,14 +24,14 @@ const SimpleImageGrid = ({ projects, label, extend = false }: Props) => {
     <div className="flex justify-center">
       <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
         <Heading label={label} />
-        <div className="grid_container grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full mt-8">
+        <div className="grid_container  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full mt-8">
           {projects
             .slice(0, extend ? displayCount : projects.length)
             .map((project, index) => (
               <section key={index} className="w-full flex flex-col mb-6">
                 <div className="flex flex-col h-full gap-3">
                   <Image
-                    src="/philippe_wells.webp"
+                    src={`https:${project.thumbnail.fields.file.url}`}
                     alt={project.title}
                     width={500}
                     height={500}

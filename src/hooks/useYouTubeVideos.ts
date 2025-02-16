@@ -18,7 +18,7 @@ export const useYouTubeVideos = () => {
       const data = await response.json();
 
       if (data.error) {
-        throw new Error(data.error);
+        return;
       }
 
       setVideos(data.videos);

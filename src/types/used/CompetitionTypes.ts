@@ -8,6 +8,8 @@ export interface CompetitionFields {
   endDate: string;
   isGrant: boolean;
 
+  thumbnail: ImageFile;
+
   showIntroVideo: boolean;
   introVideoYoutubeId: string;
 
@@ -49,6 +51,16 @@ export interface CompetitionFields {
   showPeople: boolean;
   peopleSectionLabel: string;
   people: Person[];
+}
+
+export interface HomePageContent {
+  name: string;
+  header: string;
+  tagline: string;
+  showHero: boolean;
+  heroImage: ImageFile;
+  showAllEventsListBlock: boolean;
+  showYoutubeVideos: boolean;
 }
 
 export interface Project {

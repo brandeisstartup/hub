@@ -21,6 +21,12 @@ const CompetitionContext = createContext<CompetitionContextType | undefined>(
   undefined
 );
 
+const sortByStartDate = (data: CompetitionFields[]) => {
+  return data.sort(
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+  );
+};
+
 export function CompetitionProvider({ children }: { children: ReactNode }) {
   const [competitions, setCompetitions] = useState<CompetitionFields[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<CompetitionFields[]>([]);
@@ -37,8 +43,8 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
         const formattedCompetitions = response.items.map(
           (entry) => entry.fields
         );
-
-        setCompetitions(formattedCompetitions);
+        const data = sortByStartDate(formattedCompetitions);
+        setCompetitions(data);
 
         // Compute upcoming events (start date in the next 3 months OR ongoing events)
         const currentDate = new Date();
@@ -48,7 +54,7 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
         threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
         threeMonthsLater.setHours(23, 59, 59, 999); // Set to end of the day
 
-        const filteredUpcoming = formattedCompetitions.filter((comp) => {
+        const filteredUpcoming = data.filter((comp) => {
           if (!comp.startDate) return false; // If no start date, ignore
 
           const eventStart = new Date(comp.startDate);
