@@ -8,6 +8,7 @@ export interface CompetitionFields {
   endDate: string;
   isGrant: boolean;
 
+  heroImage: ImageFile;
   thumbnail: ImageFile;
 
   showIntroVideo: boolean;

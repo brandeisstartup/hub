@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import slugify from "slugify";
 
 import { Project } from "@/types/used/CompetitionTypes";
 import Button from "@/ui/components/brandeisBranding/buttons/button";
@@ -20,14 +21,6 @@ const Projects = ({ projects, label, extend = false }: Props) => {
     setDisplayCount((prevCount) => prevCount + 4); // Load 4 more projects each time
   };
 
-  function createProjectUrl(projectName: string) {
-    const kebabCaseName = projectName
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-    return `/projects/${kebabCaseName}`;
-  }
   return (
     <div className="flex justify-center">
       <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
@@ -47,7 +40,9 @@ const Projects = ({ projects, label, extend = false }: Props) => {
                     height={500}
                   />
                   <a
-                    href={createProjectUrl(project.fields.title)}
+                    href={`/projects/${slugify(project.fields.title, {
+                      lower: true
+                    })}`}
                     className="text-xl font-bold font-serif text-BrandeisBrand mt-2 hover:underline">
                     {project.fields.title}
                   </a>
