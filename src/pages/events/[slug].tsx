@@ -144,7 +144,18 @@ export default function CompetitionPage({ competition }: Props) {
           </ResponsiveGrid>
         )}
 
-      <Prizes />
+      {competition.fields.showPrizes &&
+        competition.fields.prizesLabel &&
+        competition.fields.prizesList && (
+          <Prizes
+            label={competition.fields.prizesLabel}
+            prizes={competition.fields.prizesList}
+            showRaffle={competition.fields.showRaffle}
+            raffleHeading={competition.fields.raffleMainText}
+            raffleSubtext={competition.fields.raffleSubText}
+            raffleImage={competition.fields.raffleImage.fields.file.url}
+          />
+        )}
 
       {competition.fields.showPastProjects && (
         <Projects

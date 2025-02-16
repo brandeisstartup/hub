@@ -39,6 +39,14 @@ export interface CompetitionFields {
   personSpotlightFirstName: string;
   personSpotlightLastName: string;
 
+  showPrizes: boolean;
+  prizesLabel: string;
+  prizesList: Prize[];
+  showRaffle: boolean;
+  raffleMainText: string;
+  raffleSubText: string;
+  raffleImage: ImageFile;
+
   showPastProjects: boolean;
   pastProjectTitle: string;
   projects: Project[];
@@ -89,6 +97,11 @@ export interface ScheduleItem {
   description: string;
   date: string;
   dateTime: string;
+}
+
+export interface Prize {
+  name: string;
+  value: string;
 }
 export interface ImageFile {
   fields: {
