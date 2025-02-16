@@ -144,7 +144,7 @@ export default function CompetitionPage({ competition }: Props) {
           </ResponsiveGrid>
         )}
 
-      <Prizes prizesList={[]} />
+      <Prizes />
 
       {competition.fields.showPastProjects && (
         <Projects
