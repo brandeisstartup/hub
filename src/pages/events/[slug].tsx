@@ -19,6 +19,7 @@ import Faq from "@/ui/components/contentfulComponents/faq/faq";
 import Projects from "@/ui/components/contentfulComponents/projects/projects";
 import Hero from "@/ui/components/brandeisBranding/hero/Hero";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
+import Prizes from "@/ui/components/brandeisBranding/data-display/prizes/prizes";
 
 // import { pitchSummitData } from "@/data/competition";
 
@@ -142,6 +143,8 @@ export default function CompetitionPage({ competition }: Props) {
             ))}
           </ResponsiveGrid>
         )}
+
+      <Prizes />
 
       {competition.fields.showPastProjects && (
         <Projects
