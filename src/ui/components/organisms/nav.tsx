@@ -5,9 +5,32 @@ import Link from "next/link";
 
 import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
+import TopBanner from "@/ui/components/contentfulComponents/banner/topBanner";
+
+const findUpcomingEvent = (
+  events: { title: string; startDate: string; endDate: string }[],
+  daysAhead = 7
+) => {
+  const today = new Date();
+
+  return (
+    events.find((event) => {
+      const startDate = new Date(event.startDate);
+      const endDate = new Date(event.endDate);
+
+      const daysUntilStart =
+        (startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+      const daysUntilEnd =
+        (endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+
+      return daysUntilEnd >= 0 && daysUntilStart < daysAhead;
+    }) || null
+  );
+};
 
 export default function NavBarSearch() {
   const { competitions, upcomingEvents, loading } = useCompetitions();
+  const thisWeekEvent = findUpcomingEvent(upcomingEvents, 7);
 
   const competitionsList = competitions.filter((comp) => !comp.isGrant);
 
@@ -93,8 +116,15 @@ export default function NavBarSearch() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50">
-        <Disclosure as="main" className="bg-BrandeisBrand shadow">
+      <nav className="sticky top-0 z-50 ">
+        {thisWeekEvent && (
+          <TopBanner
+            message={"Happening This Week!"}
+            linkLabel={"Go to Event"}
+            event={thisWeekEvent}
+          />
+        )}
+        <Disclosure as="main" className="bg-BrandeisBrand shadow ">
           {({ open }) => (
             <>
               <div className="mx-auto px-2 sm:px-4 lg:px-8">
