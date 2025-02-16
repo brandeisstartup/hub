@@ -5,7 +5,7 @@ import {
 } from "@/types/used/CompetitionTypes";
 import client from "@/lib/contentful";
 import { ParsedUrlQuery } from "querystring";
-import Heading from "@/ui/components/brandeisBranding/headings/heading";
+// import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import About from "@/ui/components/contentfulComponents/about/about";
 import IntroVideo from "@/ui/components/contentfulComponents/IntroVideo/introVideo";
 import Requirements from "@/ui/components/contentfulComponents/requirements/Requirements";
