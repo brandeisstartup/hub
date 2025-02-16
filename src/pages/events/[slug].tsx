@@ -17,6 +17,7 @@ import ContactInfo from "@/ui/components/contentfulComponents/contactInfo/contac
 import People from "@/ui/components/contentfulComponents/people/people";
 import Faq from "@/ui/components/contentfulComponents/faq/faq";
 import Projects from "@/ui/components/contentfulComponents/projects/projects";
+import Hero from "@/ui/components/brandeisBranding/hero/Hero";
 
 // import { pitchSummitData } from "@/data/competition";
 
@@ -85,11 +86,18 @@ export default function CompetitionPage({ competition }: Props) {
 
   return (
     <div className="bg-white">
-      <div className="">
+      {competition.fields.heroImage.fields.file.url && (
+        <Hero
+          heroImage={competition.fields.heroImage.fields.file.url}
+          description={competition.fields.description}
+          header={competition.fields.title}
+        />
+      )}
+      {/* <div className="">
         <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:py-22">
           <Heading label={`${competition.fields.title}`} />
         </div>
-      </div>
+      </div> */}
       {competition.fields.showAbout && (
         <About
           title="about"
