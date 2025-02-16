@@ -34,7 +34,7 @@ const TopBanner = ({
   dismissTimeout = 24
 }: TopBannerProps) => {
   const [visible, setVisible] = useState(true);
-  const [isLiveEvent, setIsLiveEvent] = useState(isEventLive(event));
+  const [isLiveEvent] = useState(isEventLive(event));
 
   // Hide banner function with timeout
   const dismissBanner = () => {
@@ -57,7 +57,7 @@ const TopBanner = ({
   }, []);
 
   // Hide banner if the event is not live
-  // if (!visible || !isEventLive(event)) return null;
+  if (!visible) return null;
 
   return (
     <div className="bg-BrandeisBrandShade">
