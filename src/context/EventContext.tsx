@@ -27,6 +27,10 @@ const sortByStartDate = (data: CompetitionFields[]) => {
   );
 };
 
+const sortByTitle = (data: CompetitionFields[]) => {
+  return data.sort((a, b) => a.title.localeCompare(b.title));
+};
+
 export function CompetitionProvider({ children }: { children: ReactNode }) {
   const [competitions, setCompetitions] = useState<CompetitionFields[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<CompetitionFields[]>([]);
@@ -43,7 +47,7 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
         const formattedCompetitions = response.items.map(
           (entry) => entry.fields
         );
-        const data = sortByStartDate(formattedCompetitions);
+        const data = sortByTitle(formattedCompetitions);
         setCompetitions(data);
 
         // Compute upcoming events (start date in the next 3 months OR ongoing events)
@@ -68,8 +72,8 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
             (eventEnd && eventEnd >= currentDate) // Ongoing events that have not ended
           );
         });
-
-        setUpcomingEvents(filteredUpcoming);
+        const upComingData = sortByStartDate(filteredUpcoming);
+        setUpcomingEvents(upComingData);
       } catch (error) {
         console.error("❌ Error fetching competitions:", error);
       } finally {

@@ -20,7 +20,6 @@ type HomePageProps = {
 };
 
 export default function Home({ homepageContent }: HomePageProps) {
-  console.log(homepageContent);
   const { upcomingEvents, competitions, loading } = useCompetitions();
 
   return (
