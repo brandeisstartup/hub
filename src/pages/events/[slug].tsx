@@ -5,7 +5,7 @@ import {
 } from "@/types/used/CompetitionTypes";
 import client from "@/lib/contentful";
 import { ParsedUrlQuery } from "querystring";
-// import Heading from "@/ui/components/brandeisBranding/headings/heading";
+
 import About from "@/ui/components/contentfulComponents/about/about";
 import IntroVideo from "@/ui/components/contentfulComponents/IntroVideo/introVideo";
 import Requirements from "@/ui/components/contentfulComponents/requirements/Requirements";
@@ -18,6 +18,7 @@ import People from "@/ui/components/contentfulComponents/people/people";
 import Faq from "@/ui/components/contentfulComponents/faq/faq";
 import Projects from "@/ui/components/contentfulComponents/projects/projects";
 import Hero from "@/ui/components/brandeisBranding/hero/Hero";
+import Heading from "@/ui/components/brandeisBranding/headings/heading";
 
 // import { pitchSummitData } from "@/data/competition";
 
@@ -93,11 +94,11 @@ export default function CompetitionPage({ competition }: Props) {
           header={competition.fields.title}
         />
       )}
-      {/* <div className="">
+      <div className="">
         <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:py-22">
           <Heading label={`${competition.fields.title}`} />
         </div>
-      </div> */}
+      </div>
       {competition.fields.showAbout && (
         <About
           title="about"
