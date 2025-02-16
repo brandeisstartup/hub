@@ -29,7 +29,7 @@ const YouTubeGrid = ({ videos, label, extend = false }: Props) => {
   function createVideoUrl(videoId: string) {
     return `https://www.youtube.com/watch?v=${videoId}`;
   }
-
+  const length = videos.length;
   return (
     <div className="flex justify-center">
       <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">

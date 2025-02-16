@@ -5,13 +5,17 @@ import { useCompetitions } from "@/context/EventContext";
 import YouTubePage from "@/ui/components/organisms/youtube/YouTubePage";
 import IbsGrid from "@/ui/components/brandeisBranding/data-display/3Column/IbsGrid";
 import SimpleImageGrid from "@/ui/components/brandeisBranding/data-display/4Column/SimpleImageGrid";
+import Hero from "@/ui/components/brandeisBranding/hero/Hero";
+import { ImageFile } from "@/types/used/CompetitionTypes";
 
 type HomePageProps = {
   homepageContent: {
     name: string;
+    header: string;
     description: string;
     showAllEventsListBlock: boolean;
     showYoutubeVideos: boolean;
+    heroImage: ImageFile;
   };
 };
 
@@ -21,10 +25,15 @@ export default function Home({ homepageContent }: HomePageProps) {
 
   return (
     <>
+      <Hero
+        heroImage={homepageContent.heroImage.fields.file.url}
+        header={homepageContent.header}
+        description={homepageContent.description}
+      />
       {!loading && homepageContent.showAllEventsListBlock && (
         <>
           <IbsGrid
-            label="Up Coming"
+            label="Upcoming"
             href="#programs"
             data={upcomingEvents}
             showButton={true}

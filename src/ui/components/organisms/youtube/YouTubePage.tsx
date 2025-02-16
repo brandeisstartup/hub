@@ -5,11 +5,13 @@ const YouTubePage = () => {
   const { videos, loading, error } = useYouTubeVideos();
 
   if (loading) return;
-  if (error) return <p>{error}</p>;
+  if (error) return;
 
   return (
     <div>
-      <YouTubeGrid videos={videos} label="Our YouTube Videos" extend />
+      {videos.length > 0 && (
+        <YouTubeGrid videos={videos} label="Our YouTube Videos" extend />
+      )}
     </div>
   );
 };

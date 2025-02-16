@@ -31,7 +31,7 @@ export default function NavBarSearch() {
       ]
     },
     {
-      name: "Upcoming Events",
+      name: "Upcoming",
       href: "#upcoming",
       links: upcomingEvents.map((event) => ({
         name: event.title,
@@ -82,56 +82,64 @@ export default function NavBarSearch() {
   ];
 
   return (
-    <nav className="sticky top-0 z-0">
-      <Disclosure as="main" className="bg-BrandeisBrand shadow">
-        {({ open }) => (
-          <>
-            <div className="mx-auto px-2 sm:px-4 lg:px-8">
-              <div className="flex h-16 justify-between">
-                <div className="flex px-2 lg:px-0">
-                  <div className="flex flex-shrink-0 items-center">
-                    <Logo />
+    <>
+      <nav className="sticky top-0 z-50">
+        <Disclosure as="main" className="bg-BrandeisBrand shadow">
+          {({ open }) => (
+            <>
+              <div className="mx-auto px-2 sm:px-4 lg:px-8">
+                <div className="flex h-16 justify-between">
+                  <div className="flex px-2 lg:px-0">
+                    <div className="flex flex-shrink-0 items-center">
+                      <Logo />
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end">
-                  <div className="hidden lg:ml-6 lg:flex py-3 px-2">
-                    {!loading &&
-                      dynamicNavigation.map((item) => (
-                        <DropDownButton
-                          key={item.href + "nav"}
-                          title={item.name}
-                          links={item.links}
+                  <div className="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end">
+                    <div className="hidden lg:ml-6 lg:flex py-3 px-2">
+                      {!loading &&
+                        dynamicNavigation.map((item) => (
+                          <DropDownButton
+                            key={item.href + "nav"}
+                            title={item.name}
+                            links={item.links}
+                          />
+                        ))}
+                    </div>
+                  </div>
+
+                  {/* Mobile Menu Button */}
+                  <div className="flex items-center lg:hidden">
+                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                      <span className="absolute -inset-0.5" />
+                      <span className="sr-only">Open main menu</span>
+                      {open ? (
+                        <XMarkIcon
+                          className="block h-6 w-6"
+                          aria-hidden="true"
                         />
-                      ))}
+                      ) : (
+                        <Bars3Icon
+                          className="block h-6 w-6"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </Disclosure.Button>
                   </div>
-                </div>
 
-                {/* Mobile Menu Button */}
-                <div className="flex items-center lg:hidden">
-                  <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
-                    <span className="absolute -inset-0.5" />
-                    <span className="sr-only">Open main menu</span>
-                    {open ? (
-                      <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                    ) : (
-                      <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                    )}
-                  </Disclosure.Button>
-                </div>
-
-                {/* Simple Sign In Button */}
-                <div className="hidden lg:ml-4 lg:flex lg:items-center">
-                  <Link
-                    href="#"
-                    className="text-white font-bold border border-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition">
-                    Sign In
-                  </Link>
+                  {/* Simple Sign In Button */}
+                  <div className="hidden lg:ml-4 lg:flex lg:items-center">
+                    <Link
+                      href="#"
+                      className="text-white font-bold border border-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition">
+                      Sign In
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          </>
-        )}
-      </Disclosure>
-    </nav>
+            </>
+          )}
+        </Disclosure>
+      </nav>
+    </>
   );
 }
