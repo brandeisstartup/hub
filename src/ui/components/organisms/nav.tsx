@@ -11,6 +11,16 @@ export default function NavBarSearch() {
 
   const competitionsList = competitions.filter((comp) => !comp.isGrant);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(date);
+  };
+
   // Dynamically build navigation
   const dynamicNavigation = [
     {
@@ -37,8 +47,8 @@ export default function NavBarSearch() {
         name: event.title,
         description: event.description,
         href: `/events/${event.title.toLowerCase().replace(/\s+/g, "-")}`,
-        startDate: event.startDate,
-        endDate: event.endDate
+        startDate: formatDate(event.startDate),
+        endDate: formatDate(event.endDate)
       }))
     },
     {
@@ -47,9 +57,9 @@ export default function NavBarSearch() {
       links: competitionsList.map((comp) => ({
         name: comp.title,
         description: comp.description,
-        href: `/events/${comp.title.toLowerCase().replace(/\s+/g, "-")}`,
-        startDate: comp.startDate,
-        endDate: comp.endDate
+        href: `/events/${comp.title.toLowerCase().replace(/\s+/g, "-")}`
+        // startDate: formatDate(comp.startDate),
+        // endDate: formatDate(comp.endDate)
       }))
     },
     {
