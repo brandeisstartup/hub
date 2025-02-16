@@ -88,18 +88,20 @@ export default function CompetitionPage({ competition }: Props) {
   return (
     <div className="bg-white">
       {competition.fields.heroImage &&
-        competition.fields.heroImage.fields.file.url != "" && (
-          <Hero
-            heroImage={competition.fields.heroImage.fields.file.url}
-            description={competition.fields.description}
-            header={competition.fields.title}
-          />
-        )}
-      <div className="">
-        <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:py-22">
-          <Heading label={`${competition.fields.title}`} />
+      competition.fields.heroImage.fields.file.url != "" ? (
+        <Hero
+          heroImage={competition.fields.heroImage.fields.file.url}
+          description={competition.fields.description}
+          header={competition.fields.title}
+        />
+      ) : (
+        <div className="">
+          <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:py-22">
+            <Heading label={`${competition.fields.title}`} />
+          </div>
         </div>
-      </div>
+      )}
+
       {competition.fields.showAbout && (
         <About
           title="about"
