@@ -3,10 +3,6 @@ import Image from "next/image";
 
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 
-type Props = {
-  prizesList: any[];
-};
-
 const prizesArray = [
   {
     name: "First Place",
@@ -38,7 +34,7 @@ const prizesArray = [
   }
 ];
 
-const Prizes = (prizesList: Props) => {
+const Prizes = () => {
   return (
     <div className="bg-white" id="prizes">
       <div className="mx-auto max-w-8xl px-6 py-24 sm:py-32 lg:px-4 lg:py-16">
