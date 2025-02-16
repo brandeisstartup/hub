@@ -6,7 +6,6 @@ import {
 import client from "@/lib/contentful";
 import { ParsedUrlQuery } from "querystring";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
-import Link from "next/link";
 
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
