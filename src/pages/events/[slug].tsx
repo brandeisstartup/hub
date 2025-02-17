@@ -5,7 +5,6 @@ import {
 } from "@/types/used/CompetitionTypes";
 import client from "@/lib/contentful";
 import { ParsedUrlQuery } from "querystring";
-import slugify from "slugify";
 
 import About from "@/ui/components/contentfulComponents/about/about";
 import IntroVideo from "@/ui/components/contentfulComponents/IntroVideo/introVideo";
