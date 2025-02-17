@@ -2,10 +2,11 @@ import React from "react";
 import { Disclosure } from "@headlessui/react";
 import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
+import { FAQ } from "@/types/used/CompetitionTypes";
 
 type Props = {
   label: string;
-  faqs: Array<{ question: string; answer: string }>;
+  faqs: FAQ[];
 };
 
 const Faq = ({ label, faqs }: Props) => {
@@ -18,14 +19,14 @@ const Faq = ({ label, faqs }: Props) => {
             {faqs.map((faq, index) => (
               <Disclosure
                 as="div"
-                key={`${faq.question}-${faq.answer}-${index}`}
+                key={`${faq.fields.question}-${faq.fields.answer}-${index}`}
                 className="pt-6 pb-6 px-5 bg-BrandeisBackgroundAlt">
                 {({ open }) => (
                   <>
                     <dt>
                       <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
                         <span className="font-sans font-semibold leading-7">
-                          {faq.question}
+                          {faq.fields.question}
                         </span>
                         <span className="ml-6 flex h-8 items-center">
                           {open ? (
@@ -43,8 +44,8 @@ const Faq = ({ label, faqs }: Props) => {
                       </Disclosure.Button>
                     </dt>
                     <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                      {Array.isArray(faq.answer) ? (
-                        faq.answer.map((item, index) => (
+                      {Array.isArray(faq.fields.answer) ? (
+                        faq.fields.answer.map((item, index) => (
                           <p
                             key={`${item ?? "empty"}-${index}`}
                             className="text-base leading-7 text-gray-600 mb-2">
@@ -53,7 +54,7 @@ const Faq = ({ label, faqs }: Props) => {
                         ))
                       ) : (
                         <p className="text-base leading-7 text-gray-600">
-                          {faq.answer}
+                          {faq.fields.answer}
                         </p>
                       )}
                     </Disclosure.Panel>

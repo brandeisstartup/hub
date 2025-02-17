@@ -29,10 +29,10 @@ const Prizes = ({
               {prizes.map((prize, index) => (
                 <div key={index} className="flex max-w-xs flex-col gap-y-4">
                   <dt className="text-2xl font-sans leading-7 text-gray-600">
-                    {prize.name}
+                    {prize.fields.name}
                   </dt>
                   <dd className="text-9xl sm:text-7xl md:text-8xl  font-sans tracking-tight text-gray-900">
-                    {prize.value}
+                    {prize.fields.value}
                   </dd>
                 </div>
               ))}

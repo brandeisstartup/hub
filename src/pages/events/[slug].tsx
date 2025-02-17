@@ -89,7 +89,6 @@ export default function CompetitionPage({ competition }: Props) {
   return (
     <div className="bg-white">
       {competition.fields.heroImage &&
-      competition.fields.showHero &&
       competition.fields.heroImage.fields.file.url != "" &&
       competition.fields.title &&
       competition.fields.heroPrimaryButtonLabel &&
@@ -111,55 +110,53 @@ export default function CompetitionPage({ competition }: Props) {
         </div>
       )}
 
-      {competition.fields.showAbout && (
+      {competition.fields.about && competition.fields.aboutLabel && (
         <About
           title="about"
           heading={competition.fields.aboutLabel}
           description={competition.fields.about}
         />
       )}
-      {competition.fields.showIntroVideo &&
-        competition.fields.introVideoYoutubeId && (
-          <IntroVideo YoutubeId={`${competition.fields.introVideoYoutubeId}`} />
-        )}
-      {competition.fields.showRequirements && (
+      {competition.fields.introVideoYoutubeId && (
+        <IntroVideo YoutubeId={`${competition.fields.introVideoYoutubeId}`} />
+      )}
+      {competition.fields.requirements && (
         <Requirements
           heading={"Requirements"}
           requirements={competition.fields.requirements}
         />
       )}
-      {competition.fields.showSchedule &&
-        competition.fields.scheduleEvents.length > 1 &&
+      {competition.fields.scheduleEvents &&
         competition.fields.scheduleLabel != "" && (
           <Schedule
             heading={`${competition.fields.scheduleLabel}`}
             scheduleEvents={competition.fields.scheduleEvents}
           />
         )}
-      {competition.fields.showWinnersYoutubeGrid &&
-        competition.fields.winnersYoutubeGridLabel &&
+      {competition.fields.winnersYoutubeGridLabel &&
+        competition.fields.winnersYoutubeGrid &&
         competition.fields.winnersYoutubeGrid.length >= 1 && (
           <ResponsiveGrid
             headingLabel={`${competition.fields.winnersYoutubeGridLabel}`}>
             {competition.fields.winnersYoutubeGrid.map((item, index) => (
               <ResponsiveGridItem
-                key={`${item.youtubeUrl}-${index}`}
-                youtubeUrl={item.youtubeUrl}
-                overlayText={item.overlayText}
-                topLabel={item.topLabel}
+                key={`${item.fields.youtubeId}-${index}`}
+                youtubeUrl={item.fields.youtubeId}
+                overlayText={item.fields.overlayText}
+                topLabel={item.fields.topLabel}
               />
             ))}
           </ResponsiveGrid>
         )}
 
       {competition.fields.prizesLabel &&
-        competition.fields.prizesList &&
+        competition.fields.prizes &&
         competition.fields.raffleMainText &&
         competition.fields.raffleSubText &&
         competition.fields.raffleImage?.fields?.file?.url && (
           <Prizes
             label={competition.fields.prizesLabel}
-            prizes={competition.fields.prizesList}
+            prizes={competition.fields.prizes}
             raffleHeading={competition.fields.raffleMainText}
             raffleSubtext={competition.fields.raffleSubText}
             raffleImage={competition.fields.raffleImage.fields.file.url}

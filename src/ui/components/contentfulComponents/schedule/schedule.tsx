@@ -16,9 +16,9 @@ const Schedule = ({ heading, scheduleEvents }: Props) => {
         id="dates">
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-8 overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
           {scheduleEvents.map((item, index) => (
-            <div key={`${item.title}-${index}`}>
+            <div key={`${item.fields.title}-${index}`}>
               <time
-                dateTime={item.dateTime}
+                dateTime={item.fields.dateAndTime}
                 className="flex items-center text-lg font-sans  leading-6 text-blue-600">
                 <svg
                   viewBox="0 0 4 4"
@@ -26,16 +26,18 @@ const Schedule = ({ heading, scheduleEvents }: Props) => {
                   aria-hidden="true">
                   <circle cx={2} cy={2} r={2} fill="currentColor" />
                 </svg>
-                {item.date} at {item.dateTime}
+                {item.fields.dateAndTime}
                 <div
                   className="absolute -ml-2 h-px w-screen -translate-x-full bg-gray-900/10 sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
                   aria-hidden="true"
                 />
               </time>
               <p className="font-sans mt-6 text-lg  leading-8 tracking-tight text-gray-900">
-                {item.title}
+                {item.fields.title}
               </p>
-              <p className="mt-1 leading-7 text-gray-600">{item.description}</p>
+              <p className="mt-1 leading-7 text-gray-600">
+                {item.fields.description}
+              </p>
             </div>
           ))}
         </div>
