@@ -152,48 +152,52 @@ export default function CompetitionPage({ competition }: Props) {
           </ResponsiveGrid>
         )}
 
-      {competition.fields.showPrizes &&
-        competition.fields.prizesLabel &&
-        competition.fields.prizesList && (
+      {competition.fields.prizesLabel &&
+        competition.fields.prizesList &&
+        competition.fields.raffleMainText &&
+        competition.fields.raffleSubText &&
+        competition.fields.raffleImage?.fields?.file?.url && (
           <Prizes
             label={competition.fields.prizesLabel}
             prizes={competition.fields.prizesList}
-            showRaffle={competition.fields.showRaffle}
             raffleHeading={competition.fields.raffleMainText}
             raffleSubtext={competition.fields.raffleSubText}
             raffleImage={competition.fields.raffleImage.fields.file.url}
           />
         )}
 
-      {competition.fields.showPastProjects && (
+      {competition.fields.projects && (
         <Projects
           label={"Project Block"}
           projects={competition.fields.projects}
           extend={true}
         />
       )}
-      {competition.fields.showPersonSpotlight && (
-        <PersonSpotlight
-          label={competition.fields.personSpotlightFirstName}
-          title={competition.fields.personSpotlightImage.fields.title}
-          imageUrl={competition.fields.personSpotlightImage.fields.file.url}
-          personSpotlightText={competition.fields.personSpotlightText}
-          personSpotlightLInk={competition.fields.personSpotlightLInk}
-          firstName={competition.fields.personSpotlightFirstName}
-          lastName={competition.fields.personSpotlightLastName}
-        />
-      )}
-
-      {competition.fields.showPeople &&
-        competition.fields.people &&
-        competition.fields.people.length >= 1 && (
-          <People
-            label={competition.fields.peopleSectionLabel}
-            people={competition.fields.people}
+      {competition.fields.personSpotlightFirstName &&
+        competition.fields.personSpotlightLastName &&
+        competition.fields.personSpotlightImage?.fields?.title &&
+        competition.fields.personSpotlightImage?.fields?.file?.url &&
+        competition.fields.personSpotlightText &&
+        competition.fields.personSpotlightLInk && (
+          <PersonSpotlight
+            label={competition.fields.personSpotlightFirstName}
+            title={competition.fields.personSpotlightImage.fields.title}
+            imageUrl={competition.fields.personSpotlightImage.fields.file.url}
+            personSpotlightText={competition.fields.personSpotlightText}
+            personSpotlightLInk={competition.fields.personSpotlightLInk}
+            firstName={competition.fields.personSpotlightFirstName}
+            lastName={competition.fields.personSpotlightLastName}
           />
         )}
 
-      {competition.fields.showFaq && (
+      {competition.fields.people && competition.fields.people.length >= 1 && (
+        <People
+          label={competition.fields.peopleSectionLabel}
+          people={competition.fields.people}
+        />
+      )}
+
+      {competition.fields.faqs && (
         <Faq label={"FAQ"} faqs={competition.fields.faqs} />
       )}
       {competition.fields.contactInformation && (

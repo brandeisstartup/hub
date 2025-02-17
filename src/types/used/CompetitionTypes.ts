@@ -45,24 +45,19 @@ export interface CompetitionFields {
   personSpotlightFirstName: string;
   personSpotlightLastName: string;
 
-  showPrizes: boolean;
   prizesLabel: string;
   prizesList: Prize[];
-  showRaffle: boolean;
   raffleMainText: string;
   raffleSubText: string;
   raffleImage: ImageFile;
 
-  showPastProjects: boolean;
   pastProjectTitle: string;
   projects: Project[];
 
-  showFaq: boolean;
   faqs: Array<{ question: string; answer: string }>;
 
   contactInformation: Person[];
 
-  showPeople: boolean;
   peopleSectionLabel: string;
   people: Person[];
 
