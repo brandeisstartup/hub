@@ -17,40 +17,49 @@ const PresentationResources = ({ presentations, label }: Props) => {
         </div>
         <ul
           role="list"
-          className="w-full mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6  md:grid-cols-2 lg:grid-cols-3">
+          className="w-full mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6  md:grid-cols-2 lg:grid-cols-4">
           {presentations.map((project, index) => (
-            <li key={index} className="col-span-1 flex rounded-md shadow-sm">
-              <div className="flex flex-1 items-center justify-between truncate rounded-r-md border border-gray-200 bg-white">
-                <div className="flex-1 truncate px-4 py-2 text-sm">
+            <li key={index} className="col-span-1 flex  ">
+              <div className="flex flex-1 items-center justify-between truncate  border border-gray-200 bg-white">
+                <div className="flex-1 truncate py-2 text-sm">
                   <div className="flex flex-col">
-                    <a
-                      href={project.href}
-                      download
-                      className="font-bold mb-2 text-gray-900 hover:text-gray-600">
+                    <h3 className="font-sans px-4 font-semibold py-2 text-lg border-b-[1px] mb-2 text-gray-900 ">
                       {project.title}
-                    </a>
-                    <div className="flex flex-row">
-                      <p className="text-gray-500 w-[100px]">Contact: </p>
-                      <p>{project.contactName}</p>
-                    </div>
-                    <div className="flex flex-row">
-                      <p className="text-gray-500 w-[100px]">Email: </p>
+                    </h3>
+                    <div className="px-4 py-2">
+                      <div className="flex flex-col">
+                        <p className="text-gray-500 w-[100px] text-bold font-sans">
+                          Contact:{" "}
+                        </p>
+                        <p>{project.contactName}</p>
+                      </div>
+                      <div className="flex flex-col mt-2">
+                        <p className="text-gray-500 w-[100px] text-bold font-sans">
+                          Email:{" "}
+                        </p>
 
-                      <p>{project.contactEmail}</p>
-                    </div>
-                    <div className="mt-4 flex space-x-2">
-                      <Link
-                        href={`${project.youtube}`}
-                        target="_blank"
-                        className="font-sans flex items-center justify-center w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition">
-                        <FaYoutube className="mr-2 w-5 h-5" /> Watch on YouTube
-                      </Link>
-                      <Link
-                        href={project.href}
-                        target="_blank"
-                        className="font-sans flex items-center justify-center w-full bg-IBSbrand hover:bg-IBSshade text-white font-bold py-2 px-4 rounded-lg transition">
-                        <FaFilePowerpoint className="mr-2 w-5 h-5" /> View
-                      </Link>
+                        <p>{project.contactEmail}</p>
+                      </div>
+
+                      <div className="mt-2 flex flex-col ">
+                        <p className="text-gray-500 w-[100px] text-bold font-sans">
+                          Links:{" "}
+                        </p>
+                        <div className="flex space-x-2">
+                          <Link
+                            href={`${project.youtube}`}
+                            target="_blank"
+                            className="font-sans flex items-center justify-center   hover:text-red-800 text-red-500 font-bold rounded-lg transition">
+                            <FaYoutube className="w-10 h-10" />
+                          </Link>
+                          <Link
+                            href={project.href}
+                            target="_blank"
+                            className="font-sans flex items-center justify-center hover:text-IBSShade text-IBSbrand font-bold  rounded-lg transition">
+                            <FaFilePowerpoint className="w-8 h-8 " />
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
