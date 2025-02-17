@@ -4,7 +4,7 @@ import slugify from "slugify";
 
 type shortEvent = {
   title: string;
-  startDate: string; // Ensure these are ISO date strings
+  startDate: string;
   endDate: string;
 };
 
@@ -23,23 +23,28 @@ const isEventLive = (event?: shortEvent | null): boolean => {
   const startDate = new Date(event.startDate);
   const endDate = new Date(event.endDate);
 
-  return today >= startDate && today <= endDate; // Inclusive check
+  return today >= startDate && today <= endDate;
 };
 
-// Arrow function component
 const TopBanner = ({
   event,
   message,
   linkLabel,
   dismissTimeout = 24
 }: TopBannerProps) => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [isLiveEvent] = useState(isEventLive(event));
+
+  // ✅ Delay showing the banner by 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 5000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Hide banner function with timeout
   const dismissBanner = () => {
     setVisible(false);
-    const expiryTimestamp = Date.now() + dismissTimeout * 60 * 60 * 1000; // Convert hours to milliseconds
+    const expiryTimestamp = Date.now() + dismissTimeout * 60 * 60 * 1000;
     localStorage.setItem("dismissedBannerExpiry", expiryTimestamp.toString());
   };
 
@@ -49,23 +54,27 @@ const TopBanner = ({
     if (storedTimestamp) {
       const expiryTime = parseInt(storedTimestamp, 10);
       if (Date.now() < expiryTime) {
-        setVisible(false); // Hide banner if still within the timeout
+        setVisible(false);
       } else {
-        localStorage.removeItem("dismissedBannerExpiry"); // Reset after expiry
+        localStorage.removeItem("dismissedBannerExpiry");
       }
     }
   }, []);
 
-  // Hide banner if the event is not live
+  // If it's not time to show yet or the banner was dismissed, return null
   if (!visible) return null;
 
   return (
-    <div className="bg-BrandeisBrandShade">
+    <div
+      className={`bg-BrandeisBrandShade overflow-hidden transition-all duration-700 ${
+        visible
+          ? "h-auto opacity-100 translate-y-0"
+          : "h-0 opacity-0 -translate-y-full"
+      }`}>
       <section className="text-white text-xs md:text-base p-2 flex items-center mx-auto px-4">
         <div className="flex items-center gap-4 w-full justify-center">
           <div className="flex flex-row gap-3">
             {isLiveEvent ? <div>Happening Now!!</div> : <div>{message}</div>}
-
             {event && <div className="font-bold">{event.title}</div>}
           </div>
           <div className="flex items-center gap-4">
