@@ -5,27 +5,48 @@ type HeroProps = {
   heroImage: string;
   description: string;
   header: string;
+  primaryLabel: string;
+  primaryLink: string;
+  secondaryLabel?: string;
+  secondaryLink?: string;
 };
 
-const Hero = ({ heroImage, description, header }: HeroProps) => (
+const Hero = ({
+  heroImage,
+  description,
+  header,
+  primaryLabel,
+  primaryLink,
+  secondaryLabel,
+  secondaryLink
+}: HeroProps) => (
   <>
     <section
       className="relative flex items-center justify-center text-white text-center 
                  h-[40vh] md:h-screen w-full bg-cover bg-center"
       style={{ backgroundImage: `url(${heroImage})` }}>
       {/* 🔹 Dark Overlay for Readability (Lower z-index) */}
-      <div className="absolute inset-0 bg-black bg-opacity-10 z-0"></div>
+      <div className="absolute inset-0 bg-black bg-opacity-20 z-0"></div>
 
       {/* 🔹 Hero Content (Higher z-index to stay above the overlay) */}
       <div className="hidden w-full gap-2 md:flex mt-10 flex-col text-white px-6 max-w-8xl font-sans relative z-10">
-        <div className="text-start flex flex-col w-full max-w-5xl">
-          <h1 className="text-4xl md:text-6xl">{header}</h1>
+        <div className="text-start flex flex-col w-full max-w-5xl ">
+          <h1 className=" text-medium [text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-sans text-5xl">
+            {header}
+          </h1>
           {description && (
-            <p className="font-serif mt-4 text-lg md:text-2xl">{description}</p>
+            <p className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-serif mt-4 text-lg text-bold w-full max-w-3xl md:text-xl">
+              {description}
+            </p>
           )}
         </div>
         <div className="flex flex-row gap-2">
-          <Button label="Learn More" href="/about" color="green" />
+          {primaryLabel && primaryLink && (
+            <Button label={primaryLabel} href={primaryLink} color="green" />
+          )}
+          {secondaryLabel && secondaryLink && (
+            <Button label={secondaryLabel} href={secondaryLink} color="blue" />
+          )}
         </div>
       </div>
     </section>
@@ -37,7 +58,12 @@ const Hero = ({ heroImage, description, header }: HeroProps) => (
         <p className=" font-serif mt-4 text-lg md:text-2xl">{description}</p>
       )}
       <div className="flex flex-row gap-2">
-        <Button label="Learn More" href="/about" color="green" />
+        {primaryLabel && primaryLink && (
+          <Button label={primaryLabel} href={primaryLink} color="green" />
+        )}
+        {secondaryLabel && secondaryLink && (
+          <Button label={secondaryLabel} href={secondaryLink} color="blue" />
+        )}
       </div>
     </div>
   </>
