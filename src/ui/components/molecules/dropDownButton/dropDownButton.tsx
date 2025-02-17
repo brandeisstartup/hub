@@ -51,11 +51,11 @@ export default function DropDownButton(props: Props) {
                             {item.name}
                           </p>
                           {item.startDate && item.endDate ? (
-                            <p className="text-lg text-gray-500">
+                            <p className="text-md text-gray-500">
                               {item.startDate} - {item.endDate}
                             </p>
                           ) : (
-                            <p className="text-lg text-gray-500">
+                            <p className="text-md text-gray-500">
                               {item.description}
                             </p>
                           )}

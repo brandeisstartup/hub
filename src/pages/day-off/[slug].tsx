@@ -6,6 +6,7 @@ import {
 import client from "@/lib/contentful";
 import { ParsedUrlQuery } from "querystring";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
+import CalendarEventsList from "@/ui/components/googleCalendarComponents/calendar";
 
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
@@ -73,8 +74,9 @@ export default function CompetitionPage({ competition }: Props) {
   return (
     <div className="bg-white">
       <div className="">
-        <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
+        <div className="mx-auto max-w-8xl px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
           <Heading label={`${competition.fields.title} Display`} />
+          <CalendarEventsList startDate="2025-01-07" endDate="2025-02-09" />
         </div>
       </div>
     </div>
