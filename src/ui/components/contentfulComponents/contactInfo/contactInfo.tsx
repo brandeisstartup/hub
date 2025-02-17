@@ -1,14 +1,16 @@
 import React from "react";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Link from "next/link";
+import { Person } from "@/types/used/CompetitionTypes";
 
 type Props = {
   label: string;
   sectionBlurb: string;
-  contacts: Array<{ name: string; email: string }>;
+  contacts: Person[];
 };
 
 const ContactInfo = ({ label, sectionBlurb, contacts }: Props) => {
+  console.log(contacts);
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-8xl px-6 lg:px-4">
@@ -24,23 +26,25 @@ const ContactInfo = ({ label, sectionBlurb, contacts }: Props) => {
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
               {contacts.map((contact, index) => (
                 <div
-                  key={`${contact.name}-${index}`}
+                  key={`${contact.fields.firstName}-${index}`}
                   className="rounded-2xl  bg-gray-50 p-10">
                   <h3 className="text-base font-sans font-semibold leading-7 text-gray-900">
-                    {contact.name}
+                    {contact.fields.lastName} {contact.fields.firstName}
                   </h3>
-                  <dl className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
-                    <div>
-                      <dt className="sr-only">Email</dt>
-                      <dd>
-                        <Link
-                          className="font-semibold text-blue-600"
-                          href={`mailto:${contact.email}`}>
-                          {contact.email}
-                        </Link>
-                      </dd>
-                    </div>
-                  </dl>
+                  {contact.fields.email && (
+                    <dl className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
+                      <div>
+                        <dt className="sr-only">Email</dt>
+                        <dd>
+                          <Link
+                            className="font-semibold text-blue-600"
+                            href={`mailto:${contact.fields.email}`}>
+                            {contact.fields.email}
+                          </Link>
+                        </dd>
+                      </div>
+                    </dl>
+                  )}
                 </div>
               ))}
             </div>

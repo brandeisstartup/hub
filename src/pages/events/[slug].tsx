@@ -196,7 +196,7 @@ export default function CompetitionPage({ competition }: Props) {
       {competition.fields.showFaq && (
         <Faq label={"FAQ"} faqs={competition.fields.faqs} />
       )}
-      {competition.fields.showContactInformation && (
+      {competition.fields.contactInformation && (
         <ContactInfo
           label="Get in touch"
           sectionBlurb={"Contact the organizers for any questions"}

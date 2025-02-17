@@ -60,8 +60,7 @@ export interface CompetitionFields {
   showFaq: boolean;
   faqs: Array<{ question: string; answer: string }>;
 
-  showContactInformation: boolean;
-  contactInformation: Array<{ name: string; email: string }>;
+  contactInformation: Person[];
 
   showPeople: boolean;
   peopleSectionLabel: string;
@@ -82,6 +81,29 @@ export interface HomePageContent {
   showYoutubeVideos: boolean;
 }
 
+export interface Contact {
+  sys: {
+    id: string;
+  };
+  fields: {
+    person: Person;
+  };
+}
+
+export interface Person {
+  sys: {
+    id: string;
+  };
+  fields: {
+    firstName: string;
+    lastName: string;
+    about: string;
+    role: string;
+    image: ImageFile;
+    email?: string;
+  };
+}
+
 export interface Project {
   fields: {
     title: string;
@@ -99,6 +121,7 @@ export interface Person {
     about: string;
     role: string;
     image: ImageFile;
+    email?: string;
   };
 }
 
