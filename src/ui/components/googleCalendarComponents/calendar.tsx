@@ -139,9 +139,9 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
                 })}
               </h3>
               <ul className="max-w-md">
-                {eventsByDate[date].map((event, index, array) => (
+                {eventsByDate[date].map((event, index) => (
                   <li
-                    key={event.id}
+                    key={index}
                     className={`text-sm mb-1 flex flex-row px-1 pb-1 transition-all duration-300 ${
                       isCurrentEvent(event)
                         ? "text-blue-500 bg-white border border-blue-500 rounded-sm shadow-lg"
