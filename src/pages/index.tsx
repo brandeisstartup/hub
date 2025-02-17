@@ -16,6 +16,10 @@ type HomePageProps = {
     showAllEventsListBlock: boolean;
     showYoutubeVideos: boolean;
     heroImage: ImageFile;
+    heroPrimaryButtonLabel: string;
+    heroPrimaryButtonLink: string;
+    heroSecondaryButtonLabel: string;
+    heroSecondaryButtonLink: string;
   };
 };
 
@@ -28,8 +32,10 @@ export default function Home({ homepageContent }: HomePageProps) {
         heroImage={homepageContent.heroImage.fields.file.url}
         header={homepageContent.header}
         description={homepageContent.description}
-        primaryLabel={"Learn More"}
-        primaryLink={"/about"}
+        primaryLabel={homepageContent.heroPrimaryButtonLabel}
+        primaryLink={homepageContent.heroPrimaryButtonLink}
+        secondaryLabel={homepageContent.heroSecondaryButtonLabel}
+        secondaryLink={homepageContent.heroSecondaryButtonLink}
       />
       {!loading && homepageContent.showAllEventsListBlock && (
         <>

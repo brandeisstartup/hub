@@ -90,17 +90,19 @@ export default function CompetitionPage({ competition }: Props) {
   return (
     <div className="bg-white">
       {competition.fields.heroImage &&
-      competition.fields.heroImage.fields.file.url != "" ? (
+      competition.fields.showHero &&
+      competition.fields.heroImage.fields.file.url != "" &&
+      competition.fields.title &&
+      competition.fields.heroPrimaryButtonLabel &&
+      competition.fields.heroPrimaryButtonLink ? (
         <Hero
           heroImage={competition.fields.heroImage.fields.file.url}
           description={competition.fields.description}
           header={competition.fields.title}
-          primaryLabel={"Learn More"}
-          primaryLink={"/about"}
-          secondaryLabel="Day of Page"
-          secondaryLink={`/day-of/${slugify(competition.fields.title, {
-            lower: true
-          })}`}
+          primaryLabel={competition.fields.heroPrimaryButtonLabel}
+          primaryLink={competition.fields.heroPrimaryButtonLink}
+          secondaryLabel={competition.fields.heroSecondaryButtonLabel}
+          secondaryLink={competition.fields.heroSecondaryButtonLink}
         />
       ) : (
         <div className="">
