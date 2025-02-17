@@ -10,7 +10,6 @@ type Props = {
 };
 
 const ContactInfo = ({ label, sectionBlurb, contacts }: Props) => {
-  console.log(contacts);
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-8xl px-6 lg:px-4">

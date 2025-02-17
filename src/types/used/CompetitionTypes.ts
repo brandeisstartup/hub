@@ -9,36 +9,26 @@ export interface CompetitionFields {
   isGrant: boolean;
   thumbnail: ImageFile;
 
-  showHero: boolean;
   heroImage: ImageFile;
   heroPrimaryButtonLabel: string;
   heroPrimaryButtonLink: string;
   heroSecondaryButtonLabel: string;
   heroSecondaryButtonLink: string;
 
-  showIntroVideo: boolean;
   introVideoYoutubeId: string;
 
-  showAbout: boolean;
   about: string;
   aboutLabel: string;
 
-  showRequirements: boolean;
-  requirements: Array<{ requirement: string; explanation: Array<string> }>;
+  requirements: Requirement[];
 
-  showSchedule: boolean;
   scheduleLabel: string;
   scheduleEvents: ScheduleItem[];
+  scheduleEventsNew: ScheduleItem[];
 
-  showWinnersYoutubeGrid: boolean;
   winnersYoutubeGridLabel: string;
-  winnersYoutubeGrid: Array<{
-    youtubeUrl: string;
-    overlayText: string;
-    topLabel: string;
-  }>;
+  winnersYoutubeGrid: YoutubeWinnerItem[];
 
-  showPersonSpotlight: boolean;
   personSpotlightImage: ImageFile;
   personSpotlightText: string;
   personSpotlightLInk: string;
@@ -46,7 +36,7 @@ export interface CompetitionFields {
   personSpotlightLastName: string;
 
   prizesLabel: string;
-  prizesList: Prize[];
+  prizes: Prize[];
   raffleMainText: string;
   raffleSubText: string;
   raffleImage: ImageFile;
@@ -54,7 +44,8 @@ export interface CompetitionFields {
   pastProjectTitle: string;
   projects: Project[];
 
-  faqs: Array<{ question: string; answer: string }>;
+  // faqs: Array<{ question: string; answer: string }>;
+  faqs: FAQ[];
 
   contactInformation: Person[];
 
@@ -66,6 +57,16 @@ export interface CompetitionFields {
   eventResources: EventResource[];
 }
 
+export interface FAQ {
+  sys: {
+    id: string;
+  };
+  fields: {
+    question: string;
+    answer: string;
+  };
+}
+
 export interface HomePageContent {
   name: string;
   header: string;
@@ -75,13 +76,30 @@ export interface HomePageContent {
   showAllEventsListBlock: boolean;
   showYoutubeVideos: boolean;
 }
-
+export interface YoutubeWinnerItem {
+  fields: {
+    youtubeId: string;
+    overlayText: string;
+    topLabel: string;
+  };
+}
 export interface Contact {
   sys: {
     id: string;
   };
   fields: {
-    person: Person;
+    question: string;
+    answer: string;
+  };
+}
+
+export interface Requirement {
+  sys: {
+    id: string;
+  };
+  fields: {
+    requirement: string;
+    explanation: string[];
   };
 }
 
@@ -121,17 +139,12 @@ export interface Person {
 }
 
 export interface ScheduleItem {
-  title: string;
-  description: string;
-  date: string;
-  dateTime: string;
-}
-
-export interface ScheduleItem {
-  title: string;
-  description: string;
-  date: string;
-  dateTime: string;
+  fields: {
+    title: string;
+    description: string;
+    date: string;
+    dateAndTime: string;
+  };
 }
 
 export interface EventResource {
@@ -146,8 +159,10 @@ export interface EventResource {
 }
 
 export interface Prize {
-  name: string;
-  value: string;
+  fields: {
+    name: string;
+    value: string;
+  };
 }
 export interface ImageFile {
   fields: {
