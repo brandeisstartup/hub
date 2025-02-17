@@ -7,9 +7,14 @@ export interface CompetitionFields {
   startDate: string;
   endDate: string;
   isGrant: boolean;
-
-  heroImage: ImageFile;
   thumbnail: ImageFile;
+
+  showHero: boolean;
+  heroImage: ImageFile;
+  heroPrimaryButtonLabel: string;
+  heroPrimaryButtonLink: string;
+  heroSecondaryButtonLabel: string;
+  heroSecondaryButtonLink: string;
 
   showIntroVideo: boolean;
   introVideoYoutubeId: string;

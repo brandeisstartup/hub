@@ -18,7 +18,7 @@ const Button = ({ label, color, href, onClick }: Props) => {
   // Common button content
   const buttonContent = (
     <span
-      className={`${styles.heroButton} ${bgClass} text-bold text-2xl font-sans hover:underline flex items-center gap-2 px-4 py-2`}>
+      className={`${styles.heroButton} ${bgClass} text-lg text-bold md:text-2xl font-sans hover:underline flex items-center gap-2 px-4 py-2`}>
       {label}
       <ArrowRightIcon className="h-8 hover:underline" />
     </span>

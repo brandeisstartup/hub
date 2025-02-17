@@ -61,7 +61,7 @@ const TopBanner = ({
 
   return (
     <div className="bg-BrandeisBrandShade">
-      <section className="text-white p-2 flex items-center mx-auto px-4">
+      <section className="text-white text-xs md:text-base p-2 flex items-center mx-auto px-4">
         <div className="flex items-center gap-4 w-full justify-center">
           <div className="flex flex-row gap-3">
             {isLiveEvent ? <div>Happening Now!!</div> : <div>{message}</div>}
