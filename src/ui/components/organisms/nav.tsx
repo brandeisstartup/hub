@@ -2,6 +2,7 @@ import { useCompetitions } from "@/context/EventContext";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useMemo } from "react";
 
 import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
@@ -30,9 +31,17 @@ const findUpcomingEvent = (
 
 export default function NavBarSearch() {
   const { competitions, upcomingEvents, loading } = useCompetitions();
-  const thisWeekEvent = findUpcomingEvent(upcomingEvents, 7);
 
-  const competitionsList = competitions.filter((comp) => !comp.isGrant);
+  // ✅ Use useMemo to prevent recalculating unless upcomingEvents changes
+  const thisWeekEvent = useMemo(
+    () => findUpcomingEvent(upcomingEvents, 7),
+    [upcomingEvents]
+  );
+
+  const competitionsList = useMemo(
+    () => competitions.filter((comp) => !comp.isGrant),
+    [competitions]
+  );
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -44,87 +53,84 @@ export default function NavBarSearch() {
     }).format(date);
   };
 
-  // Dynamically build navigation
-  const dynamicNavigation = [
-    {
-      name: "Projects",
-      href: "/",
-      isActive: "/",
-      links: [
-        {
-          name: "View Projects",
-          description: "Browse through all projects",
-          href: "/search?collection=Projects&query="
-        }
-        // {
-        //   name: "Submit a Project",
-        //   description: "Submit your project to the platform",
-        //   href: "/projects/postForm"
-        // }
-      ]
-    },
-    {
-      name: "Upcoming",
-      href: "#upcoming",
-      links: upcomingEvents.map((event) => ({
-        name: event.title,
-        description: event.description,
-        href: `/events/${event.title.toLowerCase().replace(/\s+/g, "-")}`,
-        startDate: formatDate(event.startDate),
-        endDate: formatDate(event.endDate)
-      }))
-    },
-    {
-      name: "Events",
-      href: "#events",
-      links: competitionsList.map((comp) => ({
-        name: comp.title,
-        description: comp.description,
-        href: `/events/${comp.title.toLowerCase().replace(/\s+/g, "-")}`
-        // startDate: formatDate(comp.startDate),
-        // endDate: formatDate(comp.endDate)
-      }))
-    },
-    {
-      name: "Resources",
-      href: "/resources",
-      isActive: "/404",
-      links: [
-        {
-          name: "Funding Resources",
-          description: "Find funding resources at Brandeis",
-          href: "/resources#funding"
-        },
-        {
-          name: "Community Resources",
-          description: "Community resources inside and outside Brandeis",
-          href: "/resources#community"
-        },
-        {
-          name: "Patenting Resources",
-          description: "Protect your intellectual property",
-          href: "/resources#patents"
-        },
-        {
-          name: "Software Resources",
-          description: "Free software and discounts for Brandeis students",
-          href: "/resources#software"
-        }
-      ]
-    }
-  ];
+  // ✅ Use useMemo to optimize dynamic navigation array
+  const dynamicNavigation = useMemo(
+    () => [
+      {
+        name: "Projects",
+        href: "/",
+        isActive: "/",
+        links: [
+          {
+            name: "View Projects",
+            description: "Browse through all projects",
+            href: "/search?collection=Projects&query="
+          }
+        ]
+      },
+      {
+        name: "Upcoming",
+        href: "#upcoming",
+        links: upcomingEvents.map((event) => ({
+          name: event.title,
+          description: event.description,
+          href: `/events/${event.title.toLowerCase().replace(/\s+/g, "-")}`,
+          startDate: formatDate(event.startDate),
+          endDate: formatDate(event.endDate)
+        }))
+      },
+      {
+        name: "Events",
+        href: "#events",
+        links: competitionsList.map((comp) => ({
+          name: comp.title,
+          description: comp.description,
+          href: `/events/${comp.title.toLowerCase().replace(/\s+/g, "-")}`
+        }))
+      },
+      {
+        name: "Resources",
+        href: "/resources",
+        isActive: "/404",
+        links: [
+          {
+            name: "Funding Resources",
+            description: "Find funding resources at Brandeis",
+            href: "/resources#funding"
+          },
+          {
+            name: "Community Resources",
+            description: "Community resources inside and outside Brandeis",
+            href: "/resources#community"
+          },
+          {
+            name: "Patenting Resources",
+            description: "Protect your intellectual property",
+            href: "/resources#patents"
+          },
+          {
+            name: "Software Resources",
+            description: "Free software and discounts for Brandeis students",
+            href: "/resources#software"
+          }
+        ]
+      }
+    ],
+    [upcomingEvents, competitionsList]
+  );
 
   return (
     <>
-      <nav className="sticky top-0 z-50 ">
-        {thisWeekEvent && (
+      <nav className="sticky top-0 z-50">
+        {/* ✅ Show TopBanner only when data is loaded */}
+        {!loading && thisWeekEvent && (
           <TopBanner
             message={"Happening This Week!"}
             linkLabel={"Go to Event"}
             event={thisWeekEvent}
           />
         )}
-        <Disclosure as="main" className="bg-BrandeisBrand shadow ">
+        <Disclosure as="main" className="bg-BrandeisBrand shadow">
           {({ open }) => (
             <>
               <div className="mx-auto max-w-9xl px-2 sm:px-4 lg:px-8">
@@ -136,14 +142,26 @@ export default function NavBarSearch() {
                   </div>
                   <div className="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end">
                     <div className="hidden lg:ml-6 lg:flex py-3 px-2">
-                      {!loading &&
+                      {loading ? (
+                        /* ✅ Skeleton Loaders */
+                        <div className="flex space-x-4">
+                          {[...Array(4)].map((_, i) => (
+                            <div
+                              key={i}
+                              className="h-6 w-24 bg-BrandeisBrand animate-pulse rounded"
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        /* ✅ Actual Navigation */
                         dynamicNavigation.map((item) => (
                           <DropDownButton
                             key={item.href + "nav"}
                             title={item.name}
                             links={item.links}
                           />
-                        ))}
+                        ))
+                      )}
                     </div>
                   </div>
 
