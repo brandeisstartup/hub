@@ -44,9 +44,14 @@ const IbsGrid = ({
             <section key={program.title} className="w-full flex flex-col mb-6">
               <div className="flex flex-col h-full gap-3">
                 <aside>
-                  <span className="text-md font-bold text-white bg-IBSbrand px-2 py-1 font-sans">
-                    {formatDate(program.startDate)}
-                  </span>
+                  <dl>
+                    <dt className="sr-only">Start Date</dt>
+                    <dd aria-label="Start Date">
+                      <span className="text-md font-bold text-white bg-IBSbrand px-2 py-1 font-sans">
+                        {formatDate(program.startDate)}
+                      </span>
+                    </dd>
+                  </dl>
                 </aside>
                 <Link
                   href={`/events/${slugify(program.title, { lower: true })}`}
