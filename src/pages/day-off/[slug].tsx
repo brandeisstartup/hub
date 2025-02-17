@@ -76,7 +76,11 @@ export default function CompetitionPage({ competition }: Props) {
       <div className="">
         <div className="mx-auto max-w-8xl px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
           <Heading label={`${competition.fields.title} Display`} />
-          <CalendarEventsList startDate="2025-01-07" endDate="2025-02-09" />
+          {/* <CalendarEventsList
+            startDate={competition.fields.startDate}
+            endDate={competition.fields.endDate}
+          /> */}
+          <CalendarEventsList startDate="2025-01-07" endDate="2025-02-12" />
         </div>
       </div>
     </div>

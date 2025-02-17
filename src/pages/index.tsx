@@ -42,7 +42,7 @@ export default function Home({ homepageContent }: HomePageProps) {
         </>
       )}
       <SimpleImageGrid label={"All Events"} projects={competitions} />
-      {homepageContent.showYoutubeVideos && <YouTubePage />}
+      {/* {homepageContent.showYoutubeVideos && <YouTubePage />} */}
     </>
   );
 }

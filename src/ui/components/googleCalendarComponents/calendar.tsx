@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import Heading from "@/ui/components/brandeisBranding/headings/heading";
+
 interface CalendarEvent {
   id: string;
   start: {
@@ -76,7 +78,8 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
 
   // Filter and process events...
   const start = new Date(startDate);
-  const end = new Date(endDate);
+  let end = new Date(endDate);
+  end.setDate(end.getDate() + 1);
 
   const filteredEvents = calendarData.items.filter((event) => {
     const eventStart = new Date(event.start.dateTime || event.start.date!);
@@ -119,17 +122,15 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
   };
 
   return (
-    <div className="w-full flex flex-col align-middle items-center mt-20 mb-20">
-      <h2 className=" font-sans pb-2 text-4xl leading-10 tracking-tight">
-        Schedule
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="w-full flex flex-col  mt-20 mb-20">
+      <Heading label={"Schedule"} />
+      <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 ">
         {sortedDates.length === 0 ? (
           <p>No events found for the selected date range.</p>
         ) : (
           sortedDates.map((date) => (
             <div
-              className=" font-sans flex flex-col align-middle items-center"
+              className=" font-sans flex flex-col align-middle items-start"
               key={date}>
               <h3 className="text-2xl mt-4 mb-2">
                 {new Date(date).toLocaleDateString("en-US", {
@@ -147,7 +148,7 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
                         ? "text-blue-500 bg-white border border-blue-500 rounded-sm shadow-lg"
                         : "other-class"
                     }`}>
-                    <span className="w-[80px] text-xxs flex flex-row">
+                    <span className="w-[120px] text-xxs flex flex-row">
                       {new Date(
                         event.start.dateTime || event.start.date!
                       ).toLocaleTimeString("en-US", {
@@ -164,7 +165,7 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
                         hour12: true
                       })}
                     </span>
-                    <span className="w-[420px]">
+                    <span className="w-full max-w-[420px]">
                       <strong>{event.summary}</strong>
                       <br /> {event.description}
                     </span>
