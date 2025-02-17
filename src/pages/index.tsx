@@ -28,6 +28,8 @@ export default function Home({ homepageContent }: HomePageProps) {
         heroImage={homepageContent.heroImage.fields.file.url}
         header={homepageContent.header}
         description={homepageContent.description}
+        primaryLabel={"Learn More"}
+        primaryLink={"/about"}
       />
       {!loading && homepageContent.showAllEventsListBlock && (
         <>
