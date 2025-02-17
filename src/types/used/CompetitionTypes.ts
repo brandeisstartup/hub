@@ -65,6 +65,10 @@ export interface CompetitionFields {
   showPeople: boolean;
   peopleSectionLabel: string;
   people: Person[];
+
+  showEventResources: boolean;
+  eventResourcesLabel: string;
+  eventResources: EventResource[];
 }
 
 export interface HomePageContent {
@@ -102,6 +106,24 @@ export interface ScheduleItem {
   description: string;
   date: string;
   dateTime: string;
+}
+
+export interface ScheduleItem {
+  title: string;
+  description: string;
+  date: string;
+  dateTime: string;
+}
+
+export interface EventResource {
+  title: string;
+  contactName: string;
+  contactEmail: string;
+  initials: string;
+  href: string;
+  youtube: string;
+  members: number;
+  bgColor: string;
 }
 
 export interface Prize {
