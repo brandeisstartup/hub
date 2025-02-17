@@ -78,7 +78,7 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
 
   // Filter and process events...
   const start = new Date(startDate);
-  let end = new Date(endDate);
+  const end = new Date(endDate);
   end.setDate(end.getDate() + 1);
 
   const filteredEvents = calendarData.items.filter((event) => {
