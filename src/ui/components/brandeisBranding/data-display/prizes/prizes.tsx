@@ -7,7 +7,6 @@ import Heading from "@/ui/components/brandeisBranding/headings/heading";
 type Props = {
   label: string;
   prizes: Prize[];
-  showRaffle: boolean;
   raffleHeading: string;
   raffleSubtext: string;
   raffleImage: string;
@@ -16,7 +15,6 @@ type Props = {
 const Prizes = ({
   prizes,
   label,
-  showRaffle,
   raffleHeading,
   raffleImage,
   raffleSubtext
@@ -40,31 +38,28 @@ const Prizes = ({
               ))}
             </dl>
           </div>
-          {showRaffle &&
-            raffleImage &&
-            raffleHeading != "" &&
-            raffleSubtext != "" && (
-              <div className="mt-16  font-sans">
-                <div className="w-full  flex flex-row border  p-4">
-                  <div className="w-30 h-30 p-5">
-                    <Image
-                      src={`https:${raffleImage}`}
-                      width={"200"}
-                      height={"200"}
-                      alt=""
-                    />
-                  </div>
-                  <div className=" flex flex-col justify-center m-6">
-                    <h3 className="text-2xl sm:text-6xl font-sans ">
-                      {raffleHeading}
-                    </h3>
-                    <p className="text-red-500 font-sans text-xl sm:text-2xl">
-                      {raffleSubtext}
-                    </p>
-                  </div>
+          {raffleImage && raffleHeading != "" && raffleSubtext != "" && (
+            <div className="mt-16  font-sans">
+              <div className="w-full  flex flex-row border  p-4">
+                <div className="w-30 h-30 p-5">
+                  <Image
+                    src={`https:${raffleImage}`}
+                    width={"200"}
+                    height={"200"}
+                    alt=""
+                  />
+                </div>
+                <div className=" flex flex-col justify-center m-6">
+                  <h3 className="text-2xl sm:text-6xl font-sans ">
+                    {raffleHeading}
+                  </h3>
+                  <p className="text-red-500 font-sans text-xl sm:text-2xl">
+                    {raffleSubtext}
+                  </p>
                 </div>
               </div>
-            )}
+            </div>
+          )}
         </div>
       </div>
     </div>
