@@ -7,6 +7,9 @@ import client from "@/lib/contentful";
 import { ParsedUrlQuery } from "querystring";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import CalendarEventsList from "@/ui/components/googleCalendarComponents/calendar";
+import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import PresentationResources from "@/ui/components/contentfulComponents/presentationResources/presentation-resrouces";
 
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
@@ -65,6 +68,59 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   };
 };
 
+const tempData = [
+  {
+    title: "ComUniversity",
+    contactName: "Jia Zheng",
+    contactEmail: "email@brandeis.edu",
+    initials: "CMU",
+    href: "/ComUniversity_Info.zip",
+    youtube: "https://www.youtube.com/watch?v=U4iY-q3eYr0",
+    members: 4,
+    bgColor: "bg-purple-600"
+  },
+  {
+    title: "BIBS",
+    contactName: "Jia Zheng",
+    contactEmail: "email@brandeis.edu",
+    initials: "BIB",
+    href: "/BIBS.zip",
+    youtube: "https://youtu.be/yFoKs6-xJBg",
+    members: 3,
+    bgColor: "bg-yellow-500"
+  },
+  {
+    title: "Checklist",
+    contactName: "Jia Zheng",
+    contactEmail: "email@brandeis.edu",
+    initials: "CLT",
+    href: "/Checklist.zip",
+    youtube: "https://www.youtube.com/watch?v=U4iY-q3eYr0",
+    members: 3,
+    bgColor: "bg-pink-600"
+  },
+  {
+    title: "Capturé",
+    contactName: "Jia Zheng",
+    contactEmail: "email@brandeis.edu",
+    initials: "GAP",
+    href: "/Capture.zip",
+    youtube: "https://www.youtube.com/watch?v=U4iY-q3eYr0",
+    members: 2,
+    bgColor: "bg-green-600"
+  },
+  {
+    title: "Project Insulin",
+    contactName: "Jia Zheng",
+    contactEmail: "email@brandeis.edu",
+    initials: "PRI",
+    href: "/Project_Insulin.zip",
+    youtube: "https://www.youtube.com/watch?v=U4iY-q3eYr0",
+    members: 2,
+    bgColor: "bg-blue-600"
+  }
+];
+
 // ✅ Page Component
 export default function CompetitionPage({ competition }: Props) {
   if (!competition || !competition.fields) {
@@ -76,6 +132,10 @@ export default function CompetitionPage({ competition }: Props) {
       <div className="">
         <div className="mx-auto max-w-8xl px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
           <Heading label={`${competition.fields.title} Display`} />
+          <PresentationResources
+            presentations={competition.fields.eventResources}
+            label={competition.fields.eventResourcesLabel}
+          />
           {/* <CalendarEventsList
             startDate={competition.fields.startDate}
             endDate={competition.fields.endDate}
