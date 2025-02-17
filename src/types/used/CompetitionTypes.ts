@@ -21,6 +21,7 @@ export interface CompetitionFields {
 
   showAbout: boolean;
   about: string;
+  aboutLabel: string;
 
   showRequirements: boolean;
   requirements: Array<{ requirement: string; explanation: Array<string> }>;

@@ -114,7 +114,7 @@ export default function CompetitionPage({ competition }: Props) {
       {competition.fields.showAbout && (
         <About
           title="about"
-          heading={`How this works `}
+          heading={competition.fields.aboutLabel}
           description={competition.fields.about}
         />
       )}
