@@ -24,29 +24,29 @@ const PresentationResources = ({ presentations, label }: Props) => {
                 <div className="flex-1 truncate py-2 text-sm">
                   <div className="flex flex-col font-sans">
                     <h3 className="px-4 font-semibold py-2 text-lg border-b-[1px] mb-2 text-gray-900">
-                      {project.title}
+                      {project.fields.title}
                     </h3>
                     <div className="px-4 py-2">
                       <dl className="flex flex-col space-y-2">
                         <div className="flex flex-col">
                           <dt className="w-[100px] font-semibold">Contact:</dt>
-                          <dd>{project.contactName}</dd>
+                          <dd>{project.fields.contactName}</dd>
                         </div>
                         <div className="flex flex-col">
                           <dt className="w-[100px] font-semibold">Email:</dt>
-                          <dd>{project.contactEmail}</dd>
+                          <dd>{project.fields.contactEmail}</dd>
                         </div>
                         <div className="mt-2 flex flex-col">
                           <dt className="w-[100px] font-semibold">Links:</dt>
                           <dd className="flex space-x-2 justify-between pt-2">
                             <Link
-                              href={project.youtube}
+                              href={`${project.fields.youtube}`}
                               target="_blank"
                               className="py-1 border w-full font-sans flex items-center justify-center hover:text-red-800 text-red-500 font-bold transition">
                               <FaYoutube className="w-8 h-8" />
                             </Link>
                             <Link
-                              href={project.href}
+                              href={`${project.fields.href}`}
                               target="_blank"
                               className="py-1 border w-full font-sans flex items-center justify-center hover:text-IBSShade text-IBSbrand font-bold transition">
                               <FaFilePowerpoint className="w-6 h-6" />

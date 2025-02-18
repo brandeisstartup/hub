@@ -148,14 +148,13 @@ export interface ScheduleItem {
 }
 
 export interface EventResource {
-  title: string;
-  contactName: string;
-  contactEmail: string;
-  initials: string;
-  href: string;
-  youtube: string;
-  members: number;
-  bgColor: string;
+  fields: {
+    title: string;
+    contactName: string;
+    contactEmail: string;
+    href?: string;
+    youtube?: string;
+  };
 }
 
 export interface Prize {
