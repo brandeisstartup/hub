@@ -51,7 +51,7 @@ const About = ({ title, heading, description }: AboutProps) => {
       <div className="mx-auto max-w-8xl px-4">
         <div className="mx-auto max-w-8xl lg:mx-0">
           <Heading label={heading} />
-          <p className="text-center md:text-left mt-6 text-lg leading-8 text-gray-600">
+          <p className="md:text-left mt-6 text-base leading-7 text-gray-600">
             {highlightLinks(description)}
           </p>
         </div>

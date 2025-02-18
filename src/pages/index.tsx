@@ -7,6 +7,7 @@ import IbsGrid from "@/ui/components/brandeisBranding/data-display/3Column/IbsGr
 import SimpleImageGrid from "@/ui/components/brandeisBranding/data-display/4Column/SimpleImageGrid";
 import Hero from "@/ui/components/brandeisBranding/hero/Hero";
 import { ImageFile } from "@/types/used/CompetitionTypes";
+import YouTubePage from "@/ui/components/organisms/youtube/YouTubePage";
 
 type HomePageProps = {
   homepageContent: {
@@ -50,7 +51,7 @@ export default function Home({ homepageContent }: HomePageProps) {
         </>
       )}
       <SimpleImageGrid label={"All Events"} projects={competitions} />
-      {/* {homepageContent.showYoutubeVideos && <YouTubePage />} */}
+      {homepageContent.showYoutubeVideos && <YouTubePage />}
     </>
   );
 }

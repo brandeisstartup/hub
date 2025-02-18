@@ -9,9 +9,10 @@ export interface CompetitionFields {
   isGrant: boolean;
   thumbnail: ImageFile;
 
+  ctaButtonLabel: string;
+  ctaButtonLink: string;
+
   heroImage: ImageFile;
-  heroPrimaryButtonLabel: string;
-  heroPrimaryButtonLink: string;
   heroSecondaryButtonLabel: string;
   heroSecondaryButtonLink: string;
 
@@ -44,7 +45,6 @@ export interface CompetitionFields {
   pastProjectTitle: string;
   projects: Project[];
 
-  // faqs: Array<{ question: string; answer: string }>;
   faqs: FAQ[];
 
   contactInformation: Person[];
