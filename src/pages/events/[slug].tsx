@@ -20,6 +20,7 @@ import Projects from "@/ui/components/contentfulComponents/projects/projects";
 import Hero from "@/ui/components/brandeisBranding/hero/Hero";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Prizes from "@/ui/components/brandeisBranding/data-display/prizes/prizes";
+import Button from "@/ui/components/brandeisBranding/buttons/button";
 
 // import { pitchSummitData } from "@/data/competition";
 
@@ -91,21 +92,30 @@ export default function CompetitionPage({ competition }: Props) {
       {competition.fields.heroImage &&
       competition.fields.heroImage.fields.file.url != "" &&
       competition.fields.title &&
-      competition.fields.heroPrimaryButtonLabel &&
-      competition.fields.heroPrimaryButtonLink ? (
+      competition.fields.ctaButtonLabel &&
+      competition.fields.ctaButtonLink ? (
         <Hero
           heroImage={competition.fields.heroImage.fields.file.url}
           description={competition.fields.description}
           header={competition.fields.title}
-          primaryLabel={competition.fields.heroPrimaryButtonLabel}
-          primaryLink={competition.fields.heroPrimaryButtonLink}
+          primaryLabel={competition.fields.ctaButtonLabel}
+          primaryLink={competition.fields.ctaButtonLink}
           secondaryLabel={competition.fields.heroSecondaryButtonLabel}
           secondaryLink={competition.fields.heroSecondaryButtonLink}
         />
       ) : (
-        <div className="">
-          <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:py-22">
-            <Heading label={`${competition.fields.title}`} />
+        <div className="py-24 sm:pt-32">
+          <div className="mx-auto max-w-8xl px-4">
+            <div className="mx-auto max-w-8xl lg:mx-0">
+              <Heading label={`${competition.fields.title}`} />
+              <p className="text-center md:text-left my-6 text-lg leading-8 text-gray-600">
+                {competition.fields.description}
+              </p>
+            </div>
+            <Button
+              label={competition.fields.ctaButtonLabel}
+              color="blue"
+              href={competition.fields.ctaButtonLink}></Button>
           </div>
         </div>
       )}
