@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import slugify from "slugify";
 
-import Button from "@/ui/components/brandeisBranding/buttons/button";
 import { CompetitionFields } from "@/types/used/CompetitionTypes";
 import Heading from "../../headings/heading";
 
