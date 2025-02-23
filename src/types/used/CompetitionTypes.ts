@@ -200,3 +200,9 @@ export type CompetitionSkeleton = EntrySkeletonType<
 
 // Define the typed Contentful Entry
 export type CompetitionEntry = Entry<CompetitionSkeleton>;
+
+// Ensure the correct `EntrySkeletonType` with explicit contentTypeId
+export type Projectskeleton = EntrySkeletonType<Project, "projects">;
+
+// Define the typed Contentful Entry
+export type ProjectEntry = Entry<Projectskeleton>;
