@@ -64,7 +64,7 @@ export default function NavBarSearch() {
           {
             name: "View Projects",
             description: "Browse through all projects",
-            href: "/search?collection=Projects&query="
+            href: "/search"
           }
         ]
       },
