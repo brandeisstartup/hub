@@ -89,7 +89,7 @@ export default function ProjectPage({ project }: Props) {
         {/* Left Column (sticky on large screens) */}
         <div
           id="fixed"
-          className="w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible p-4">
+          className="border border-gray-200/50 w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible p-4">
           <Heading label={`${title}`} />
           {tagline && (
             <p className="md:text-left my-6 text-lg leading-8 text-gray-600">
@@ -113,6 +113,13 @@ export default function ProjectPage({ project }: Props) {
               {about}
             </p>
           </div>
+          {image?.fields?.file?.url && (
+            <img
+              src={image.fields.file.url}
+              alt={image.fields.title}
+              className="w-full max-w-lg rounded-lg"
+            />
+          )}
 
           <div className="p-4">
             <Heading label="Team Members" />

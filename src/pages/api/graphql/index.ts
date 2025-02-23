@@ -49,6 +49,8 @@ const typeDefs = gql`
     competition: String
     team_members_emails: [String!]!
     video_url: String
+
+    teamMembers: [User!]!
   }
 
   type User {
