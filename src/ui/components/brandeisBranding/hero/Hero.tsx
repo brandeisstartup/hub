@@ -57,7 +57,7 @@ const Hero = ({
       {description && (
         <p className=" font-serif mt-4 text-lg md:text-2xl">{description}</p>
       )}
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-col gap-2">
         {primaryLabel && primaryLink && (
           <Button label={primaryLabel} href={primaryLink} color="green" />
         )}

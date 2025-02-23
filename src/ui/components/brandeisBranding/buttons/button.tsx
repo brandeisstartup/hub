@@ -26,12 +26,14 @@ const Button = ({ label, color, href, onClick }: Props) => {
 
   return href ? (
     // ✅ Use `Link` for navigation if `href` is present
-    <Link href={href} className="inline-block">
+    <Link href={href} className="w-full max-w-[18rem]">
       {buttonContent}
     </Link>
   ) : (
     // ✅ Use a normal button if no `href` is provided
-    <button onClick={onClick}>{buttonContent}</button>
+    <button className="w-full max-w-xs" onClick={onClick}>
+      {buttonContent}
+    </button>
   );
 };
 

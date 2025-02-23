@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import slugify from "slugify";
 
-import Button from "@/ui/components/brandeisBranding/buttons/link";
+import Button from "@/ui/components/brandeisBranding/buttons/button";
 import { CompetitionFields } from "@/types/used/CompetitionTypes";
 import Heading from "../../headings/heading";
 
@@ -66,7 +66,7 @@ const IbsGrid = ({
           ))}
           {showButton && buttonLabel && buttonLink && (
             <div className="col-span-full flex justify-start md:justify-start mt-4">
-              <Button label={buttonLabel} color="blue" link={buttonLink} />
+              <Button label={buttonLabel} color="blue" href={buttonLink} />
             </div>
           )}
         </div>
