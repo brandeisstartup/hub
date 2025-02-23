@@ -3,6 +3,8 @@ import { Entry, EntrySkeletonType } from "contentful";
 export interface CompetitionFields {
   title: string;
   showInHub: boolean;
+  shortDescription: string;
+  navigationDescription: string;
   description: string;
   startDate: string;
   endDate: string;

@@ -73,7 +73,7 @@ export default function NavBarSearch() {
         href: "#upcoming",
         links: upcomingEvents.map((event) => ({
           name: event.title,
-          description: event.description,
+          description: event.navigationDescription,
           href: `/events/${event.title.toLowerCase().replace(/\s+/g, "-")}`,
           startDate: formatDate(event.startDate),
           endDate: formatDate(event.endDate)
@@ -84,7 +84,7 @@ export default function NavBarSearch() {
         href: "#events",
         links: competitionsList.map((comp) => ({
           name: comp.title,
-          description: comp.description,
+          description: comp.navigationDescription,
           href: `/events/${comp.title.toLowerCase().replace(/\s+/g, "-")}`
         }))
       },

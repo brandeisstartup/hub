@@ -112,10 +112,12 @@ export default function CompetitionPage({ competition }: Props) {
                 {competition.fields.description}
               </p>
             </div>
-            <Button
-              label={competition.fields.ctaButtonLabel}
-              color="blue"
-              href={competition.fields.ctaButtonLink}></Button>
+            <div className="max-w-[18rem]">
+              <Button
+                label={competition.fields.ctaButtonLabel}
+                color="blue"
+                href={competition.fields.ctaButtonLink}></Button>
+            </div>
           </div>
         </div>
       )}
