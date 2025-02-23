@@ -1,17 +1,13 @@
 .heroButton {
-    max-width: 250px;
-    border-radius: 0.25rem;
-    color: white;
-    text-decoration: none;
-    /* background-color: #008383 !important; */
-    padding: 1rem 1.1rem;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  
-    
-  }
-  
+  border-radius: 0.25rem;
+  color: white;
+  text-decoration: none;
+  /* background-color: #008383 !important; */
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
