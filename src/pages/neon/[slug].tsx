@@ -12,8 +12,15 @@ interface ProjectProps {
     competition?: string;
     team_members_emails: string[];
     video_url: string;
+    teamMembers: TeamMembers[];
   };
 }
+type TeamMembers = {
+  id: string;
+  name: string;
+  bio: string;
+  email: string;
+};
 
 // ✅ Fetch Data on Server Side
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -39,17 +46,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 export default function ProjectPage({ project }: ProjectProps) {
   return (
     <div className="py-24 sm:pt-32">
-      <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
+      <div className="mb-20 mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
         <div
           id="fixed"
           className="w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible p-4">
           <Heading label={`${project.title}`} />
-          <p className="md:text-left my-6 text-lg leading-8 text-gray-600">
-            {project.competition}
-          </p>
-          <p className="md:text-left my-6 text-lg leading-8 text-gray-600">
-            {project.short_description}
-          </p>
+          <div className=" max-w-xs mt-4 grid grid-cols-1 md:grid-cols-2">
+            {project.teamMembers.map((email) => (
+              <div key={email.id}>
+                <h4>{email.name}</h4>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Scrollable Content */}
@@ -80,11 +88,14 @@ export default function ProjectPage({ project }: ProjectProps) {
 
           <div className="p-4">
             <Heading label={`Team Members`} />
-            <ul className="list-disc list-inside">
-              {project.team_members_emails.map((email) => (
-                <li key={email}>{email}</li>
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              {project.teamMembers.map((email) => (
+                <div key={email.id}>
+                  <h4>{email.name}</h4>
+                  <p>{email.bio}</p>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </section>
       </div>

@@ -11,6 +11,11 @@ export const GET_PROJECT_BY_SLUG = gql`
       competition
       team_members_emails
       video_url
+      teamMembers {
+        id
+        name
+        bio
+      }
     }
   }
 `;

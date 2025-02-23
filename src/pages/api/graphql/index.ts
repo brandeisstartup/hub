@@ -145,6 +145,18 @@ const resolvers = {
     deleteUser: async (_: unknown, { id }: UserArgs) => {
       return prisma.users.delete({ where: { id } });
     }
+  },
+  Project: {
+    // "parent" is the Project object from the DB
+    // We use "parent.team_members_emails" to fetch all users with matching emails
+    teamMembers: async (parent: any, _args: unknown, _context: unknown) => {
+      // parent.team_members_emails might be ["john@example.com", "jane@foo.bar", ...]
+      return prisma.users.findMany({
+        where: {
+          email: { in: parent.team_members_emails }
+        }
+      });
+    }
   }
 };
 
