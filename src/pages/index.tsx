@@ -38,18 +38,20 @@ export default function Home({ homepageContent }: HomePageProps) {
         secondaryLabel={homepageContent.heroSecondaryButtonLabel}
         secondaryLink={homepageContent.heroSecondaryButtonLink}
       />
-      {!loading && homepageContent.showAllEventsListBlock && (
-        <>
-          <IbsGrid
-            label="Upcoming"
-            href="#programs"
-            data={upcomingEvents}
-            showButton={true}
-            buttonLabel={"Learn More"}
-            buttonLink="/about"
-          />
-        </>
-      )}
+      {!loading &&
+        homepageContent.showAllEventsListBlock &&
+        upcomingEvents.length > 0 && (
+          <>
+            <IbsGrid
+              label="Upcoming"
+              href="#programs"
+              data={upcomingEvents}
+              // showButton={true}
+              // buttonLabel={"Learn More"}
+              // buttonLink="/about"
+            />
+          </>
+        )}
       <SimpleImageGrid label={"All Events"} projects={competitions} />
       {homepageContent.showYoutubeVideos && <YouTubePage />}
     </>

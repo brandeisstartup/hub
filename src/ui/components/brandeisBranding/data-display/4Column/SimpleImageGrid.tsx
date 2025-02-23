@@ -42,7 +42,7 @@ const SimpleImageGrid = ({ projects, label, extend = false }: Props) => {
                     {project.title}
                   </Link>
                   <p className="text-body4 text-BrandeisBodyText">
-                    {project.description}
+                    {project.shortDescription}
                   </p>
                 </div>
               </section>
