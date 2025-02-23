@@ -74,6 +74,7 @@ const resolvers = {
   },
 
   Mutation: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     createProject: async (_: unknown, args: any) => {
       const { id, ...data } = args; // ✅ Dynamically remove `id`
 
