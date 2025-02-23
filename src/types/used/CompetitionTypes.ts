@@ -119,16 +119,6 @@ export interface Person {
   };
 }
 
-export interface Project {
-  fields: {
-    title: string;
-    tagline: string;
-    about: string;
-    image: ImageFile;
-    members: string[];
-  };
-}
-
 export interface Person {
   fields: {
     firstName: string;
@@ -184,6 +174,16 @@ export interface ImageFile {
   };
 }
 
+export interface Project {
+  fields: {
+    title: string;
+    tagline: string;
+    about: string;
+    image: ImageFile;
+    members: string[];
+  };
+}
+
 export interface Competition {
   fields: CompetitionFields;
 }
@@ -201,8 +201,20 @@ export type CompetitionSkeleton = EntrySkeletonType<
 // Define the typed Contentful Entry
 export type CompetitionEntry = Entry<CompetitionSkeleton>;
 
-// Ensure the correct `EntrySkeletonType` with explicit contentTypeId
-export type Projectskeleton = EntrySkeletonType<Project, "projects">;
+export interface ProjectFields {
+  title: string;
+  tagline: string;
+  about: string;
+  members: string[];
+  image: ImageFile;
+}
 
-// Define the typed Contentful Entry
+/**
+ * The typed skeleton for the `projects` content type.
+ */
+export type Projectskeleton = EntrySkeletonType<ProjectFields, "projects">;
+
+/**
+ * A strongly typed Contentful Entry for `projects`.
+ */
 export type ProjectEntry = Entry<Projectskeleton>;

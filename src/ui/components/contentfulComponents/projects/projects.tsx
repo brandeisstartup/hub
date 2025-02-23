@@ -40,7 +40,7 @@ const Projects = ({ projects, label, extend = false }: Props) => {
                     height={500}
                   />
                   <a
-                    href={`/projects/${slugify(project.fields.title, {
+                    href={`/featured/${slugify(project.fields.title, {
                       lower: true
                     })}`}
                     className="text-xl font-bold font-serif text-BrandeisBrand mt-2 hover:underline">
