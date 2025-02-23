@@ -57,7 +57,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    projects: [Project!]!
+    projects(search: String): [Project!]!
     project(id: Int, slug: String): Project
     users: [User!]!
     user(id: Int!): User
@@ -82,7 +82,20 @@ const typeDefs = gql`
 // ✅ Fully Typed Resolvers
 const resolvers = {
   Query: {
-    projects: async () => prisma.projects.findMany(),
+    // projects: async () => prisma.projects.findMany(),
+    projects: async (_: unknown, { search }: { search?: string }) => {
+      if (!search) return prisma.projects.findMany();
+
+      return prisma.projects.findMany({
+        where: {
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { competition: { contains: search, mode: "insensitive" } },
+            { creator_email: { contains: search, mode: "insensitive" } }
+          ]
+        }
+      });
+    },
 
     project: async (_: unknown, { id, slug }: ProjectArgs) => {
       if (id) return prisma.projects.findUnique({ where: { id } });
