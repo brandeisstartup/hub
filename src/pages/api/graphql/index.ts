@@ -5,6 +5,37 @@ import { NextApiRequest, NextApiResponse } from "next";
 // ✅ Initialize Prisma Client
 const prisma = new PrismaClient();
 
+// ✅ Define TypeScript Interfaces for Query & Mutation Arguments
+interface ProjectArgs {
+  id?: number;
+  slug?: string;
+}
+
+interface CreateProjectArgs {
+  title: string;
+  creator_email: string;
+  short_description?: string;
+  long_description?: string;
+  competition?: string;
+  team_members_emails: string[];
+}
+
+interface UserArgs {
+  id: number;
+}
+
+interface CreateUserArgs {
+  email: string;
+  name?: string;
+  bio?: string; // ❌ This caused an error
+}
+
+interface UpdateUserArgs {
+  id: number;
+  name?: string;
+  bio?: string;
+}
+
 // ✅ GraphQL Type Definitions
 const typeDefs = gql`
   type Project {
@@ -28,8 +59,8 @@ const typeDefs = gql`
   type Query {
     projects: [Project!]!
     project(id: Int, slug: String): Project
-    users: [User!]! # ✅ Fetch all users
-    user(id: Int!): User # ✅ Fetch user by ID
+    users: [User!]!
+    user(id: Int!): User
   }
 
   type Mutation {
@@ -42,25 +73,19 @@ const typeDefs = gql`
       team_members_emails: [String!]!
     ): Project!
 
-    createUser(email: String!, name: String, bio: String): User! # ✅ Create user
-    updateUser(id: Int!, name: String, bio: String): User! # ✅ Update user
-    deleteUser(id: Int!): User! # ✅ Delete user
+    createUser(email: String!, name: String, bio: String): User!
+    updateUser(id: Int!, name: String, bio: String): User!
+    deleteUser(id: Int!): User!
   }
 `;
 
-// ✅ Resolvers
+// ✅ Fully Typed Resolvers
 const resolvers = {
   Query: {
     projects: async () => prisma.projects.findMany(),
-    // project: async (_: unknown, { id }: { id: number }) =>
-    //   prisma.projects.findUnique({ where: { id } }),
-    project: async (
-      _: unknown,
-      { id, slug }: { id?: number; slug?: string }
-    ) => {
-      if (id) {
-        return prisma.projects.findUnique({ where: { id } });
-      }
+
+    project: async (_: unknown, { id, slug }: ProjectArgs) => {
+      if (id) return prisma.projects.findUnique({ where: { id } });
       if (slug) {
         return prisma.projects.findFirst({
           where: { title: slug.replace(/-/g, " ") }
@@ -68,36 +93,44 @@ const resolvers = {
       }
       throw new Error("Either 'id' or 'slug' must be provided.");
     },
+
     users: async () => prisma.users.findMany(),
-    user: async (_: unknown, { id }: { id: number }) =>
+    user: async (_: unknown, { id }: UserArgs) =>
       prisma.users.findUnique({ where: { id } })
   },
 
   Mutation: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    createProject: async (_: unknown, args: any) => {
-      const { id, ...data } = args; // ✅ Dynamically remove `id`
+    createProject: async (_: unknown, args: CreateProjectArgs) => {
+      return prisma.projects.create({ data: args });
+    },
 
-      return prisma.projects.create({
-        data // ✅ Insert all other fields dynamically
+    createUser: async (_: unknown, args: CreateUserArgs) => {
+      return prisma.users.create({
+        data: {
+          email: args.email,
+          name: args.name || "", // ✅ Default empty string if undefined
+          bio: args.bio ?? "" // ✅ Fix: Ensure `bio` is always a string
+        }
       });
     },
 
-    createUser: async (_: unknown, args: any) =>
-      prisma.users.create({ data: args }),
-
-    updateUser: async (_: unknown, args: any) =>
-      prisma.users.update({
+    updateUser: async (_: unknown, args: UpdateUserArgs) => {
+      return prisma.users.update({
         where: { id: args.id },
-        data: { name: args.name, bio: args.bio }
-      }),
+        data: {
+          name: args.name,
+          bio: args.bio ?? "" // ✅ Ensure `bio` is a string
+        }
+      });
+    },
 
-    deleteUser: async (_: unknown, { id }: { id: number }) =>
-      prisma.users.delete({ where: { id } })
+    deleteUser: async (_: unknown, { id }: UserArgs) => {
+      return prisma.users.delete({ where: { id } });
+    }
   }
 };
 
-// ✅ Singleton Apollo Server
+// ✅ Singleton Apollo Server to prevent multiple instances
 let apolloServer: ApolloServer | null = null;
 const getApolloServer = async () => {
   if (!apolloServer) {
@@ -128,7 +161,7 @@ export default async function handler(
   return server.createHandler({ path: "/api/graphql" })(req, res);
 }
 
-// ✅ Disable Next.js Body Parser
+// ✅ Disable Next.js Body Parser for Apollo Server
 export const config = {
   api: {
     bodyParser: false
