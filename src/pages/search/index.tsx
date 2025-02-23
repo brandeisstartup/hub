@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { gql } from "@apollo/client";
 import { useState, useEffect } from "react";
 import client from "@/lib/apolloClient";
@@ -17,7 +16,15 @@ const GET_ALL_PROJECTS = gql`
   }
 `;
 
-// Debounce Hook
+// Define TypeScript Interfaces
+interface Project {
+  id: string;
+  title: string;
+  short_description?: string;
+  competition?: string;
+}
+
+// Debounce Hook for Search Input
 function useDebounce(value: string, delay: number = 500) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -32,45 +39,22 @@ function useDebounce(value: string, delay: number = 500) {
   return debouncedValue;
 }
 
-export default function SearchPage({
-  initialProjects = []
-}: {
-  initialProjects?: any[];
-}) {
-  const router = useRouter();
-  const initialQuery = (router.query.query as string) || "";
-  const [searchTerm, setSearchTerm] = useState(initialQuery);
+interface SearchPageProps {
+  initialProjects: Project[];
+}
+
+export default function SearchPage({ initialProjects }: SearchPageProps) {
+  const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  // Ensure initialProjects is always an array before filtering
-  const filteredProjects = (initialProjects ?? []).filter((project) =>
-    project?.title?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+  // Filter projects based on search term
+  const filteredProjects = initialProjects.filter((project) =>
+    project.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
-
-  // ✅ FIX: Do NOT block full navigation when users click on other links
-  useEffect(() => {
-    if (debouncedSearchTerm) {
-      router.replace(
-        { pathname: router.pathname, query: { query: debouncedSearchTerm } },
-        undefined,
-        { shallow: true }
-      );
-    } else {
-      router.replace({ pathname: router.pathname }, undefined, {
-        shallow: true
-      });
-    }
-  }, [debouncedSearchTerm]);
-
-  // ✅ FIX: Use `router.push()` for external links to ensure full navigation
-  const handleNavigation = (path: string) => {
-    router.push(path);
-  };
 
   return (
     <div className="flex justify-center items-center">
-      {" "}
-      <div className="p-6 relative w-full max-w-8xl font-sans ">
+      <div className="p-6 relative w-full max-w-8xl font-sans">
         <h1 className="text-2xl font-bold mb-4">Search Projects</h1>
 
         {/* Search Input */}
@@ -85,11 +69,11 @@ export default function SearchPage({
         {/* Results */}
         <ul className="mt-4 grid grid-cols-3 gap-4">
           {filteredProjects.length > 0 ? (
-            filteredProjects.map((project: any) => (
+            filteredProjects.map((project) => (
               <li
                 key={project.id}
                 className="border p-4 hover:bg-gray-100 transition">
-                {/* Ensure full navigation works */}
+                {/* Link to project details */}
                 <Link
                   href={`/projects/${slugify(project.title)}`}
                   className="block">
