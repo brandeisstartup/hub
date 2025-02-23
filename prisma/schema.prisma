@@ -16,6 +16,7 @@ model Projects {
   long_description    String?
   competition         String?   @db.VarChar(255)
   team_members_emails String[]
+  video_url           String?   @db.VarChar(255)
 }
 
 model Users {

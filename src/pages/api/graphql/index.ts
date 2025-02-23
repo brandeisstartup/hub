@@ -18,6 +18,7 @@ interface CreateProjectArgs {
   long_description?: string;
   competition?: string;
   team_members_emails: string[];
+  video_url: string;
 }
 
 interface UserArgs {
@@ -47,6 +48,7 @@ const typeDefs = gql`
     long_description: String
     competition: String
     team_members_emails: [String!]!
+    video_url: String
   }
 
   type User {
@@ -71,6 +73,7 @@ const typeDefs = gql`
       long_description: String
       competition: String
       team_members_emails: [String!]!
+      video_url: String
     ): Project!
 
     createUser(email: String!, name: String, bio: String): User!
