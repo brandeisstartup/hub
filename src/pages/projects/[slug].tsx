@@ -2,8 +2,6 @@ import { GetServerSideProps } from "next";
 import client from "@/lib/apolloClient";
 import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries"; // ✅ Import reusable query
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
-import Button from "@/ui/components/brandeisBranding/buttons/button";
-import slugify from "slugify";
 
 interface ProjectProps {
   project: {
