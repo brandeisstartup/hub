@@ -40,6 +40,7 @@ interface GraphQLProject {
   competition?: string;
   team_members_emails?: string[];
   video_url?: string;
+  image_url?: string;
 }
 
 /** Final shape for the page to render. */
@@ -149,7 +150,8 @@ export const getServerSideProps: GetServerSideProps<
     video_url: graphQLProject?.video_url ?? "",
 
     // 6) Flattened image URL from Contentful
-    imageUrl: contentfulFlattened?.image?.fields?.file?.url ?? ""
+    imageUrl:
+      contentfulFlattened?.image?.fields?.file?.url || graphQLProject?.image_url
   };
 
   return {
@@ -283,21 +285,6 @@ export default function ProjectPage({ project }: ServerSideProps) {
                 <iframe
                   className="absolute inset-0 w-full h-full "
                   src={`https://www.youtube.com/embed/${video_url}`}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              </div>
-            </div>
-          )}
-          {!video_url && (
-            <div className="p-4">
-              <Heading label="Video" />
-              <div className="relative w-full aspect-video">
-                <iframe
-                  className="absolute inset-0 w-full h-full "
-                  src={`https://www.youtube.com/embed/WFvO8R7SZZE`}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"

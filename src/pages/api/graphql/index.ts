@@ -19,6 +19,7 @@ interface CreateProjectArgs {
   competition?: string;
   team_members_emails: string[];
   video_url: string;
+  image_url: string;
 }
 
 interface UserArgs {
@@ -49,6 +50,7 @@ const typeDefs = gql`
     competition: String
     team_members_emails: [String!]!
     video_url: String
+    image_url: String
 
     teamMembers: [User!]!
   }
@@ -76,6 +78,7 @@ const typeDefs = gql`
       competition: String
       team_members_emails: [String!]!
       video_url: String
+      image_url: String
     ): Project!
 
     createUser(email: String!, name: String, bio: String): User!
