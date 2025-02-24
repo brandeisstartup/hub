@@ -7,7 +7,7 @@ type Props = {
 
 const Heading = ({ label, alignStart = true }: Props) => {
   return (
-    <div className="heading w-full flex justify-center">
+    <div className="heading w-full flex justify-center mb-4">
       <div className="flex flex-col gap-4 justify-center text-center w-full self-start">
         <span
           className={`decoration h-[.5rem] bg-BrandeisBrand w-[4rem] block self-start ${

@@ -175,51 +175,97 @@ export default function ProjectPage({ project }: ServerSideProps) {
   } = project;
 
   return (
-    <div className="py-24 sm:pt-32">
+    <div className="py-24">
       <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
         {/* Left Column */}
         <div
           id="fixed"
-          className="w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible p-4">
+          className=" border w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible p-8">
           <Heading label={title} />
 
-          {tagline && (
-            <p className="my-6 text-lg leading-8 text-gray-600">{tagline}</p>
-          )}
-
-          {competition && (
-            <p className="my-6 text-lg leading-8 text-gray-600">
-              Competition: {competition}
-            </p>
-          )}
+          <dd className="flex flex-row gap-2 font-sans">
+            By:
+            {(members || []).map((member) => (
+              <dl key={member}>{member}</dl>
+            ))}
+            {(team_members_emails || []).map((email) => (
+              <dl key={email}>{email}</dl>
+            ))}
+          </dd>
 
           {/* Render image if available from Contentful */}
           {imageUrl && (
             <img
               src={imageUrl}
               alt="Project Image"
-              className="w-full max-w-lg rounded-lg"
+              className="w-full max-w-lg mt-5"
             />
           )}
+
+          {/* Share Button */}
+          <nav className="w-full flex justify-start gap-2">
+            <button
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({
+                    title: title,
+                    text: `Check out this project: ${title}`,
+                    url: window.location.href
+                  });
+                } else {
+                  navigator.clipboard.writeText(window.location.href);
+                  alert("URL copied to clipboard!");
+                }
+              }}
+              className="mt-4 px-4 py-2 font-sans border  rounded hover:bg-gray-100 hover:border transition">
+              🔗 Share this Project
+            </button>
+
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                alert("🔗 Project link copied to clipboard!");
+              }}
+              className="mt-4 px-4 py-2 font-sans border   rounded hover:bg-gray-100 transition">
+              📋 Copy Link
+            </button>
+          </nav>
+          {/* {!imageUrl && (
+            <img
+              src={`/missing.webp`}
+              alt="Project Image"
+              className="w-full max-w-lg mt-5"
+            />
+          )} */}
+          {/* {competition && (
+            <p className="my-6 text-lg leading-8 text-gray-600 text-sm">
+              Competition: {competition}
+            </p>
+          )} */}
         </div>
 
         {/* Right Column */}
-        <section className="w-full flex flex-col gap-6 lg:max-h-[90vh]">
+        <section className="w-full flex flex-col gap-6  p-4">
           {/* Combined descriptions */}
+
           <div className="p-4">
             <Heading label="Project Description" />
-            {about && (
-              <p className="my-6 text-lg leading-8 text-gray-600">{about}</p>
-            )}
-            {/* Show GraphQL fields if they exist */}
-            {long_description && (
-              <p className="my-6 text-lg leading-8 text-gray-600">
-                {long_description}
-              </p>
+            {tagline && (
+              <p className="my-6 text-lg leading-8 text-gray-600">{tagline}</p>
             )}
             {short_description && !long_description && (
               <p className="my-6 text-lg leading-8 text-gray-600">
                 {short_description}
+              </p>
+            )}
+            {about && (
+              <p className="my-6 text-lg leading-8 text-gray-600">{about}</p>
+            )}
+
+            {/* Show GraphQL fields if they exist */}
+            {long_description && (
+              <p className="my-6 text-lg leading-8 text-gray-600">
+                {long_description}
               </p>
             )}
           </div>
@@ -228,10 +274,25 @@ export default function ProjectPage({ project }: ServerSideProps) {
           {video_url && (
             <div className="p-4">
               <Heading label="Video" />
+              <div className="relative w-full aspect-video mt-5">
+                <iframe
+                  className="absolute inset-0 w-full h-full "
+                  src={`https://www.youtube.com/embed/${video_url}`}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          )}
+          {!video_url && (
+            <div className="p-4">
+              <Heading label="Video" />
               <div className="relative w-full aspect-video">
                 <iframe
-                  className="absolute inset-0 w-full h-full rounded-lg"
-                  src={`https://www.youtube.com/embed/${video_url}`}
+                  className="absolute inset-0 w-full h-full "
+                  src={`https://www.youtube.com/embed/WFvO8R7SZZE`}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
