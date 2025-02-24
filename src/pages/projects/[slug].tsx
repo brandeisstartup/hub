@@ -180,7 +180,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
         {/* Left Column */}
         <div
           id="fixed"
-          className=" border w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible p-10">
+          className=" border w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible p-8">
           <Heading label={title} />
 
           <dd className="flex flex-row gap-2 font-sans">
@@ -200,7 +200,11 @@ export default function ProjectPage({ project }: ServerSideProps) {
 
           {/* Render image if available from Contentful */}
           {imageUrl && (
-            <img src={imageUrl} alt="Project Image" className="w-full  mt-5" />
+            <img
+              src={imageUrl}
+              alt="Project Image"
+              className="w-full max-w-lg mt-5"
+            />
           )}
 
           {/* Share Button */}
@@ -246,7 +250,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
         </div>
 
         {/* Right Column */}
-        <section className="sm:border w-full flex flex-col gap-6  p-6">
+        <section className="w-full flex flex-col gap-6  p-4">
           {/* Combined descriptions */}
 
           <div className="p-4">
