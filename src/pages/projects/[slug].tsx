@@ -192,6 +192,11 @@ export default function ProjectPage({ project }: ServerSideProps) {
               <dl key={email}>{email}</dl>
             ))}
           </dd>
+          {competition && (
+            <p className="font-sans leading-8 text-sm">
+              <span className="font-semibold">Competition:</span> {competition}
+            </p>
+          )}
 
           {/* Render image if available from Contentful */}
           {imageUrl && (
