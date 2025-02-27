@@ -21,7 +21,7 @@ const People = ({ label, people }: Props) => {
               key={`${person.fields.firstName}-${person.fields.lastName}`}
               className="flex flex-col max-w-5xl md:flex-row gap-8">
               <Image
-                className="w-full md:w-40 md:h-40  object-cover"
+                className="w-40 h-40  object-cover"
                 src={`https:${person.fields.image.fields.file.url}`}
                 alt={person.fields.image.fields.title || "Person image"}
                 width={100}

@@ -640,7 +640,7 @@ module.exports = {
       "5xl": "64rem",
       "6xl": "72rem",
       "7xl": "80rem",
-      "8xl": "88rem",
+      "8xl": "86rem",
       "9xl": "96rem",
       full: "100%",
       min: "min-content",
@@ -1005,9 +1005,6 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        // "inter-thin": ["Inter var", ...defaultTheme.fontFamily.sans],
-        // "inter-bold": ["Inter var", ...defaultTheme.fontFamily.sans],
-        // "inter-normal": ["Inter var", ...defaultTheme.fontFamily.sans],
         sans: ["var(--font-hind)", ...defaultTheme.fontFamily.sans],
         serif: ["var(--font-merriweather)", ...defaultTheme.fontFamily.serif]
       }

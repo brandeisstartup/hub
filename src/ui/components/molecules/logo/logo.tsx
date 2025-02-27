@@ -10,7 +10,7 @@ type Props = {
 
 const Logo = ({ color = "white" }: Props) => {
   const colorClass = color === "white" ? styles.white : styles.blue;
-  const mobile = "hidden md:flex";
+  const mobile = "";
   const backgroundColorClass = color === "white" ? styles.bwhite : styles.bblue;
 
   return (
@@ -19,10 +19,10 @@ const Logo = ({ color = "white" }: Props) => {
         <h1 className={clsx(styles.logo, colorClass)}>Brandeis</h1>
         <div className={clsx(styles.bar, backgroundColorClass, mobile)}></div>
         <small
-          className="hidden md:flex flex-col uppercase justify-center leading-tight font-bold"
-          style={{ fontSize: "0.48rem" }}>
-          <span className="tracking-wide"> The Asper Center for</span>
-          <span className="tracking-tighter">Global Entrepreneurship</span>
+          className="flex flex-col uppercase justify-center leading-tight "
+          style={{ fontSize: "0.7rem" }}>
+          <span className=""> The Asper Center for</span>
+          <span className="">Global Entrepreneurship</span>
         </small>{" "}
       </Link>
     </>

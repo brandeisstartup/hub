@@ -7,35 +7,40 @@ type Props = {
   scheduleEvents: ScheduleItem[];
 };
 
+// Function to format date
+const formatDateTime = (dateTimeString: string) => {
+  const date = new Date(dateTimeString);
+  return date.toLocaleString("en-US", {
+    // Full weekday name (e.g., "Monday")
+    year: "numeric",
+    month: "long", // Full month name (e.g., "February")
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true // Ensures AM/PM format
+  });
+};
+
 const Schedule = ({ heading, scheduleEvents }: Props) => {
   return (
-    <div className="mx-auto max-w-8xl lg:px-4">
+    <div className="mx-auto w-full max-w-8xl p-4 ">
       <Heading label={`${heading}`} />
-      <div
-        className=" p-20 rounded-lg mx-auto mt-20 max-w-8xl px-6 lg:px-14"
-        id="dates">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-8 overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
+      <div className="rounded-lg mx-auto mt-20 max-w-8xl" id="dates">
+        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-6 overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
           {scheduleEvents.map((item, index) => (
-            <div key={`${item.fields.title}-${index}`}>
+            <div
+              key={`${item.fields.title}-${index}`}
+              className="border border-gray-150 p-4">
               <time
                 dateTime={item.fields.dateAndTime}
-                className="flex items-center text-lg font-sans  leading-6 text-blue-600">
-                <svg
-                  viewBox="0 0 4 4"
-                  className="mr-4 h-1 w-1 flex-none"
-                  aria-hidden="true">
-                  <circle cx={2} cy={2} r={2} fill="currentColor" />
-                </svg>
-                {item.fields.dateAndTime}
-                <div
-                  className="absolute -ml-2 h-px w-screen -translate-x-full bg-gray-900/10 sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
-                  aria-hidden="true"
-                />
+                className="flex items-center text-lg font-sans leading-6 text-blue-600">
+                {formatDateTime(item.fields.dateAndTime)}
+                <div className="" aria-hidden="true" />
               </time>
-              <p className="font-sans mt-6 text-lg  leading-8 tracking-tight text-gray-900">
+              <p className="font-sans text-lg leading-8 tracking-tight text-gray-900">
                 {item.fields.title}
               </p>
-              <p className="mt-1 leading-7 text-gray-600">
+              <p className="leading-7 text-gray-600">
                 {item.fields.description}
               </p>
             </div>

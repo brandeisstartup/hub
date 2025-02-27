@@ -36,6 +36,7 @@ const Projects = ({ projects, label, extend = false }: Props) => {
                   <Image
                     src={`https:${project.fields.image.fields.file.url}`}
                     alt={project.fields.title}
+                    className="aspect-ratio"
                     width={500}
                     height={500}
                   />

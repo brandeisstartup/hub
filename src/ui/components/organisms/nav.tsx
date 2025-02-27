@@ -133,8 +133,8 @@ export default function NavBarSearch() {
         <Disclosure as="main" className="bg-BrandeisBrand shadow">
           {({ open }) => (
             <>
-              <div className="mx-auto max-w-9xl px-2 sm:px-4 lg:px-8">
-                <div className="flex h-16 justify-between">
+              <div className="mx-auto w-full px-2 sm:px-4 lg:px-8">
+                <div className="flex h-18 justify-between">
                   <div className="flex px-2 lg:px-0">
                     <div className="flex flex-shrink-0 items-center">
                       <Logo />
@@ -185,7 +185,7 @@ export default function NavBarSearch() {
                   </div>
 
                   {/* Simple Sign In Button */}
-                  <div className="hidden lg:ml-4 lg:flex lg:items-center">
+                  <div className="hidden  lg:flex lg:items-center">
                     <Link
                       href="#"
                       className="text-white font-bold border border-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition">

@@ -72,12 +72,12 @@ const TopBanner = ({
           : "h-0 opacity-0 -translate-y-full"
       }`}>
       <section className="text-white text-xs md:text-base p-2 flex items-center mx-auto px-4">
-        <div className="flex items-center gap-4 w-full justify-center">
+        <div className="flex-col   gap-1 md:flex-row flex items-center md:gap-4 w-full justify-center">
           <div className="flex flex-row gap-3">
             {isLiveEvent ? <div>Happening Now!!</div> : <div>{message}</div>}
             {event && <div className="font-bold">{event.title}</div>}
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex  items-center gap-4">
             {event && (
               <>
                 <Link
