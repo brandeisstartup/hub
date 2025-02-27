@@ -166,23 +166,45 @@ export default function NavBarSearch() {
                   </div>
 
                   {/* Mobile Menu Button */}
-                  <div className="flex items-center lg:hidden">
+                  <div className="flex items-center z-52 lg:hidden">
                     <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
                       <span className="absolute -inset-0.5" />
                       <span className="sr-only">Open main menu</span>
-                      {open ? (
+                      <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                    </Disclosure.Button>
+                  </div>
+
+                  <Disclosure.Panel className="lg:hidden fixed inset-0 z-50  flex flex-col space-y-4 p-6 text-white shadow-lg bg-BrandeisBrand">
+                    <div className="flex flex-row justify-end lg:hidden">
+                      <Disclosure.Button className="relative inline-flex rounded-md p-2 text-gray-50 hover:bg-BrandeisBrand hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <span className="absolute -inset-0.5" />
+                        <span className="sr-only">Close main menu</span>
                         <XMarkIcon
                           className="block h-6 w-6"
                           aria-hidden="true"
                         />
-                      ) : (
-                        <Bars3Icon
-                          className="block h-6 w-6"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </Disclosure.Button>
-                  </div>
+                      </Disclosure.Button>
+                    </div>
+                    {dynamicNavigation.map((item) => (
+                      <div key={item.href}>
+                        <p className="text-lg font-semibold">{item.name}</p>
+                        {item.links.map((link) => (
+                          <Disclosure.Button
+                            as={Link}
+                            key={link.href}
+                            href={link.href}
+                            className="block py-2 text-gray-50 hover:underline">
+                            {link.name}
+                          </Disclosure.Button>
+                        ))}
+                      </div>
+                    ))}
+                    <Link
+                      href="#"
+                      className="text-white bg-BrandeisBrandShade text-center py-2 rounded-md">
+                      Sign In
+                    </Link>
+                  </Disclosure.Panel>
 
                   {/* Simple Sign In Button */}
                   <div className="hidden  lg:flex lg:items-center">
