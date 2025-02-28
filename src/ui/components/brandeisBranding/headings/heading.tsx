@@ -14,7 +14,7 @@ const Heading = ({ label, alignStart = true }: Props) => {
             alignStart ? "md:self-start" : "md:self-center"
           }`}></span>
         <h2
-          className={`font-sans text-4xl self-start text-start ${
+          className={`text-2xl font-sans md:text-4xl self-start text-start ${
             alignStart ? "md:self-start" : "md:self-center"
           }`}>
           {label}
