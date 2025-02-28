@@ -120,7 +120,7 @@ export default function NavBarSearch() {
   );
 
   return (
-    <>
+    <header>
       <nav className="sticky top-0 z-50">
         {/* ✅ Show TopBanner only when data is loaded */}
         {!loading && thisWeekEvent && (
@@ -134,7 +134,7 @@ export default function NavBarSearch() {
           {({ open }) => (
             <>
               <div className="mx-auto w-full px-2 sm:px-4 lg:px-8">
-                <div className="flex h-18 justify-between">
+                <div className="flex h-[4.3rem] justify-between">
                   <div className="flex px-2 lg:px-0">
                     <div className="flex flex-shrink-0 items-center">
                       <Logo />
@@ -202,7 +202,7 @@ export default function NavBarSearch() {
                       ))}
                       <Link
                         href="#"
-                        className="text-white bg-BrandeisBrandShade text-center py-2 rounded-md">
+                        className="text-white text-lg bg-BrandeisBrandShade text-center py-2 rounded-md">
                         Sign In
                       </Link>
                     </Disclosure.Panel>
@@ -212,7 +212,7 @@ export default function NavBarSearch() {
                   <div className="hidden  lg:flex lg:items-center">
                     <Link
                       href="#"
-                      className="text-white font-bold border border-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition">
+                      className="text-white text-lg font-bold border border-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition">
                       Sign In
                     </Link>
                   </div>
@@ -222,6 +222,6 @@ export default function NavBarSearch() {
           )}
         </Disclosure>
       </nav>
-    </>
+    </header>
   );
 }

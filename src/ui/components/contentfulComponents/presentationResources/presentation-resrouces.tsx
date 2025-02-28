@@ -10,7 +10,7 @@ type Props = {
 
 const PresentationResources = ({ presentations, label }: Props) => {
   return (
-    <div className="w-full flex items-center justify-center flex-col mt-20">
+    <section className="w-full flex items-center justify-center flex-col mt-20">
       <div className="max-w-8xl w-full p-2 xl:p-0">
         <div className="w-full">
           <Heading label={label} />
@@ -62,7 +62,7 @@ const PresentationResources = ({ presentations, label }: Props) => {
           ))}
         </ul>
       </div>
-    </div>
+    </section>
   );
 };
 

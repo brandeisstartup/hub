@@ -88,7 +88,7 @@ export default function CompetitionPage({ competition }: Props) {
   }
 
   return (
-    <div className="bg-white">
+    <main className="bg-white">
       {competition.fields.heroImage &&
       competition.fields.heroImage.fields.file.url != "" &&
       competition.fields.title &&
@@ -104,7 +104,7 @@ export default function CompetitionPage({ competition }: Props) {
           secondaryLink={competition.fields.heroSecondaryButtonLink}
         />
       ) : (
-        <div className="py-24 sm:pt-32">
+        <section className="py-24 sm:pt-32">
           <div className="mx-auto max-w-8xl px-4">
             <div className="mx-auto max-w-8xl lg:mx-0">
               <Heading label={`${competition.fields.title}`} />
@@ -119,7 +119,7 @@ export default function CompetitionPage({ competition }: Props) {
                 href={competition.fields.ctaButtonLink}></Button>
             </div>
           </div>
-        </div>
+        </section>
       )}
 
       {competition.fields.about && competition.fields.aboutLabel && (
@@ -216,6 +216,6 @@ export default function CompetitionPage({ competition }: Props) {
           contacts={competition.fields.contactInformation}
         />
       )}
-    </div>
+    </main>
   );
 }

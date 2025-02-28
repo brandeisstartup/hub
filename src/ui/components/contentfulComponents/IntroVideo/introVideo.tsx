@@ -6,7 +6,7 @@ type Props = {
 
 const IntroVideo = ({ YoutubeId }: Props) => {
   return (
-    <div className="mt-5">
+    <section className="mt-5">
       {/* Mobile layout */}
       <div className="flex justify-center items-center lg:hidden">
         <iframe
@@ -29,7 +29,7 @@ const IntroVideo = ({ YoutubeId }: Props) => {
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen></iframe>
       </div>
-    </div>
+    </section>
   );
 };
 

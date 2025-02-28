@@ -22,7 +22,7 @@ const PersonSpotlight = ({
   personSpotlightText
 }: Props) => {
   return (
-    <div className="bg-white ">
+    <section className="bg-white ">
       <div className="mx-auto max-w-8xl lg:px-4">
         <div className="mx-auto max-w-2xl lg:mx-0">
           <Heading label={label} />
@@ -48,7 +48,7 @@ const PersonSpotlight = ({
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -2,6 +2,7 @@
 
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
+import QRCode from "qrcode";
 
 // ----- CONTENTFUL TYPES & CLIENT -----
 import contentfulClient from "@/lib/contentful";
@@ -176,16 +177,32 @@ export default function ProjectPage({ project }: ServerSideProps) {
     imageUrl
   } = project;
 
+  // Function to generate and download the QR Code for the current URL
+  const downloadQRCode = async () => {
+    if (typeof window !== "undefined") {
+      try {
+        const currentUrl = window.location.href;
+        const qrDataUrl = await QRCode.toDataURL(currentUrl);
+        const link = document.createElement("a");
+        link.href = qrDataUrl;
+        link.download = `${title}-qr-code.png`;
+        link.click();
+      } catch (error) {
+        console.error("Error generating QR Code", error);
+      }
+    }
+  };
+
   return (
-    <div className="py-24">
+    <main className="py-24">
       <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
         {/* Left Column */}
-        <div
+        <section
           id="fixed"
-          className=" border w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible p-8">
+          className=" w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible ">
           <Heading label={title} />
 
-          <dd className="flex flex-row gap-2 font-sans">
+          <dd className="flex flex-row gap-1 font-sans flex-wrap">
             By:
             {(members || []).map((member) => (
               <dl key={member}>{member}</dl>
@@ -202,60 +219,51 @@ export default function ProjectPage({ project }: ServerSideProps) {
 
           {/* Render image if available from Contentful */}
           {imageUrl && (
-            <img
-              src={imageUrl}
-              alt="Project Image"
-              className="w-full max-w-lg mt-5"
-            />
+            <img src={imageUrl} alt="Project Image" className="w-full mt-5" />
           )}
 
-          {/* Share Button */}
-          <nav className="w-full flex justify-start gap-2">
-            <button
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({
-                    title: title,
-                    text: `Check out this project: ${title}`,
-                    url: window.location.href
-                  });
-                } else {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert("URL copied to clipboard!");
-                }
-              }}
-              className="mt-4 px-4 py-2 font-sans border  rounded hover:bg-gray-100 hover:border transition">
-              🔗 Share this Project
-            </button>
+          {/* Share, Copy Link, and QR Code Buttons */}
+          <aside>
+            <menu className="w-full flex justify-start gap-2">
+              <button
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: title,
+                      text: `Check out this project: ${title}`,
+                      url: window.location.href
+                    });
+                  } else {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert("URL copied to clipboard!");
+                  }
+                }}
+                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
+                🔗 Share Project
+              </button>
 
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                alert("🔗 Project link copied to clipboard!");
-              }}
-              className="mt-4 px-4 py-2 font-sans border   rounded hover:bg-gray-100 transition">
-              📋 Copy Link
-            </button>
-          </nav>
-          {/* {!imageUrl && (
-            <img
-              src={`/missing.webp`}
-              alt="Project Image"
-              className="w-full max-w-lg mt-5"
-            />
-          )} */}
-          {/* {competition && (
-            <p className="my-6 text-lg leading-8 text-gray-600 text-sm">
-              Competition: {competition}
-            </p>
-          )} */}
-        </div>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  alert("🔗 Project link copied to clipboard!");
+                }}
+                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
+                📋 Copy Link
+              </button>
+
+              <button
+                onClick={downloadQRCode}
+                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
+                📥 QR Code
+              </button>
+            </menu>
+          </aside>
+        </section>
 
         {/* Right Column */}
-        <section className="w-full flex flex-col gap-6  p-4">
+        <section className="w-full flex flex-col gap-6">
           {/* Combined descriptions */}
-
-          <div className="p-4">
+          <div className="">
             <Heading label="Project Description" />
             {tagline && (
               <p className="my-6 text-lg leading-8 text-gray-600">{tagline}</p>
@@ -279,11 +287,11 @@ export default function ProjectPage({ project }: ServerSideProps) {
 
           {/* Possibly show video from GraphQL */}
           {video_url && (
-            <div className="p-4">
+            <div className="">
               <Heading label="Video" />
               <div className="relative w-full aspect-video mt-5">
                 <iframe
-                  className="absolute inset-0 w-full h-full "
+                  className="absolute inset-0 w-full h-full"
                   src={`https://www.youtube.com/embed/${video_url}`}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -295,19 +303,45 @@ export default function ProjectPage({ project }: ServerSideProps) {
           )}
 
           {/* Combine or list both sets of team members */}
-          <div className="p-4">
+          <div className="">
             <Heading label="Team Members" />
-            <ul className="list-disc list-inside">
-              {(members || []).map((member) => (
-                <li key={member}>{member}</li>
+            <dd className="list-disc list-inside">
+              {(members || []).map((member, index) => (
+                <dl key={index} className="flex mt-2">
+                  <div className="flex flex-row gap-2">
+                    <div className="w-24 h-24 bg-BrandeisBrandShade"></div>
+                    <div className="flex flex-col gap-1 justify-around py-2">
+                      <div>{member}</div>
+                      <div>Year/Major</div>
+                      <div className="max-w-2xl text-wrap">
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Ex minus beatae quod modi! Quaerat aspernatur ad,
+                        quam dolorum voluptate assumenda esse id illo quis magni
+                        quibusdam commodi atque, praesentium omnis?
+                      </div>
+                    </div>
+                  </div>
+                </dl>
               ))}
-              {(team_members_emails || []).map((email) => (
-                <li key={email}>{email}</li>
+              {(team_members_emails || []).map((email, index) => (
+                <dl key={index} className="flex mt-2">
+                  <div className="flex flex-row gap-2">
+                    <div className="w-24 h-24 bg-BrandeisBrandShade"></div>
+                    <div className="flex flex-col gap-1 justify-around py-2">
+                      <div>{email}</div>
+                      <div>Year/Major</div>
+                      <div className="max-w-2xl">
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Ex minus beatae quod modi.
+                      </div>
+                    </div>
+                  </div>
+                </dl>
               ))}
-            </ul>
+            </dd>
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 }

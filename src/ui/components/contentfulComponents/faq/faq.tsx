@@ -11,7 +11,7 @@ type Props = {
 
 const Faq = ({ label, faqs }: Props) => {
   return (
-    <div className="bg-white" id="faq">
+    <section className="bg-white" id="faq">
       <div className="mx-auto max-w-8xl px-4 py-24 sm:py-32 lg:py-16">
         <div className="mx-auto max-w-8xl">
           <Heading label={label} />
@@ -65,7 +65,7 @@ const Faq = ({ label, faqs }: Props) => {
           </dl>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
