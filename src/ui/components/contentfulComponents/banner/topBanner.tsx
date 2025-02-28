@@ -83,13 +83,13 @@ const TopBanner = ({
                 <Link
                   href={`/events/${slugify(event.title, { lower: true })}`}
                   className="border text-white px-3 rounded-md font-bold hover:bg-gray-200 hover:text-blue-700 transition">
-                  {linkLabel} {isLiveEvent && <span>Home</span>}
+                  {linkLabel}
                 </Link>
                 {isLiveEvent && (
                   <Link
                     href={`/day-of/${slugify(event.title, { lower: true })}`}
                     className="border text-white px-3 rounded-md font-bold hover:bg-gray-200 hover:text-blue-700 transition">
-                    Go to Live Event Page
+                    Go to Live Page
                   </Link>
                 )}
               </>
