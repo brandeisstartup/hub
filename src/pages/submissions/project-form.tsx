@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import ImageUploader from "@/ui/components/forms/inputs/image-uploader";
 import TextInput from "@/ui/components/forms/inputs/text-input";
 
-interface FormValues {
+interface FormValues extends Record<string, unknown> {
   title: string;
   otherData: string;
 }
@@ -21,15 +21,14 @@ function BigForm() {
     alert(
       `Title: ${data.title}\nOther Data: ${data.otherData}\nImage URL: ${uploadedImageUrl}`
     );
-    // Further processing or backend submission goes here.
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
       <h2 className="text-2xl font-bold">Big Form</h2>
 
-      {/* Title Input: pass required prop */}
-      <TextInput
+      {/* Required Title Input */}
+      <TextInput<FormValues>
         label="Title"
         name="title"
         placeholder="Enter title"
@@ -38,8 +37,8 @@ function BigForm() {
         error={errors.title}
       />
 
-      {/* Other Data Input: pass required prop */}
-      <TextInput
+      {/* Required Other Data Input */}
+      <TextInput<FormValues>
         label="Other Data"
         name="otherData"
         placeholder="Enter other data"
