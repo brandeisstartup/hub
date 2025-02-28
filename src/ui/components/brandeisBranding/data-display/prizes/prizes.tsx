@@ -20,7 +20,7 @@ const Prizes = ({
   raffleSubtext
 }: Props) => {
   return (
-    <div className="bg-white" id="prizes">
+    <section className="bg-white" id="prizes">
       <div className="mx-auto max-w-8xl px-6 py-24 sm:py-32 lg:px-4 lg:py-16">
         <div className="mx-auto max-w-8xl">
           <Heading label={label} />
@@ -62,7 +62,7 @@ const Prizes = ({
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

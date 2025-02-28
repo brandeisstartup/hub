@@ -122,7 +122,7 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
   };
 
   return (
-    <div className="w-full flex flex-col  mt-20 mb-20">
+    <section className="w-full flex flex-col  mt-20 mb-20">
       <Heading label={"Schedule"} />
       <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 ">
         {sortedDates.length === 0 ? (
@@ -132,13 +132,13 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
             <div
               className=" font-sans flex flex-col align-middle items-start"
               key={date}>
-              <h3 className="text-2xl mt-4 mb-2">
+              <time className="text-2xl mt-4 mb-2">
                 {new Date(date).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric"
                 })}
-              </h3>
+              </time>
               <ul className="max-w-md">
                 {eventsByDate[date].map((event, index) => (
                   <li
@@ -148,7 +148,7 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
                         ? "text-blue-500 bg-white border border-blue-500 rounded-sm shadow-lg"
                         : "other-class"
                     }`}>
-                    <span className="w-[120px] text-xxs flex flex-row">
+                    <time className="w-[120px] text-xxs flex flex-row">
                       {new Date(
                         event.start.dateTime || event.start.date!
                       ).toLocaleTimeString("en-US", {
@@ -164,7 +164,7 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
                         minute: "2-digit",
                         hour12: true
                       })}
-                    </span>
+                    </time>
                     <span className="w-full max-w-[420px]">
                       <strong>{event.summary}</strong>
                       <br /> {event.description}
@@ -176,7 +176,7 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
           ))
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

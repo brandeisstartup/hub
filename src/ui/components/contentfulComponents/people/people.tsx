@@ -10,15 +10,15 @@ type Props = {
 
 const People = ({ label, people }: Props) => {
   return (
-    <div className="bg-white py-24 px- sm:py-32">
+    <section className="bg-white py-24 px- sm:py-32">
       <div className="mx-auto max-w-8xl px-4">
         <Heading label={label} />
         <ul
           role="list"
           className=" font-sans mx-auto mt-20 grid  grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 max-w-7xl justify-center  lg:mx-0 lg:max-w-none  ">
-          {people.map((person) => (
+          {people.map((person, index) => (
             <li
-              key={`${person.fields.firstName}-${person.fields.lastName}`}
+              key={index}
               className="flex flex-col max-w-5xl md:flex-row gap-8">
               <Image
                 className="w-40 h-40  object-cover"
@@ -40,7 +40,7 @@ const People = ({ label, people }: Props) => {
           ))}
         </ul>
       </div>
-    </div>
+    </section>
   );
 };
 

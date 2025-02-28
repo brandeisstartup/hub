@@ -9,7 +9,7 @@ type Props = {
 
 const Requirements = ({ heading, requirements }: Props) => {
   return (
-    <div className="" id="reqs">
+    <section className="" id="reqs">
       <div className="mx-auto max-w-8xl divide-y divide-gray-900/10 px-4 py-24 sm:py-32 lg:px-4 lg:py-22">
         <Heading label={`${heading}`} />
         <dl className="mt-10 space-y-8 divide-y divide-gray-900/10">
@@ -32,7 +32,7 @@ const Requirements = ({ heading, requirements }: Props) => {
           ))}
         </dl>
       </div>
-    </div>
+    </section>
   );
 };
 

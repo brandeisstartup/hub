@@ -23,7 +23,7 @@ const formatDateTime = (dateTimeString: string) => {
 
 const Schedule = ({ heading, scheduleEvents }: Props) => {
   return (
-    <div className="mx-auto w-full max-w-8xl p-4 ">
+    <section className="mx-auto w-full max-w-8xl p-4 ">
       <Heading label={`${heading}`} />
       <div className="rounded-lg mx-auto mt-10 max-w-8xl" id="dates">
         <div className="w-full  grid  grid-cols-1 md:grid-cols-2 gap-6 overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
@@ -47,7 +47,7 @@ const Schedule = ({ heading, scheduleEvents }: Props) => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
