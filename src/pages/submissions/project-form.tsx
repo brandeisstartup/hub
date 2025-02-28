@@ -7,10 +7,8 @@ function BigForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Use the uploadedImageUrl and other form data for your submission
-    console.log("Image URL:", uploadedImageUrl);
-    console.log("Other Data:", otherData);
-    // You could send this data to your API or handle it as needed.
+
+    alert(uploadedImageUrl + otherData);
   };
 
   return (
@@ -28,19 +26,13 @@ function BigForm() {
       </label>
 
       <div>
-        <h3>Upload an Image</h3>
         <ImageUploader
+          label="Upload an Image"
           onUploadComplete={(url: string) => setUploadedImageUrl(url)}
         />
       </div>
 
       <button type="submit">Submit Big Form</button>
-
-      {uploadedImageUrl && (
-        <div>
-          <p>Image uploaded at: {uploadedImageUrl}</p>
-        </div>
-      )}
     </form>
   );
 }
