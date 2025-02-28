@@ -9,7 +9,7 @@ type ImageUploaderProps = {
 };
 
 function ImageUploader({ onUploadComplete, label }: ImageUploaderProps) {
-  const { imageUrl, uploading, uploadFile, setSelectedFile } =
+  const { uploading, uploadFile, setSelectedFile } =
     useImageUploader(onUploadComplete);
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
