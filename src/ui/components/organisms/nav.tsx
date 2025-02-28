@@ -175,8 +175,13 @@ export default function NavBarSearch() {
                   </div>
 
                   {open && (
-                    <Disclosure.Panel className="lg:hidden fixed inset-0 z-50  flex flex-col space-y-4 p-6 text-white shadow-lg bg-BrandeisBrand">
-                      <div className="flex flex-row justify-end lg:hidden">
+                    <Disclosure.Panel className="lg:hidden fixed inset-0 z-50  flex flex-col space-y-4 p-4 overflow-y-auto  text-white shadow-lg bg-BrandeisBrand">
+                      <div className="flex flex-row justify-between lg:hidden">
+                        <div className="flex lg:px-0">
+                          <div className="">
+                            <Logo />
+                          </div>
+                        </div>
                         <Disclosure.Button className="relative inline-flex rounded-md p-2 text-gray-50 hover:bg-BrandeisBrand hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
                           <span className="absolute -inset-0.5" />
                           <span className="sr-only">Close main menu</span>
