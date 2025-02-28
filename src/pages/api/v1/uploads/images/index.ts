@@ -1,24 +1,26 @@
-// pages/api/v1/uploads/images/index.ts
+// src/pages/api/v1/uploads/images/index.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { IncomingForm } from "formidable";
+import { IncomingForm, Fields, Files } from "formidable";
 import fs from "fs";
 import sharp from "sharp";
 import { put } from "@vercel/blob";
 
-// Disable Next.js body parsing so formidable can handle the multipart data
+// Disable Next.js built-in body parsing so formidable can handle the multipart data
 export const config = {
   api: {
     bodyParser: false
   }
 };
 
-// Wrap formidable parsing in a Promise
-const parseForm = (req: NextApiRequest) => {
-  return new Promise<{ fields: any; files: any }>((resolve, reject) => {
+// Wrap formidable parsing in a Promise with proper types
+const parseForm = (
+  req: NextApiRequest
+): Promise<{ fields: Fields; files: Files }> => {
+  return new Promise((resolve, reject) => {
     const form = new IncomingForm({ multiples: false });
     form.parse(req, (err, fields, files) => {
-      if (err) reject(err);
-      else resolve({ fields, files });
+      if (err) return reject(err);
+      resolve({ fields, files });
     });
   });
 };
@@ -40,7 +42,7 @@ export default async function handler(
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    // If multiple files are somehow uploaded, use the first one.
+    // If the file is an array (if multiples were enabled), use the first one.
     const uploadedFile = Array.isArray(file) ? file[0] : file;
 
     // Read the temporary file from disk

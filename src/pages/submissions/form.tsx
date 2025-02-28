@@ -1,8 +1,6 @@
 import React from "react";
 
-type Props = {};
-
-function UploadForm({}: Props) {
+function Form() {
   return (
     <form
       action="/api/v1/uploads/images"
@@ -14,4 +12,4 @@ function UploadForm({}: Props) {
   );
 }
 
-export default UploadForm;
+export default Form;
