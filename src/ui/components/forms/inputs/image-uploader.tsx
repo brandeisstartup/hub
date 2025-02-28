@@ -53,7 +53,7 @@ function ImageUploader({ onUploadComplete, label }: ImageUploaderProps) {
     setIsDragging(false);
   };
 
-  // Reset the file selection (also used by the Cancel button)
+  // Reset the file selection
   const handleEdit = () => {
     setSelectedFile(null);
     setFileName("");
@@ -80,8 +80,8 @@ function ImageUploader({ onUploadComplete, label }: ImageUploaderProps) {
   };
 
   return (
-    <fieldset className="border border-gray-300 p-4 rounded-md">
-      <legend className="text-lg font-semibold">{label}</legend>
+    <fieldset className=" rounded-md font-sans">
+      <legend className="text-lg ">{label}</legend>
 
       {fileName ? (
         // When a file is selected, show its name with "Preview" and "Edit" buttons.
@@ -102,7 +102,7 @@ function ImageUploader({ onUploadComplete, label }: ImageUploaderProps) {
               onClick={handleEdit}
               className="px-3 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-700 focus:ring focus:ring-gray-300"
               aria-label="Edit selected image">
-              Edit
+              Remove
             </button>
           </div>
         </div>
@@ -126,21 +126,45 @@ function ImageUploader({ onUploadComplete, label }: ImageUploaderProps) {
             type="file"
             name="file"
             onChange={handleFileChange}
-            required
             className="hidden"
           />
         </div>
-      )}
-
-      {uploading && (
-        <div className="mt-3 text-sm text-blue-600">Uploading...</div>
       )}
 
       {/* Modal for previewing the image */}
       {showModal && previewUrl && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="bg-white p-4 rounded-md max-w-md w-full">
-            <h2 className="text-xl font-semibold mb-4">Preview Image</h2>
+            <div className="flex flex-col justify-center items-center text-center gap-1 py-2">
+              <h2 className="text-xl ">Preview Image</h2>
+              {uploading ? (
+                <div className="flex items-center gap-2">
+                  <svg
+                    className="animate-spin h-5 w-5 text-BrandeisBrand"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24">
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                  </svg>
+                  <p className="text-sm text-blue-600">File: {fileName}</p>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-blue-600">File: {fileName}</p>
+                </div>
+              )}
+            </div>
+
             <div className="mb-4 flex justify-center">
               <Image
                 height={300}
