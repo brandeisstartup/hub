@@ -32,7 +32,7 @@ interface ProjectData {
   competition?: string;
   team_members_emails?: string[];
   video_url?: string;
-  imageUrl?: string;
+  image_url?: string;
 }
 
 // ----- SSR PROPS & PARAMS -----
@@ -81,7 +81,7 @@ export const getServerSideProps: GetServerSideProps<
     competition: graphQLProject.competition || "",
     team_members_emails: graphQLProject.team_members_emails || [],
     video_url: graphQLProject.video_url || "",
-    imageUrl: graphQLProject.image_url || ""
+    image_url: graphQLProject.image_url || ""
   };
 
   return {
@@ -100,7 +100,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
     long_description,
     competition,
     video_url,
-    imageUrl
+    image_url
   } = project;
   const router = useRouter();
   const { deleteProject, error } = useDeleteProject();
@@ -167,7 +167,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
             long_description={long_description || ""}
             competition={competition || ""}
             video_url={video_url || ""}
-            imageUrl={imageUrl || ""}
+            image_url={image_url || ""}
           />
         </section>
       </div>

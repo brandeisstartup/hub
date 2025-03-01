@@ -10,7 +10,7 @@ interface EditProjectProps {
   long_description: string;
   competition: string;
   video_url: string;
-  imageUrl: string;
+  image_url: string;
 }
 
 const EditProject: React.FC<EditProjectProps> = (props) => {
@@ -20,7 +20,7 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
     long_description: props.long_description,
     competition: props.competition,
     video_url: props.video_url,
-    imageUrl: props.imageUrl
+    image_url: props.image_url
   });
 
   const handleFieldUpdate = (fieldKey: string, newValue: string) => {
@@ -67,7 +67,7 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
       <EditableField
         label="Image URL"
         fieldKey="image_url"
-        value={project.imageUrl}
+        value={project.image_url}
         onChange={handleFieldUpdate}
         projectId={props.id}
       />
