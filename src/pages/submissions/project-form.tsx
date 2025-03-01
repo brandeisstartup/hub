@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import ImageUploader from "@/ui/components/forms/inputs/image-uploader";
 import TextInput from "@/ui/components/forms/inputs/text-input";
-import ListInput from "@/ui/components/forms/inputs/list-input";
+// import ListInput from "@/ui/components/forms/inputs/list-input";
 
 interface FormValues extends Record<string, unknown> {
   title: string;
@@ -50,15 +50,6 @@ function BigForm() {
           register={methods.register}
           required
           error={errors.otherData}
-        />
-
-        {/* List Input (must be inside FormProvider) */}
-        <ListInput<FormValues>
-          label="Items"
-          name="items"
-          required
-          options={{ required: "At least one item is required" }}
-          error={errors.items as any} // Cast if needed
         />
 
         {/* Image Uploader */}
