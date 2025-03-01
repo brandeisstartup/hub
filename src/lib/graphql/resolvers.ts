@@ -2,6 +2,45 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+// Interfaces defined earlier:
+interface ProjectArgs {
+  id?: number;
+  slug?: string;
+}
+
+interface UpdateProjectFieldArgs {
+  id: number;
+  key: string;
+  newValue?: string;
+}
+
+interface CreateProjectArgs {
+  title: string;
+  creator_email: string;
+  short_description?: string;
+  long_description?: string;
+  competition?: string;
+  team_members_emails: string[];
+  video_url: string;
+  image_url: string;
+}
+
+interface UserArgs {
+  id: number;
+}
+
+interface CreateUserArgs {
+  email: string;
+  name?: string;
+  bio?: string;
+}
+
+interface UpdateUserArgs {
+  id: number;
+  name?: string;
+  bio?: string;
+}
+
 export const resolvers = {
   Query: {
     projects: async (_: unknown, { search }: { search?: string }) => {
@@ -34,10 +73,10 @@ export const resolvers = {
   },
 
   Mutation: {
-    createProject: async (_: unknown, args: any) => {
+    createProject: async (_: unknown, args: CreateProjectArgs) => {
       return prisma.projects.create({ data: args });
     },
-    createUser: async (_: unknown, args: any) => {
+    createUser: async (_: unknown, args: CreateUserArgs) => {
       return prisma.users.create({
         data: {
           email: args.email,
@@ -46,7 +85,7 @@ export const resolvers = {
         }
       });
     },
-    updateUser: async (_: unknown, args: any) => {
+    updateUser: async (_: unknown, args: UpdateUserArgs) => {
       return prisma.users.update({
         where: { id: args.id },
         data: {
@@ -93,15 +132,10 @@ export const resolvers = {
     ) => {
       const project = await prisma.projects.findUnique({ where: { id } });
       if (!project) throw new Error("Project not found");
-
-      // Check if the email already exists (O(n) lookup, but avoids creating a new Set)
       if (project.team_members_emails?.includes(email)) {
-        // Optionally, return the project unchanged if the email is already present
         return project;
       }
-
       const updatedEmails = [...(project.team_members_emails || []), email];
-
       return prisma.projects.update({
         where: { id },
         data: { team_members_emails: updatedEmails }

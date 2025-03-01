@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { useState, useEffect } from "react";
 import client from "@/lib/apolloClient";
 import { GET_ALL_PROJECTS } from "@/lib/graphql/queries";
