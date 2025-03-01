@@ -100,7 +100,8 @@ export default function ProjectPage({ project }: ServerSideProps) {
     long_description,
     competition,
     video_url,
-    image_url
+    image_url,
+    team_members_emails
   } = project;
   const router = useRouter();
   const { deleteProject, error } = useDeleteProject();
@@ -168,6 +169,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
             competition={competition || ""}
             video_url={video_url || ""}
             image_url={image_url || ""}
+            team_members_emails={team_members_emails || []}
           />
         </section>
       </div>
