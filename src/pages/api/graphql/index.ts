@@ -11,6 +11,12 @@ interface ProjectArgs {
   slug?: string;
 }
 
+interface UpdateProjectFieldArgs {
+  id: number;
+  key: string;
+  newValue?: string;
+}
+
 interface CreateProjectArgs {
   title: string;
   creator_email: string;
@@ -150,11 +156,8 @@ const resolvers = {
       return prisma.users.delete({ where: { id } });
     },
 
-    updateProjectField: async (
-      _: unknown,
-      { id, key, newValue }: { id: number; key: string; newValue?: string }
-    ) => {
-      // Optionally: Validate that `key` is an allowed field.
+    updateProjectField: async (_: unknown, args: UpdateProjectFieldArgs) => {
+      const { id, key, newValue } = args;
       const allowedFields = [
         "title",
         "short_description",
@@ -167,10 +170,7 @@ const resolvers = {
         throw new Error(`Field ${key} cannot be updated.`);
       }
 
-      // Create a dynamic update object
-      const updateData: { [key: string]: any } = {
-        [key]: newValue
-      };
+      const updateData: { [key: string]: any } = { [key]: newValue };
 
       return prisma.projects.update({
         where: { id },

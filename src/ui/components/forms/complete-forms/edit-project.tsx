@@ -1,9 +1,7 @@
-// EditProject.tsx
 import React, { useState } from "react";
 
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import EditableField from "@/ui/components/forms/inputs/editable-field";
-import Head from "next/head";
 
 interface EditProjectProps {
   id: number;
