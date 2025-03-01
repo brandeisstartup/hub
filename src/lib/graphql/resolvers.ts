@@ -2,18 +2,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-// Interfaces defined earlier:
-interface ProjectArgs {
-  id?: number;
-  slug?: string;
-}
-
-interface UpdateProjectFieldArgs {
-  id: number;
-  key: string;
-  newValue?: string;
-}
-
 interface CreateProjectArgs {
   title: string;
   creator_email: string;
@@ -23,10 +11,6 @@ interface CreateProjectArgs {
   team_members_emails: string[];
   video_url: string;
   image_url: string;
-}
-
-interface UserArgs {
-  id: number;
 }
 
 interface CreateUserArgs {
