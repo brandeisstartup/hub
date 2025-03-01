@@ -49,7 +49,7 @@ function BigForm() {
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full space-y-4 p-4 font-sans max-w-3xl">
+          className="w-full space-y-4 p-4 font-sans max-w-2xl">
           <h2 className="text-2xl">Big Form</h2>
 
           {/* Title Input */}
