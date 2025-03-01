@@ -84,6 +84,7 @@ const typeDefs = gql`
     createUser(email: String!, name: String, bio: String): User!
     updateUser(id: Int!, name: String, bio: String): User!
     deleteUser(id: Int!): User!
+    updateProjectField(id: Int!, key: String!, newValue: String): Project!
   }
 `;
 
@@ -147,6 +148,34 @@ const resolvers = {
 
     deleteUser: async (_: unknown, { id }: UserArgs) => {
       return prisma.users.delete({ where: { id } });
+    },
+
+    updateProjectField: async (
+      _: unknown,
+      { id, key, newValue }: { id: number; key: string; newValue?: string }
+    ) => {
+      // Optionally: Validate that `key` is an allowed field.
+      const allowedFields = [
+        "title",
+        "short_description",
+        "long_description",
+        "competition",
+        "video_url",
+        "image_url"
+      ];
+      if (!allowedFields.includes(key)) {
+        throw new Error(`Field ${key} cannot be updated.`);
+      }
+
+      // Create a dynamic update object
+      const updateData: { [key: string]: any } = {
+        [key]: newValue
+      };
+
+      return prisma.projects.update({
+        where: { id },
+        data: updateData
+      });
     }
   }
 };

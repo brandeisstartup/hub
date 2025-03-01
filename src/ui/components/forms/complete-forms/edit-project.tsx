@@ -1,8 +1,12 @@
 // EditProject.tsx
 import React, { useState } from "react";
+
+import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import EditableField from "@/ui/components/forms/inputs/editable-field";
+import Head from "next/head";
 
 interface EditProjectProps {
+  id: number;
   title: string;
   short_description: string;
   long_description: string;
@@ -25,27 +29,34 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
     console.log(`Updating ${fieldKey} to: ${newValue}`);
     setProject((prev) => ({ ...prev, [fieldKey]: newValue }));
   };
+  console.log("id", props.id);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold mb-4">Edit Project</h1>
+    <div className="">
+      <Heading label={"Edit Project"} />
+      <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+        Project details and media.
+      </p>
       <EditableField
         label="Title"
         fieldKey="title"
         value={project.title}
         onChange={handleFieldUpdate}
+        projectId={props.id}
       />
       <EditableField
         label="Short Description"
         fieldKey="short_description"
         value={project.short_description}
         onChange={handleFieldUpdate}
+        projectId={props.id}
       />
       <EditableField
         label="Long Description"
         fieldKey="long_description"
         value={project.long_description}
         onChange={handleFieldUpdate}
+        projectId={props.id}
       />
 
       <EditableField
@@ -53,12 +64,14 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
         fieldKey="video_url"
         value={project.video_url}
         onChange={handleFieldUpdate}
+        projectId={props.id}
       />
       <EditableField
         label="Image URL"
-        fieldKey="imageUrl"
+        fieldKey="image_url"
         value={project.imageUrl}
         onChange={handleFieldUpdate}
+        projectId={props.id}
       />
     </div>
   );
