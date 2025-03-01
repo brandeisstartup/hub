@@ -90,6 +90,7 @@ export const getServerSideProps: GetServerSideProps<
 // ----- PAGE COMPONENT -----
 export default function ProjectPage({ project }: ServerSideProps) {
   const {
+    id,
     title,
     short_description,
     long_description,
@@ -104,6 +105,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
     <main className="py-24">
       <div className="mx-auto max-w-4xl px-4 grid grid-cols-1 font-sans ">
         <EditProject
+          id={Number(id)}
           title={title}
           short_description={short_description || ""}
           long_description={long_description || ""}

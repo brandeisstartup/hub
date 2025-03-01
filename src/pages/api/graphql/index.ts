@@ -11,6 +11,12 @@ interface ProjectArgs {
   slug?: string;
 }
 
+interface UpdateProjectFieldArgs {
+  id: number;
+  key: string;
+  newValue?: string;
+}
+
 interface CreateProjectArgs {
   title: string;
   creator_email: string;
@@ -84,6 +90,7 @@ const typeDefs = gql`
     createUser(email: String!, name: String, bio: String): User!
     updateUser(id: Int!, name: String, bio: String): User!
     deleteUser(id: Int!): User!
+    updateProjectField(id: Int!, key: String!, newValue: String): Project!
   }
 `;
 
@@ -147,6 +154,28 @@ const resolvers = {
 
     deleteUser: async (_: unknown, { id }: UserArgs) => {
       return prisma.users.delete({ where: { id } });
+    },
+
+    updateProjectField: async (_: unknown, args: UpdateProjectFieldArgs) => {
+      const { id, key, newValue } = args;
+      const allowedFields = [
+        "title",
+        "short_description",
+        "long_description",
+        "competition",
+        "video_url",
+        "image_url"
+      ];
+      if (!allowedFields.includes(key)) {
+        throw new Error(`Field ${key} cannot be updated.`);
+      }
+
+      const updateData: { [key: string]: string } = { [key]: newValue ?? "" };
+
+      return prisma.projects.update({
+        where: { id },
+        data: updateData
+      });
     }
   }
 };
