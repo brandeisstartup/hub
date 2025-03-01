@@ -1,19 +1,5 @@
-// hooks/useUpdateProjectField.ts
-import { gql, useMutation } from "@apollo/client";
-
-const UPDATE_PROJECT_FIELD = gql`
-  mutation UpdateProjectField($id: Int!, $key: String!, $newValue: String) {
-    updateProjectField(id: $id, key: $key, newValue: $newValue) {
-      id
-      title
-      short_description
-      long_description
-      competition
-      video_url
-      image_url
-    }
-  }
-`;
+import { useMutation } from "@apollo/client";
+import { UPDATE_PROJECT_FIELD } from "@/lib/graphql/mutations";
 
 export const useUpdateProjectField = () => {
   const [updateMutation, { data, error, loading }] =
