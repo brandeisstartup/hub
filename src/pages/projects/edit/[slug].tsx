@@ -112,7 +112,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
         // Redirect to project list page after deletion
         router.push("/search");
       } catch (err) {
-        console.error("Failed to delete project:", err);
+        console.error("Failed to delete project:", err, error);
         alert("Failed to delete project. Please try again.");
       }
     }
