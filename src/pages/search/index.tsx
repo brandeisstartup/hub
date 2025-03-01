@@ -1,20 +1,9 @@
 import { gql } from "@apollo/client";
 import { useState, useEffect } from "react";
 import client from "@/lib/apolloClient";
+import { GET_ALL_PROJECTS } from "@/lib/graphql/queries";
 import slugify from "slugify";
 import Link from "next/link";
-
-// GraphQL Query to Fetch All Projects
-const GET_ALL_PROJECTS = gql`
-  query GetAllProjects {
-    projects {
-      id
-      title
-      short_description
-      competition
-    }
-  }
-`;
 
 // Define TypeScript Interfaces
 interface Project {
