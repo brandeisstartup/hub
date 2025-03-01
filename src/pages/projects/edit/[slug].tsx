@@ -124,7 +124,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
         {/* Left Column */}
         <section
           id="fixed"
-          className="w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
+          className="w-full border p-8 lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
           <Heading label={title} />
 
           <dd className="flex flex-row gap-1 font-sans flex-wrap">By:</dd>
@@ -159,7 +159,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
         </section>
 
         {/* Right Column */}
-        <section className="w-full flex flex-col gap-6">
+        <section className="w-full flex flex-col gap-6  border p-8">
           <EditProject
             id={Number(id)}
             title={title}
