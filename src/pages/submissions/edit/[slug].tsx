@@ -6,7 +6,6 @@ import EditProject from "@/ui/components/forms/complete-forms/edit-project";
 // ----- APOLLO CLIENT & QUERY -----
 import apolloClient from "@/lib/apolloClient";
 import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries";
-import Heading from "@/ui/components/brandeisBranding/headings/heading";
 
 // ----- GRAPHQL INTERFACES -----
 interface GraphQLProject {
@@ -103,74 +102,17 @@ export default function ProjectPage({ project }: ServerSideProps) {
   // Function to generate and download the QR Code for the current URL
 
   return (
-    // <main className="py-24">
-    //   <div className="mx-auto max-w-4xl px-4 grid grid-cols-1 font-sans ">
-    //     <EditProject
-    //       id={Number(id)}
-    //       title={title}
-    //       short_description={short_description || ""}
-    //       long_description={long_description || ""}
-    //       competition={competition || ""}
-    //       video_url={video_url || ""}
-    //       imageUrl={imageUrl || ""}
-    //     />
-    //   </div>
-    // </main>
-
     <main className="py-24">
-      <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
-        {/* Left Column */}
-        <section
-          id="fixed"
-          className=" w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible ">
-          <Heading label={title} />
-
-          <dd className="flex flex-row gap-1 font-sans flex-wrap">By:</dd>
-
-          {/* Share, Copy Link, and QR Code Buttons */}
-          <aside>
-            <menu className="w-full flex justify-start gap-2">
-              <button
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({
-                      title: title,
-                      text: `Check out this project: ${title}`,
-                      url: window.location.href
-                    });
-                  } else {
-                    navigator.clipboard.writeText(window.location.href);
-                    alert("URL copied to clipboard!");
-                  }
-                }}
-                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
-                🔗 Share Project
-              </button>
-
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert("🔗 Project link copied to clipboard!");
-                }}
-                className="mt-4 px-4 py-2 text-white font-sans border rounded bg-red-700 hover:bg-red-600 transition">
-                Delete Project
-              </button>
-            </menu>
-          </aside>
-        </section>
-
-        {/* Right Column */}
-        <section className="w-full flex flex-col gap-6">
-          <EditProject
-            id={Number(id)}
-            title={title}
-            short_description={short_description || ""}
-            long_description={long_description || ""}
-            competition={competition || ""}
-            video_url={video_url || ""}
-            imageUrl={imageUrl || ""}
-          />
-        </section>
+      <div className="mx-auto max-w-4xl px-4 grid grid-cols-1 font-sans ">
+        <EditProject
+          id={Number(id)}
+          title={title}
+          short_description={short_description || ""}
+          long_description={long_description || ""}
+          competition={competition || ""}
+          video_url={video_url || ""}
+          imageUrl={imageUrl || ""}
+        />
       </div>
     </main>
   );
