@@ -1,31 +1,5 @@
 import { useCallback } from "react";
-
-const CREATE_PROJECT_MUTATION = `
-  mutation CreateProject(
-    $title: String!, 
-    $creator_email: String!,
-    $short_description: String,
-    $long_description: String,
-    $competition: String,
-    $team_members_emails: [String!]!,
-    $video_url: String,
-    $image_url: String
-  ) {
-    createProject(
-      title: $title,
-      creator_email: $creator_email,
-      short_description: $short_description,
-      long_description: $long_description,
-      competition: $competition,
-      team_members_emails: $team_members_emails,
-      video_url: $video_url,
-      image_url: $image_url
-    ) {
-      id
-      title
-    }
-  }
-`;
+import { CREATE_PROJECT_MUTATION } from "@/lib/graphql/mutations";
 
 interface PostProjectVariables {
   title: string;
