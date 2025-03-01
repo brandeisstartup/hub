@@ -39,6 +39,7 @@ function BigForm() {
       const project = await postProject(variables);
       alert(`Project created: ${project.title} (ID: ${project.id})`);
     } catch (error) {
+      console.error("Error creating project:", error);
       alert("There was an error creating the project.");
     }
   };
