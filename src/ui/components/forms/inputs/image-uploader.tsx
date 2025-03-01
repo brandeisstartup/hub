@@ -85,7 +85,7 @@ function ImageUploader({ onUploadComplete, label }: ImageUploaderProps) {
 
       {fileName ? (
         // When a file is selected, show its name with "Preview" and "Edit" buttons.
-        <div className="border border-gray-300 p-4 text-center rounded-md">
+        <div className="border border-gray-300 p-6 text-center rounded-md">
           <p className="text-sm text-gray-700">
             <strong>Selected File:</strong> {fileName}
           </p>
@@ -113,7 +113,7 @@ function ImageUploader({ onUploadComplete, label }: ImageUploaderProps) {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           tabIndex={0}
-          className={`border-2 border-dashed p-4 text-center rounded-md cursor-pointer transition ${
+          className={`border-2 border-dashed p-6 text-center rounded-md cursor-pointer transition ${
             isDragging ? "border-blue-500 bg-blue-100" : "border-gray-300"
           }`}>
           <label htmlFor="file-upload" className="cursor-pointer block">
