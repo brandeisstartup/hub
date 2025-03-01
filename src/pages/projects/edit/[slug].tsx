@@ -7,9 +7,6 @@ import EditProject from "@/ui/components/forms/complete-forms/edit-project";
 import apolloClient from "@/lib/apolloClient";
 import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries";
 
-// ----- UI COMPONENTS -----
-import Heading from "@/ui/components/brandeisBranding/headings/heading";
-
 // ----- GRAPHQL INTERFACES -----
 interface GraphQLProject {
   id: string;
@@ -97,7 +94,6 @@ export default function ProjectPage({ project }: ServerSideProps) {
     short_description,
     long_description,
     competition,
-    team_members_emails,
     video_url,
     imageUrl
   } = project;
