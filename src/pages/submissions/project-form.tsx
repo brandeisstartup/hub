@@ -1,72 +1,113 @@
-// components/BigForm.tsx
 import React, { useState } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import ImageUploader from "@/ui/components/forms/inputs/image-uploader";
 import TextInput from "@/ui/components/forms/inputs/text-input";
-// import ListInput from "@/ui/components/forms/inputs/list-input";
+import LongTextInput from "@/ui/components/forms/inputs/text-area";
+import { usePostProject } from "@/hooks/usePostProject"; // Adjust the path as needed
 
 interface FormValues extends Record<string, unknown> {
   title: string;
-  otherData: string;
-  items: string[];
+  blurb: string; // For short_description
+  description: string; // For long_description
+  videoUrl: string;
 }
 
 function BigForm() {
   const methods = useForm<FormValues>({ mode: "onSubmit" });
   const {
+    register,
     handleSubmit,
     formState: { errors }
   } = methods;
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const { postProject } = usePostProject();
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    alert(
-      `Title: ${data.title}\nOther Data: ${
-        data.otherData
-      }\nItems: ${data.items.join(", ")}\nImage URL: ${uploadedImageUrl}`
-    );
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    // Map form fields to GraphQL mutation variables
+    const variables = {
+      title: data.title,
+      creator_email: "creator@example.com", // Replace with user context or dynamic data
+      short_description: data.blurb,
+      long_description: data.description,
+      competition: "", // or set a default competition value
+      team_members_emails: ["brandeisstartup@gmail.com"],
+      video_url: data.videoUrl || null,
+      image_url: uploadedImageUrl || null
+    };
+
+    try {
+      const project = await postProject(variables);
+      alert(`Project created: ${project.title} (ID: ${project.id})`);
+    } catch (error) {
+      alert("There was an error creating the project.");
+    }
   };
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
-        <h2 className="text-2xl font-bold">Big Form</h2>
+    <section className="flex justify-center items-center py-12">
+      <FormProvider {...methods}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full space-y-4 p-4 font-sans max-w-3xl">
+          <h2 className="text-2xl">Big Form</h2>
 
-        {/* Required Title Input */}
-        <TextInput<FormValues>
-          label="Title"
-          name="title"
-          placeholder="Enter title"
-          register={methods.register}
-          required
-          error={errors.title}
-        />
-
-        {/* Required Other Data Input */}
-        <TextInput<FormValues>
-          label="Other Data"
-          name="otherData"
-          placeholder="Enter other data"
-          register={methods.register}
-          required
-          error={errors.otherData}
-        />
-
-        {/* Image Uploader */}
-        <div>
-          <ImageUploader
-            label="Upload an Image (Optional)"
-            onUploadComplete={(url: string) => setUploadedImageUrl(url)}
+          {/* Title Input */}
+          <TextInput<FormValues>
+            label="Title"
+            name="title"
+            placeholder="Enter title"
+            register={register}
+            required
+            error={errors.title}
           />
-        </div>
 
-        <button
-          type="submit"
-          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:ring focus:ring-green-300">
-          Submit Big Form
-        </button>
-      </form>
-    </FormProvider>
+          {/* Blurb Input (maps to short_description) */}
+          <TextInput<FormValues>
+            label="Blurb"
+            name="blurb"
+            placeholder="Enter a short description"
+            register={register}
+            required
+            error={errors.blurb}
+          />
+
+          {/* Description Input (maps to long_description) */}
+          <LongTextInput<FormValues>
+            label="Description"
+            name="description"
+            placeholder="Enter a detailed description..."
+            register={register}
+            required
+            error={errors.description}
+            rows={5}
+          />
+
+          {/* Youtube URL Input (maps to video_url) */}
+          <TextInput<FormValues>
+            label="Youtube URL"
+            name="videoUrl"
+            placeholder="Enter Youtube URL"
+            register={register}
+            type="url"
+            error={errors.videoUrl}
+          />
+
+          {/* Image Uploader */}
+          <div>
+            <ImageUploader
+              label="Upload an Image (Optional)"
+              onUploadComplete={(url: string) => setUploadedImageUrl(url)}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="px-6 py-4 w-full bg-BrandeisBrand text-white rounded-3xl focus:ring-BrandeisBrand">
+            Submit Big Form
+          </button>
+        </form>
+      </FormProvider>
+    </section>
   );
 }
 

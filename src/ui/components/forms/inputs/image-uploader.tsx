@@ -81,7 +81,7 @@ function ImageUploader({ onUploadComplete, label }: ImageUploaderProps) {
 
   return (
     <fieldset className=" rounded-md font-sans">
-      <legend className="text-lg ">{label}</legend>
+      <legend className="text-sm font-medium text-gray-700">{label}</legend>
 
       {fileName ? (
         // When a file is selected, show its name with "Preview" and "Edit" buttons.
