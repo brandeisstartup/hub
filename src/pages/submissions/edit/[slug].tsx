@@ -111,7 +111,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
           long_description={long_description || ""}
           competition={competition || ""}
           video_url={video_url || ""}
-          imageUrl={imageUrl || ""}
+          image_url={imageUrl || ""}
         />
       </div>
     </main>
