@@ -147,7 +147,7 @@ const resolvers = {
         where: { id: args.id },
         data: {
           name: args.name,
-          bio: args.bio ?? "" // ✅ Ensure `bio` is a string
+          bio: args.bio ?? ""
         }
       });
     },

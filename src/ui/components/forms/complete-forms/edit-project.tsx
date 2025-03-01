@@ -30,7 +30,7 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
   console.log("id", props.id);
 
   return (
-    <div className="">
+    <div className="font-sans">
       <Heading label={"Edit Project"} />
       <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
         Project details and media.

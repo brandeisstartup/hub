@@ -26,3 +26,18 @@ export const GET_ALL_PROJECTS = gql`
     }
   }
 `;
+
+export const GET_PROJECT_BY_ID = gql`
+  query GetProjectById($id: Int!) {
+    project(id: $id) {
+      id
+      title
+      short_description
+      long_description
+      competition
+      team_members_emails
+      video_url
+      image_url
+    }
+  }
+`;
