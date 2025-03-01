@@ -96,7 +96,8 @@ export default function ProjectPage({ project }: ServerSideProps) {
     long_description,
     competition,
     video_url,
-    imageUrl
+    imageUrl,
+    team_members_emails
   } = project;
 
   // Function to generate and download the QR Code for the current URL
@@ -112,6 +113,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
           competition={competition || ""}
           video_url={video_url || ""}
           image_url={imageUrl || ""}
+          team_members_emails={team_members_emails || []}
         />
       </div>
     </main>
