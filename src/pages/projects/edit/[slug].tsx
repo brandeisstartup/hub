@@ -1,12 +1,15 @@
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-
+import { useRouter } from "next/router";
 import EditProject from "@/ui/components/forms/complete-forms/edit-project";
 
 // ----- APOLLO CLIENT & QUERY -----
 import apolloClient from "@/lib/apolloClient";
 import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
+
+// ----- Custom Delete Hook -----
+import { useDeleteProject } from "@/hooks/useDeleteProject";
 
 // ----- GRAPHQL INTERFACES -----
 interface GraphQLProject {
@@ -99,35 +102,34 @@ export default function ProjectPage({ project }: ServerSideProps) {
     video_url,
     imageUrl
   } = project;
+  const router = useRouter();
+  const { deleteProject, error } = useDeleteProject();
 
-  // Function to generate and download the QR Code for the current URL
+  const handleDelete = async () => {
+    if (confirm("Are you sure you want to delete this project?")) {
+      try {
+        await deleteProject(Number(id));
+        // Redirect to project list page after deletion
+        router.push("/search");
+      } catch (err) {
+        console.error("Failed to delete project:", err);
+        alert("Failed to delete project. Please try again.");
+      }
+    }
+  };
 
   return (
-    // <main className="py-24">
-    //   <div className="mx-auto max-w-4xl px-4 grid grid-cols-1 font-sans ">
-    //     <EditProject
-    //       id={Number(id)}
-    //       title={title}
-    //       short_description={short_description || ""}
-    //       long_description={long_description || ""}
-    //       competition={competition || ""}
-    //       video_url={video_url || ""}
-    //       imageUrl={imageUrl || ""}
-    //     />
-    //   </div>
-    // </main>
-
     <main className="py-24">
       <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
         {/* Left Column */}
         <section
           id="fixed"
-          className=" w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible ">
+          className="w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
           <Heading label={title} />
 
           <dd className="flex flex-row gap-1 font-sans flex-wrap">By:</dd>
 
-          {/* Share, Copy Link, and QR Code Buttons */}
+          {/* Share, Copy Link, and Delete Button */}
           <aside>
             <menu className="w-full flex justify-start gap-2">
               <button
@@ -148,10 +150,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
               </button>
 
               <button
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert("🔗 Project link copied to clipboard!");
-                }}
+                onClick={handleDelete}
                 className="mt-4 px-4 py-2 text-white font-sans border rounded bg-red-700 hover:bg-red-600 transition">
                 Delete Project
               </button>

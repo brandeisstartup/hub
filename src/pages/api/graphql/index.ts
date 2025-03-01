@@ -91,16 +91,15 @@ const typeDefs = gql`
     updateUser(id: Int!, name: String, bio: String): User!
     deleteUser(id: Int!): User!
     updateProjectField(id: Int!, key: String!, newValue: String): Project!
+    deleteProject(id: Int!): Project!
   }
 `;
 
 // ✅ Fully Typed Resolvers
 const resolvers = {
   Query: {
-    // projects: async () => prisma.projects.findMany(),
     projects: async (_: unknown, { search }: { search?: string }) => {
       if (!search) return prisma.projects.findMany();
-
       return prisma.projects.findMany({
         where: {
           OR: [
@@ -169,13 +168,22 @@ const resolvers = {
       if (!allowedFields.includes(key)) {
         throw new Error(`Field ${key} cannot be updated.`);
       }
-
-      const updateData: { [key: string]: string } = { [key]: newValue ?? "" };
+      // Using a typed updateData object without 'any'
+      const updateData: Partial<
+        Record<(typeof allowedFields)[number], string>
+      > = {
+        [key]: newValue ?? ""
+      };
 
       return prisma.projects.update({
         where: { id },
         data: updateData
       });
+    },
+
+    // New deleteProject mutation resolver
+    deleteProject: async (_: unknown, { id }: { id: number }) => {
+      return prisma.projects.delete({ where: { id } });
     }
   }
 };
