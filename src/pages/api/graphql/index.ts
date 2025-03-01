@@ -170,7 +170,7 @@ const resolvers = {
         throw new Error(`Field ${key} cannot be updated.`);
       }
 
-      const updateData: { [key: string]: any } = { [key]: newValue };
+      const updateData: { [key: string]: string } = { [key]: newValue ?? "" };
 
       return prisma.projects.update({
         where: { id },
