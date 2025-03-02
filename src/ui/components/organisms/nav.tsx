@@ -65,6 +65,11 @@ export default function NavBarSearch() {
             name: "View Projects",
             description: "Browse through all projects",
             href: "/search"
+          },
+          {
+            name: "Add a Project",
+            description: "Submit project for display",
+            href: "/submissions/project-form"
           }
         ]
       },

@@ -58,10 +58,12 @@ const EditableFieldList: React.FC<EditableFieldListProps> = ({
       <div className="mt-6 border-t divide-gray-100 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
         <dt className="text-sm font-medium leading-6 text-gray-900">{label}</dt>
         <dd className="mt-1 flex flex-col text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-          <ul className="list-disc">
+          <ul className="list-disc gap-1 flex flex-col">
             {localValues.length > 0 ? (
               localValues.map((email) => (
-                <li key={email} className="flex justify-between items-center">
+                <li
+                  key={email}
+                  className="flex rounded-md justify-between items-center  ">
                   <span>{email}</span>
                   <button
                     onClick={() => handleRemove(email)}
@@ -87,8 +89,8 @@ const EditableFieldList: React.FC<EditableFieldListProps> = ({
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="mt-2 rounded-md bg-white font-medium text-BrandeisBrand hover:text-BrandeisBrandeTint">
-              Manage
+              className="mt-2 border rounded-md bg-white font-medium text-BrandeisBrand hover:text-BrandeisBrandeTint">
+              Add Team Member
             </button>
           )}
         </dd>
