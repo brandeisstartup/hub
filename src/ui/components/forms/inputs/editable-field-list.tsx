@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useManageTeamMembers } from "@/hooks/useManageTeamMembers";
 
 interface EditableFieldListProps {
@@ -18,16 +18,24 @@ const EditableFieldList: React.FC<EditableFieldListProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newEmail, setNewEmail] = useState("");
+  const [localValues, setLocalValues] = useState<string[]>(values); // Local state for tracking updates
   const { manageTeamMember, loading } = useManageTeamMembers();
 
+  // ✅ Use effect to sync when `values` changes
+  useEffect(() => {
+    setLocalValues([...values]); // Ensures fresh reference to trigger re-renders
+  }, [values]);
+
   const handleAdd = async () => {
-    if (!newEmail.trim() || values.includes(newEmail)) return;
+    if (!newEmail.trim() || localValues.includes(newEmail)) return;
     try {
       await manageTeamMember(projectId, newEmail, "add");
 
-      const updatedValues = Array.from(new Set([...values, newEmail])); // Ensure new array reference
+      const updatedValues = [...localValues, newEmail];
+      setLocalValues(updatedValues); // Update local state
       onChange(fieldKey, updatedValues);
       setNewEmail("");
+      setIsModalOpen(false);
     } catch (err) {
       console.error("Failed to add member:", err);
     }
@@ -37,8 +45,9 @@ const EditableFieldList: React.FC<EditableFieldListProps> = ({
     try {
       await manageTeamMember(projectId, email, "remove");
 
-      const updatedValues = values.filter((val) => val !== email);
-      onChange(fieldKey, [...updatedValues]); // Ensure new array reference
+      const updatedValues = localValues.filter((val) => val !== email);
+      setLocalValues(updatedValues); // Update local state
+      onChange(fieldKey, updatedValues);
     } catch (err) {
       console.error("Failed to remove member:", err);
     }
@@ -49,29 +58,39 @@ const EditableFieldList: React.FC<EditableFieldListProps> = ({
       <div className="mt-6 border-t divide-gray-100 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
         <dt className="text-sm font-medium leading-6 text-gray-900">{label}</dt>
         <dd className="mt-1 flex flex-col text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-          <ul className="list-disc pl-5">
-            {values.length > 0 ? (
-              values.map((email) => (
+          <ul className="list-disc">
+            {localValues.length > 0 ? (
+              localValues.map((email) => (
                 <li key={email} className="flex justify-between items-center">
                   <span>{email}</span>
                   <button
                     onClick={() => handleRemove(email)}
-                    className="ml-2 text-red-600 hover:text-red-800"
+                    className=" text-red-600 hover:text-red-800"
                     disabled={loading}>
                     Remove
                   </button>
                 </li>
               ))
             ) : (
-              <span>No team members</span>
+              <div className="flex justify-between items-center">
+                <span>No team members</span>
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(true)}
+                  className="mt-2 rounded-md bg-white font-medium text-BrandeisBrand hover:text-BrandeisBrandeTint">
+                  Add Member
+                </button>
+              </div>
             )}
           </ul>
-          <button
-            type="button"
-            onClick={() => setIsModalOpen(true)}
-            className="mt-2 rounded-md bg-white font-medium text-BrandeisBrand hover:text-BrandeisBrandeTint">
-            Manage
-          </button>
+          {localValues.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              className="mt-2 rounded-md bg-white font-medium text-BrandeisBrand hover:text-BrandeisBrandeTint">
+              Manage
+            </button>
+          )}
         </dd>
       </div>
 
@@ -85,6 +104,7 @@ const EditableFieldList: React.FC<EditableFieldListProps> = ({
               onChange={(e) => setNewEmail(e.target.value)}
               placeholder="Enter team member email"
               className="w-full p-2 border rounded mb-4"
+              required
             />
             <button
               onClick={handleAdd}
