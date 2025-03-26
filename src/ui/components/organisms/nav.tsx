@@ -3,6 +3,7 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useMemo } from "react";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
@@ -219,13 +220,24 @@ export default function NavBarSearch() {
                   )}
 
                   {/* Simple Sign In Button */}
-                  <div className="hidden  lg:flex lg:items-center">
+                  {/* <div className="hidden  lg:flex lg:items-center">
                     <Link
                       href="#"
                       className="text-white text-lg font-bold border border-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition">
                       Sign In
                     </Link>
-                  </div>
+                  </div> */}
+                  <SignedOut>
+                    <SignInButton>
+                      <button className="text-white text-lg font-bold px-4 py-2 rounded-md hover:underline  transition">
+                        Sign In
+                      </button>
+                    </SignInButton>
+                  </SignedOut>
+                  {/* Display UserButton if user is signed in */}
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
                 </div>
               </div>
             </>
