@@ -117,34 +117,29 @@ export const config = {
   }
 };
 
-// Define interfaces for the Clerk webhook event data
+// Set your GraphQL API endpoint (adjust if needed)
+const GRAPHQL_ENDPOINT =
+  process.env.GRAPHQL_ENDPOINT ||
+  "https://startuphub-jade.vercel.app/api/graphql";
+
 interface ClerkEmailAddress {
   email_address: string;
 }
 
 interface ClerkUserData {
-  email_addresses: ClerkEmailAddress[];
+  email_addresses?: ClerkEmailAddress[];
   first_name?: string;
   last_name?: string;
   image_url?: string;
   profile_image_url?: string;
-  // Add other fields if necessary
+  // Note: For deletion events, these fields might be absent
 }
 
 interface ClerkWebhookEvent {
   type: "user.created" | "user.deleted" | string;
-  data: ClerkUserData;
-  // Other fields as needed
-  event_attributes?: unknown;
-  instance_id?: string;
-  object?: string;
-  timestamp?: number;
+  data: ClerkUserData & { id: string; deleted?: boolean };
+  // other fields can be added as needed
 }
-
-// Set your GraphQL API endpoint (adjust if needed)
-const GRAPHQL_ENDPOINT =
-  process.env.GRAPHQL_ENDPOINT ||
-  "https://startuphub-jade.vercel.app/api/graphql";
 
 const clerkWebhookHandler = async (
   req: NextApiRequest,
@@ -156,7 +151,7 @@ const clerkWebhookHandler = async (
   const buf = await buffer(req);
   console.log("Raw Clerk webhook payload:", buf.toString());
 
-  // Parse the JSON payload and cast it to ClerkWebhookEvent
+  // Parse the JSON payload
   let event: ClerkWebhookEvent;
   try {
     event = JSON.parse(buf.toString()) as ClerkWebhookEvent;
@@ -166,17 +161,16 @@ const clerkWebhookHandler = async (
     return res.status(400).json({ error: "Invalid payload" });
   }
 
-  // Helper to extract primary email
+  // Helper to extract primary email if available
   const getPrimaryEmail = (data: ClerkUserData): string | null =>
     data.email_addresses && data.email_addresses.length > 0
       ? data.email_addresses[0].email_address
       : null;
 
-  // Process user.created event
   if (event.type === "user.created") {
     const data = event.data;
     const primaryEmail = getPrimaryEmail(data);
-    // Use profile_image_url if available; fallback to image_url
+    const clerkId = data.id; // Grab the Clerk user id
     const imageUrl = data.profile_image_url || data.image_url || null;
 
     if (!primaryEmail) {
@@ -184,12 +178,14 @@ const clerkWebhookHandler = async (
     } else {
       const mutation = `
         mutation CreateUser(
+          $clerkId: String!,
           $email: String!,
           $firstName: String,
           $lastName: String,
           $imageUrl: String
         ) {
           createUser(
+            clerkId: $clerkId,
             email: $email,
             firstName: $firstName,
             lastName: $lastName,
@@ -202,6 +198,7 @@ const clerkWebhookHandler = async (
       `;
 
       const variables = {
+        clerkId,
         email: primaryEmail,
         firstName: data.first_name || null,
         lastName: data.last_name || null,
@@ -213,7 +210,6 @@ const clerkWebhookHandler = async (
           method: "POST",
           headers: {
             "Content-Type": "application/json"
-            // Add authentication headers if needed
           },
           body: JSON.stringify({
             query: mutation,
@@ -233,29 +229,27 @@ const clerkWebhookHandler = async (
     }
   }
 
-  // Process user.deleted event
   if (event.type === "user.deleted") {
     const data = event.data;
-    const primaryEmail = getPrimaryEmail(data);
-    if (!primaryEmail) {
-      console.error("Primary email missing in webhook payload for deletion.");
+    const clerkId = data.id;
+    if (!clerkId) {
+      console.error("Clerk id missing in webhook payload for deletion.");
     } else {
       const mutation = `
-        mutation DeleteUserByEmail($email: String!) {
-          deleteUserByEmail(email: $email) {
+        mutation DeleteUserByClerkId($clerkId: String!) {
+          deleteUserByClerkId(clerkId: $clerkId) {
             id
             email
           }
         }
       `;
-      const variables = { email: primaryEmail };
+      const variables = { clerkId };
 
       try {
         const response = await fetch(GRAPHQL_ENDPOINT, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
-            // Add authentication headers if needed
           },
           body: JSON.stringify({
             query: mutation,
@@ -265,22 +259,24 @@ const clerkWebhookHandler = async (
         const result = await response.json();
         if (result.errors) {
           console.error(
-            "GraphQL mutation errors (deleteUserByEmail):",
+            "GraphQL mutation errors (deleteUserByClerkId):",
             result.errors
           );
         } else {
           console.log(
             "User deleted via GraphQL API:",
-            result.data.deleteUserByEmail
+            result.data.deleteUserByClerkId
           );
         }
       } catch (error) {
-        console.error("Error calling GraphQL API (deleteUserByEmail):", error);
+        console.error(
+          "Error calling GraphQL API (deleteUserByClerkId):",
+          error
+        );
       }
     }
   }
 
-  // Return a success response
   res.status(200).json({ received: true, event });
 };
 
