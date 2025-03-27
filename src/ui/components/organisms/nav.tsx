@@ -229,14 +229,24 @@ export default function NavBarSearch() {
                   </div> */}
                   <SignedOut>
                     <SignInButton>
-                      <button className="text-white text-lg font-bold px-4 py-2 rounded-md hover:underline  transition">
-                        Sign In
-                      </button>
+                      <div className="flex justify-center items-center ">
+                        <button className="h-12 hidden lg:flex lg:items-center text-white text-lg font-bold border border-white px-4 py-3 rounded-md hover:bg-white hover:text-black transition">
+                          Sign In
+                        </button>
+                      </div>
                     </SignInButton>
                   </SignedOut>
-                  {/* Display UserButton if user is signed in */}
                   <SignedIn>
-                    <UserButton />
+                    <UserButton
+                      appearance={{
+                        elements: {
+                          userButtonAvatarBox:
+                            "shadow-none ring-0 border-none rounded-none",
+                          userButtonPopoverCard:
+                            "shadow-none ring-0 border-none rounded-none"
+                        }
+                      }}
+                    />
                   </SignedIn>
                 </div>
               </div>
