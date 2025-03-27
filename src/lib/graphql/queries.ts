@@ -65,3 +65,19 @@ export const GET_PROJECT_BY_ID = gql`
     }
   }
 `;
+
+export const GET_USER_BY_CLERK_ID = gql`
+  query GetUserByClerkId($clerkId: String!) {
+    getUserByClerkId(clerkId: $clerkId) {
+      id
+      clerkId
+      email
+      firstName
+      lastName
+      bio
+      imageUrl
+      graduationYear
+      major
+    }
+  }
+`;

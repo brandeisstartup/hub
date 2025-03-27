@@ -34,6 +34,7 @@ export const typeDefs = gql`
     project(id: Int, slug: String): Project
     users: [User!]!
     user(id: Int!): User
+    getUserByClerkId(clerkId: String!): User
   }
 
   type Mutation {

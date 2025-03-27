@@ -93,7 +93,10 @@ export const resolvers = {
     // },
     users: async () => prisma.users.findMany(),
     user: async (_: unknown, { id }: { id: number }) =>
-      prisma.users.findUnique({ where: { id } })
+      prisma.users.findUnique({ where: { id } }),
+    getUserByClerkId: async (_: unknown, { clerkId }: { clerkId: string }) => {
+      return prisma.users.findUnique({ where: { clerkId } });
+    }
   },
 
   Mutation: {
