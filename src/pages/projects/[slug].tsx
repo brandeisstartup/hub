@@ -14,7 +14,6 @@ import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries";
 
 // ----- UI COMPONENTS -----
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
-import { useEffect } from "react";
 
 // ----- 1) FLATTENED INTERFACES -----
 
