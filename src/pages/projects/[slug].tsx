@@ -14,6 +14,7 @@ import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries";
 
 // ----- UI COMPONENTS -----
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
+import Image from "next/image";
 
 // ----- 1) FLATTENED INTERFACES -----
 
@@ -51,7 +52,6 @@ interface GraphQLProject {
   short_description?: string;
   long_description?: string;
   competition?: string;
-  team_members_emails?: string[];
   teamMembers?: User[]; // Updated: now an array of User objects
   video_url?: string;
   image_url?: string;
@@ -65,7 +65,6 @@ interface ProjectData {
   long_description?: string;
   competition?: string;
   members?: string[];
-  team_members_emails?: string[];
   teamMembers?: User[]; // Updated as well
   video_url?: string;
   imageUrl?: string;
@@ -150,7 +149,6 @@ export const getServerSideProps: GetServerSideProps<
     long_description: graphQLProject?.long_description ?? "",
     competition: graphQLProject?.competition ?? "",
     members: contentfulFlattened?.members ?? [],
-    team_members_emails: graphQLProject?.team_members_emails ?? [],
     teamMembers: graphQLProject?.teamMembers ?? [], // NEW: Full team members data from GraphQL
     video_url: graphQLProject?.video_url ?? "",
     imageUrl:
@@ -176,7 +174,6 @@ export default function ProjectPage({ project }: ServerSideProps) {
     competition,
     members,
     teamMembers,
-    team_members_emails,
     video_url,
     imageUrl
   } = project;
@@ -211,8 +208,8 @@ export default function ProjectPage({ project }: ServerSideProps) {
             {(members || []).map((member) => (
               <dl key={member}>{member}</dl>
             ))}
-            {(team_members_emails || []).map((email) => (
-              <dl key={email}>{email}</dl>
+            {(teamMembers || []).map((member, index) => (
+              <dl key={index}>{member.firstName + " " + member.lastName}</dl>
             ))}
           </dd>
           {competition && (
@@ -330,8 +327,15 @@ export default function ProjectPage({ project }: ServerSideProps) {
               {(teamMembers || []).map((member, index) => (
                 <dl key={index} className="flex mt-2">
                   <div className="flex flex-row gap-2">
-                    <div className="w-24 h-24 bg-BrandeisBrandShade"></div>
-                    <div className="flex flex-col gap-1  py-2">
+                    <div className="w-24 h-24">
+                      <Image
+                        src={member.imageUrl || "/default-image.png"}
+                        alt={`${member.firstName} ${member.lastName}`}
+                        width={96}
+                        height={96}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1 ">
                       <div>{member.firstName + " " + member.lastName}</div>
                       <div>
                         {member.graduationYear &&
