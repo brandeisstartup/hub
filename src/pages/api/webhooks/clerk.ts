@@ -106,8 +106,7 @@
 // };
 
 // export default clerkWebhookHandler;
-
-// pages/api/webhooks/clerk.ts
+// src/pages/api/webhooks/clerk.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import { buffer } from "micro";
 
@@ -117,6 +116,30 @@ export const config = {
     bodyParser: false
   }
 };
+
+// Define interfaces for the Clerk webhook event data
+interface ClerkEmailAddress {
+  email_address: string;
+}
+
+interface ClerkUserData {
+  email_addresses: ClerkEmailAddress[];
+  first_name?: string;
+  last_name?: string;
+  image_url?: string;
+  profile_image_url?: string;
+  // Add other fields if necessary
+}
+
+interface ClerkWebhookEvent {
+  type: "user.created" | "user.deleted" | string;
+  data: ClerkUserData;
+  // Other fields as needed
+  event_attributes?: unknown;
+  instance_id?: string;
+  object?: string;
+  timestamp?: number;
+}
 
 // Set your GraphQL API endpoint (adjust if needed)
 const GRAPHQL_ENDPOINT =
@@ -133,33 +156,32 @@ const clerkWebhookHandler = async (
   const buf = await buffer(req);
   console.log("Raw Clerk webhook payload:", buf.toString());
 
-  // Parse the JSON payload
-  let event;
+  // Parse the JSON payload and cast it to ClerkWebhookEvent
+  let event: ClerkWebhookEvent;
   try {
-    event = JSON.parse(buf.toString());
+    event = JSON.parse(buf.toString()) as ClerkWebhookEvent;
     console.log("Parsed Clerk webhook event:", event);
   } catch (error) {
     console.error("Error parsing webhook payload:", error);
     return res.status(400).json({ error: "Invalid payload" });
   }
 
-  // Extract the primary email if available
-  const getPrimaryEmail = (data: any) => {
-    return data.email_addresses && data.email_addresses[0]
+  // Helper to extract primary email
+  const getPrimaryEmail = (data: ClerkUserData): string | null =>
+    data.email_addresses && data.email_addresses.length > 0
       ? data.email_addresses[0].email_address
       : null;
-  };
 
-  // Handle user.created event
+  // Process user.created event
   if (event.type === "user.created") {
     const data = event.data;
     const primaryEmail = getPrimaryEmail(data);
+    // Use profile_image_url if available; fallback to image_url
     const imageUrl = data.profile_image_url || data.image_url || null;
 
     if (!primaryEmail) {
       console.error("Primary email missing in webhook payload.");
     } else {
-      // Build your GraphQL mutation for createUser
       const mutation = `
         mutation CreateUser(
           $email: String!,
@@ -198,6 +220,7 @@ const clerkWebhookHandler = async (
             variables
           })
         });
+
         const result = await response.json();
         if (result.errors) {
           console.error("GraphQL mutation errors (createUser):", result.errors);
@@ -210,14 +233,13 @@ const clerkWebhookHandler = async (
     }
   }
 
-  // Handle user.deleted event
+  // Process user.deleted event
   if (event.type === "user.deleted") {
     const data = event.data;
     const primaryEmail = getPrimaryEmail(data);
     if (!primaryEmail) {
       console.error("Primary email missing in webhook payload for deletion.");
     } else {
-      // Build your GraphQL mutation for deleteUserByEmail
       const mutation = `
         mutation DeleteUserByEmail($email: String!) {
           deleteUserByEmail(email: $email) {
