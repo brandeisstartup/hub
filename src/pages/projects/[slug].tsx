@@ -18,6 +18,18 @@ import Heading from "@/ui/components/brandeisBranding/headings/heading";
 // ----- 1) FLATTENED INTERFACES -----
 
 /** Flattened shape of your Contentful fields (instead of nesting inside `fields`). */
+
+interface User {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
+  imageUrl?: string;
+  graduationYear?: number;
+  major?: string;
+}
+
 interface FlattenedContentfulFields {
   title: string;
   tagline?: string;
@@ -40,11 +52,11 @@ interface GraphQLProject {
   long_description?: string;
   competition?: string;
   team_members_emails?: string[];
+  teamMembers?: User[]; // Updated: now an array of User objects
   video_url?: string;
   image_url?: string;
 }
 
-/** Final shape for the page to render. */
 interface ProjectData {
   title: string;
   tagline?: string;
@@ -54,6 +66,7 @@ interface ProjectData {
   competition?: string;
   members?: string[];
   team_members_emails?: string[];
+  teamMembers?: User[]; // Updated as well
   video_url?: string;
   imageUrl?: string;
 }
@@ -122,7 +135,6 @@ export const getServerSideProps: GetServerSideProps<
   } catch (err) {
     console.error("Error fetching from GraphQL:", err);
   }
-
   // If both are null, return 404
   if (!contentfulFlattened && !graphQLProject) {
     return { notFound: true };
@@ -130,27 +142,17 @@ export const getServerSideProps: GetServerSideProps<
 
   // -- C) MERGE INTO A SINGLE ProjectData SHAPE --
   const mergedData: ProjectData = {
-    // 1) Title: prefer Contentful, fallback GraphQL
     title:
       contentfulFlattened?.title || graphQLProject?.title || "Untitled Project",
-
-    // 2) Tagline & About from Contentful (if any)
     tagline: contentfulFlattened?.tagline ?? "",
     about: contentfulFlattened?.about ?? "",
-
-    // 3) Descriptions from GraphQL
     short_description: graphQLProject?.short_description ?? "",
     long_description: graphQLProject?.long_description ?? "",
     competition: graphQLProject?.competition ?? "",
-
-    // 4) Combine or keep separate (here, we keep them separate)
     members: contentfulFlattened?.members ?? [],
     team_members_emails: graphQLProject?.team_members_emails ?? [],
-
-    // 5) Video from GraphQL
+    teamMembers: graphQLProject?.teamMembers ?? [], // NEW: Full team members data from GraphQL
     video_url: graphQLProject?.video_url ?? "",
-
-    // 6) Flattened image URL from Contentful
     imageUrl:
       contentfulFlattened?.image?.fields?.file?.url || graphQLProject?.image_url
   };
@@ -164,6 +166,7 @@ export const getServerSideProps: GetServerSideProps<
 
 // ----- 4) PAGE COMPONENT -----
 export default function ProjectPage({ project }: ServerSideProps) {
+  console.log(project);
   const {
     title,
     tagline,
@@ -172,6 +175,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
     long_description,
     competition,
     members,
+    teamMembers,
     team_members_emails,
     video_url,
     imageUrl
@@ -323,13 +327,17 @@ export default function ProjectPage({ project }: ServerSideProps) {
                   </div>
                 </dl>
               ))}
-              {(team_members_emails || []).map((email, index) => (
+              {(teamMembers || []).map((member, index) => (
                 <dl key={index} className="flex mt-2">
                   <div className="flex flex-row gap-2">
                     <div className="w-24 h-24 bg-BrandeisBrandShade"></div>
-                    <div className="flex flex-col gap-1 justify-around py-2">
-                      <div>{email}</div>
-                      <div>Year/Major</div>
+                    <div className="flex flex-col gap-1  py-2">
+                      <div>{member.firstName + " " + member.lastName}</div>
+                      <div>
+                        {member.graduationYear &&
+                          member.major &&
+                          member.major + " " + member.graduationYear}
+                      </div>
                       <div className="max-w-2xl">
                         Lorem ipsum dolor sit, amet consectetur adipisicing
                         elit. Ex minus beatae quod modi.
