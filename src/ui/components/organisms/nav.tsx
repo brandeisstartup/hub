@@ -218,15 +218,6 @@ export default function NavBarSearch() {
                       </Link>
                     </Disclosure.Panel>
                   )}
-
-                  {/* Simple Sign In Button */}
-                  {/* <div className="hidden  lg:flex lg:items-center">
-                    <Link
-                      href="#"
-                      className="text-white text-lg font-bold border border-white px-4 py-2 rounded-md hover:bg-white hover:text-black transition">
-                      Sign In
-                    </Link>
-                  </div> */}
                   <SignedOut>
                     <SignInButton>
                       <div className="flex justify-center items-center ">
@@ -240,10 +231,15 @@ export default function NavBarSearch() {
                     <UserButton
                       appearance={{
                         elements: {
+                          // Avatar container
                           userButtonAvatarBox:
-                            "shadow-none ring-0 border-none rounded-none",
+                            "shadow-none ring-0 outline-none focus:outline-none focus:ring-0 focus:ring-offset-0",
+                          // The actual button element that gets focus
+                          userButtonTrigger:
+                            "shadow-none ring-0 outline-none focus:outline-none focus:ring-0 focus:ring-offset-0",
+                          // Popover card
                           userButtonPopoverCard:
-                            "shadow-none ring-0 border-none rounded-none"
+                            "shadow-none ring-0 border-none outline-none focus:outline-none focus:ring-0 focus:ring-offset-0"
                         }
                       }}
                     />

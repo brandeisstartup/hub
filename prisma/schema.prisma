@@ -21,8 +21,13 @@ model Projects {
 }
 
 model Users {
-  id    Int     @id @default(autoincrement())
-  email String
-  name  String?
-  bio   String
+  id              Int     @id @default(autoincrement())
+  email           String
+  secondaryEmail  String?
+  firstName       String? 
+  lastName        String? 
+  bio             String?
+  imageUrl        String?
+  graduationYear  Int?
+  major           String?
 }

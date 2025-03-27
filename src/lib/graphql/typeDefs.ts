@@ -19,8 +19,13 @@ export const typeDefs = gql`
   type User {
     id: ID!
     email: String!
-    name: String
+    secondaryEmail: String
+    firstName: String
+    lastName: String
     bio: String
+    imageUrl: String
+    graduationYear: Int
+    major: String
   }
 
   type Query {
@@ -42,9 +47,31 @@ export const typeDefs = gql`
       image_url: String
     ): Project!
 
-    createUser(email: String!, name: String, bio: String): User!
-    updateUser(id: Int!, name: String, bio: String): User!
+    createUser(
+      email: String!
+      secondaryEmail: String
+      firstName: String
+      lastName: String
+      bio: String
+      imageUrl: String
+      graduationYear: Int
+      major: String
+    ): User!
+
+    updateUser(
+      id: Int!
+      email: String
+      secondaryEmail: String
+      firstName: String
+      lastName: String
+      bio: String
+      imageUrl: String
+      graduationYear: Int
+      major: String
+    ): User!
+
     deleteUser(id: Int!): User!
+
     updateProjectField(id: Int!, key: String!, newValue: String): Project!
     deleteProject(id: Int!): Project!
     addTeamMember(id: Int!, email: String!): Project!
