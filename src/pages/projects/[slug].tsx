@@ -52,7 +52,6 @@ interface GraphQLProject {
   short_description?: string;
   long_description?: string;
   competition?: string;
-  team_members_emails?: string[];
   teamMembers?: User[]; // Updated: now an array of User objects
   video_url?: string;
   image_url?: string;
@@ -66,7 +65,6 @@ interface ProjectData {
   long_description?: string;
   competition?: string;
   members?: string[];
-  team_members_emails?: string[];
   teamMembers?: User[]; // Updated as well
   video_url?: string;
   imageUrl?: string;
@@ -151,7 +149,6 @@ export const getServerSideProps: GetServerSideProps<
     long_description: graphQLProject?.long_description ?? "",
     competition: graphQLProject?.competition ?? "",
     members: contentfulFlattened?.members ?? [],
-    team_members_emails: graphQLProject?.team_members_emails ?? [],
     teamMembers: graphQLProject?.teamMembers ?? [], // NEW: Full team members data from GraphQL
     video_url: graphQLProject?.video_url ?? "",
     imageUrl:
@@ -177,7 +174,6 @@ export default function ProjectPage({ project }: ServerSideProps) {
     competition,
     members,
     teamMembers,
-    team_members_emails,
     video_url,
     imageUrl
   } = project;
