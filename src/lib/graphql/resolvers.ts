@@ -15,14 +15,25 @@ interface CreateProjectArgs {
 
 interface CreateUserArgs {
   email: string;
-  name?: string;
+  secondaryEmail?: string; // will be mapped to secondaryEmail
+  firstName?: string; // will be mapped to firstName
+  lastName?: string; // will be mapped to lastName
   bio?: string;
+  imageUrl?: string;
+  graduationYear?: number;
+  major?: string;
 }
 
 interface UpdateUserArgs {
   id: number;
-  name?: string;
+  email?: string;
+  secondaryEmail?: string;
+  firstName?: string;
+  lastName?: string;
   bio?: string;
+  imageUrl?: string;
+  graduationYear?: number;
+  major?: string;
 }
 
 export const resolvers = {
@@ -63,9 +74,14 @@ export const resolvers = {
     createUser: async (_: unknown, args: CreateUserArgs) => {
       return prisma.users.create({
         data: {
-          email: args.email,
-          name: args.name || "",
-          bio: args.bio ?? ""
+          email: args.email, // from Clerk
+          secondaryEmail: args.secondaryEmail || null, // default to null if not provided
+          firstName: args.firstName, // from Clerk
+          lastName: args.lastName, // from Clerk
+          bio: args.bio || "", // default to empty string if not provided
+          imageUrl: args.imageUrl, // from Clerk
+          graduationYear: args.graduationYear || null,
+          major: args.major || null
         }
       });
     },
@@ -73,8 +89,14 @@ export const resolvers = {
       return prisma.users.update({
         where: { id: args.id },
         data: {
-          name: args.name,
-          bio: args.bio ?? ""
+          email: args.email,
+          secondaryEmail: args.secondaryEmail,
+          firstName: args.firstName,
+          lastName: args.lastName,
+          bio: args.bio,
+          imageUrl: args.imageUrl,
+          graduationYear: args.graduationYear,
+          major: args.major
         }
       });
     },
