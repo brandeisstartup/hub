@@ -25,8 +25,7 @@ interface CreateUserArgs {
 }
 
 interface UpdateUserArgs {
-  id: number;
-  email?: string;
+  email: string;
   secondaryEmail?: string;
   firstName?: string;
   lastName?: string;
@@ -85,11 +84,27 @@ export const resolvers = {
         }
       });
     },
+    // updateUser: async (_: unknown, args: UpdateUserArgs) => {
+    //   return prisma.users.update({
+    //     where: { email: args.email },
+    //     data: {
+    //       secondaryEmail: args.secondaryEmail,
+    //       firstName: args.firstName,
+    //       lastName: args.lastName,
+    //       bio: args.bio,
+    //       imageUrl: args.imageUrl,
+    //       graduationYear: args.graduationYear,
+    //       major: args.major
+    //     }
+    //   });
+    // },
     updateUser: async (_: unknown, args: UpdateUserArgs) => {
+      if (!args.email) {
+        throw new Error("Email is required to update a user.");
+      }
       return prisma.users.update({
-        where: { id: args.id },
+        where: { email: args.email },
         data: {
-          email: args.email,
           secondaryEmail: args.secondaryEmail,
           firstName: args.firstName,
           lastName: args.lastName,
@@ -100,8 +115,17 @@ export const resolvers = {
         }
       });
     },
+
     deleteUser: async (_: unknown, { id }: { id: number }) => {
       return prisma.users.delete({ where: { id } });
+    },
+    deleteUserByEmail: async (_: unknown, { email }: { email: string }) => {
+      if (!email) {
+        throw new Error("Email is required to delete a user.");
+      }
+      return prisma.users.delete({
+        where: { email }
+      });
     },
     updateProjectField: async (
       _: unknown,

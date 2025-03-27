@@ -59,8 +59,7 @@ export const typeDefs = gql`
     ): User!
 
     updateUser(
-      id: Int!
-      email: String
+      email: String!
       secondaryEmail: String
       firstName: String
       lastName: String
@@ -71,7 +70,7 @@ export const typeDefs = gql`
     ): User!
 
     deleteUser(id: Int!): User!
-
+    deleteUserByEmail(email: String!): User! # Updated mutation
     updateProjectField(id: Int!, key: String!, newValue: String): Project!
     deleteProject(id: Int!): Project!
     addTeamMember(id: Int!, email: String!): Project!
