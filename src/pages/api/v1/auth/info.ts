@@ -1,7 +1,7 @@
 import { getAuth } from "@clerk/nextjs/server";
-import type { NextApiRequest } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default function handler(req: NextApiRequest, res: any) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { userId, sessionId, getToken } = getAuth(req);
   // Optionally, get the JWT:
   const token = getToken();
