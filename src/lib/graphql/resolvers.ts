@@ -14,6 +14,7 @@ interface CreateProjectArgs {
 }
 
 interface CreateUserArgs {
+  clerkId: string;
   email: string;
   secondaryEmail?: string; // will be mapped to secondaryEmail
   firstName?: string; // will be mapped to firstName
@@ -73,31 +74,26 @@ export const resolvers = {
     createUser: async (_: unknown, args: CreateUserArgs) => {
       return prisma.users.create({
         data: {
-          email: args.email, // from Clerk
-          secondaryEmail: args.secondaryEmail || null, // default to null if not provided
-          firstName: args.firstName, // from Clerk
-          lastName: args.lastName, // from Clerk
-          bio: args.bio || "", // default to empty string if not provided
-          imageUrl: args.imageUrl, // from Clerk
+          clerkId: args.clerkId, // store the Clerk id
+          email: args.email,
+          secondaryEmail: args.secondaryEmail || null,
+          firstName: args.firstName,
+          lastName: args.lastName,
+          bio: args.bio || "",
+          imageUrl: args.imageUrl,
           graduationYear: args.graduationYear || null,
           major: args.major || null
         }
       });
     },
-    // updateUser: async (_: unknown, args: UpdateUserArgs) => {
-    //   return prisma.users.update({
-    //     where: { email: args.email },
-    //     data: {
-    //       secondaryEmail: args.secondaryEmail,
-    //       firstName: args.firstName,
-    //       lastName: args.lastName,
-    //       bio: args.bio,
-    //       imageUrl: args.imageUrl,
-    //       graduationYear: args.graduationYear,
-    //       major: args.major
-    //     }
-    //   });
-    // },
+    // NEW: deletion by Clerk id
+    deleteUserByClerkId: async (
+      _: unknown,
+      { clerkId }: { clerkId: string }
+    ) => {
+      return prisma.users.delete({ where: { clerkId } });
+    },
+
     updateUser: async (_: unknown, args: UpdateUserArgs) => {
       if (!args.email) {
         throw new Error("Email is required to update a user.");
