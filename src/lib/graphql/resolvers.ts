@@ -54,14 +54,43 @@ export const resolvers = {
       _: unknown,
       { id, slug }: { id?: number; slug?: string }
     ) => {
-      if (id) return prisma.projects.findUnique({ where: { id } });
-      if (slug) {
-        return prisma.projects.findFirst({
-          where: { title: slug.replace(/-/g, " ") }
-        });
-      }
-      throw new Error("Either 'id' or 'slug' must be provided.");
+      // Fetch the project record either by id or by slug
+      const project = id
+        ? await prisma.projects.findUnique({ where: { id } })
+        : await prisma.projects.findFirst({
+            where: { title: slug!.replace(/-/g, " ") }
+          });
+
+      if (!project) return null;
+
+      // Fetch user details for each email in team_members_emails
+      const teamMembers = await prisma.users.findMany({
+        where: {
+          email: {
+            in: project.team_members_emails
+          }
+        }
+      });
+
+      // Return both the original email array and the new teamMembers object
+      return {
+        ...project,
+        teamMembers // This adds a new field with full user details
+      };
     },
+
+    // project: async (
+    //   _: unknown,
+    //   { id, slug }: { id?: number; slug?: string }
+    // ) => {
+    //   if (id) return prisma.projects.findUnique({ where: { id } });
+    //   if (slug) {
+    //     return prisma.projects.findFirst({
+    //       where: { title: slug.replace(/-/g, " ") }
+    //     });
+    //   }
+    //   throw new Error("Either 'id' or 'slug' must be provided.");
+    // },
     users: async () => prisma.users.findMany(),
     user: async (_: unknown, { id }: { id: number }) =>
       prisma.users.findUnique({ where: { id } })
