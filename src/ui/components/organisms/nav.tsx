@@ -9,6 +9,7 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
 import TopBanner from "@/ui/components/contentfulComponents/banner/topBanner";
+import UserDropdown from "@/ui/components/organisms/user/UserDropdown";
 
 const findUpcomingEvent = (
   events: { title: string; startDate: string; endDate: string }[],
@@ -235,7 +236,7 @@ export default function NavBarSearch() {
                     </SignInButton>
                   </SignedOut>
                   <SignedIn>
-                    <UserButton
+                    {/* <UserButton
                       appearance={{
                         elements: {
                           userButtonAvatarBox:
@@ -246,7 +247,10 @@ export default function NavBarSearch() {
                             "shadow-none ring-0 border-none outline-none focus:outline-none focus:ring-0 focus:ring-offset-0"
                         }
                       }}
-                    />
+                    /> */}
+                    <div className="flex justify-center items-center">
+                      <UserDropdown />
+                    </div>
                   </SignedIn>
                 </div>
               </div>
