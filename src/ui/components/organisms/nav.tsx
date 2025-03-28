@@ -4,7 +4,12 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useMemo, useEffect } from "react";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  SignOutButton
+} from "@clerk/nextjs";
 
 import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
@@ -250,6 +255,7 @@ export default function NavBarSearch() {
                     /> */}
                     <div className="flex justify-center items-center">
                       <UserDropdown />
+                      <SignOutButton />
                     </div>
                   </SignedIn>
                 </div>
