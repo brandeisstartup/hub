@@ -1,10 +1,16 @@
 import type { AppProps } from "next/app";
 import { CompetitionProvider } from "@/context/EventContext";
+import dynamic from "next/dynamic";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/apolloClient";
 import "@/styles/globals.css";
 import Layout from "@/pages/layouts/layout";
 import { ClerkProvider } from "@clerk/nextjs";
+
+const UserProvider = dynamic(
+  () => import("@/context/UserContext").then((mod) => mod.UserProvider),
+  { ssr: false }
+);
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -33,10 +39,11 @@ export default function App({ Component, pageProps }: AppProps) {
       {...pageProps}>
       <ApolloProvider client={client}>
         <CompetitionProvider>
-          <Layout>
-            {/* Display SignInButton if user is signed out */}
-            <Component {...pageProps} />
-          </Layout>
+          <UserProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </UserProvider>
         </CompetitionProvider>
       </ApolloProvider>
     </ClerkProvider>
