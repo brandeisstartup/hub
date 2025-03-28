@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { useRouter } from "next/router";
 import slugify from "slugify";
@@ -11,9 +11,10 @@ import { usePostProject } from "@/hooks/usePostProject";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import { useAuth, SignInButton } from "@clerk/nextjs";
 import { useMergedUser } from "@/context/UserContext";
-
 // Import the Combobox component from Headless UI
 import { Combobox } from "@headlessui/react";
+// Import competitions from context
+import { useCompetitions } from "@/context/EventContext";
 
 // Extend form values with competition field
 interface FormValues extends Record<string, unknown> {
@@ -41,19 +42,21 @@ function BigForm() {
   const { postProject } = usePostProject();
   const [loading, setLoading] = useState(false);
 
-  // Competition options (update later as needed)
-  const competitionOptions = useMemo(
-    () => ["Competition A", "Competition B", "Competition C"],
-    []
-  );
+  // Get competitions data from the Competition context
+  const { upcomingEvents, loading: compLoading } = useCompetitions();
 
-  // Local state for the combobox value
+  // Build competition options from the competitions data (assuming each competition has a "title" property)
+  const competitionOptions = useMemo(() => {
+    return upcomingEvents.map((comp) => comp.title);
+  }, [upcomingEvents]);
+
+  // Local state for the combobox value (allow string or null)
   const [selectedCompetition, setSelectedCompetition] = useState<string | null>(
     ""
   );
 
-  // When the selected competition changes, update react-hook-form's "competition" field
-  React.useEffect(() => {
+  // Sync selected competition with the react-hook-form field "competition"
+  useEffect(() => {
     setValue("competition", selectedCompetition || "");
   }, [selectedCompetition, setValue]);
 
@@ -65,7 +68,7 @@ function BigForm() {
       creator_email: `${user?.email}`,
       short_description: data.blurb,
       long_description: data.description,
-      competition: data.competition || "", // Value from combobox
+      competition: data.competition || "",
       team_members_emails: [`${user?.email}`],
       video_url: data.videoUrl || null,
       image_url: uploadedImageUrl || null
@@ -156,7 +159,7 @@ function BigForm() {
                 <Combobox.Input
                   className="w-full border border-gray-300 rounded-md py-2 pl-3 pr-10 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Select a competition"
-                  displayValue={(value: string) => value}
+                  displayValue={(value: string | null) => value || ""}
                 />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
                   <svg
@@ -174,47 +177,56 @@ function BigForm() {
                 </Combobox.Button>
               </div>
               <Combobox.Options className="mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {competitionOptions.map((option) => (
-                  <Combobox.Option
-                    key={option}
-                    value={option}
-                    className={({ active }) =>
-                      `relative cursor-default select-none py-2 pl-3 pr-9 ${
-                        active ? "bg-blue-600 text-white" : "text-gray-900"
-                      }`
-                    }>
-                    {({ selected, active }) => (
-                      <>
-                        <span
-                          className={`block truncate ${
-                            selected ? "font-semibold" : "font-normal"
-                          }`}>
-                          {option}
-                        </span>
-                        {selected ? (
+                {compLoading ? (
+                  <div className="px-4 py-2 text-sm text-gray-500">
+                    Loading competitions...
+                  </div>
+                ) : competitionOptions.length > 0 ? (
+                  competitionOptions.map((option) => (
+                    <Combobox.Option
+                      key={option}
+                      value={option}
+                      className={({ active }) =>
+                        `relative cursor-default select-none py-2 pl-3 pr-9 ${
+                          active ? "bg-blue-600 text-white" : "text-gray-900"
+                        }`
+                      }>
+                      {({ selected, active }) => (
+                        <>
                           <span
-                            className={`absolute inset-y-0 right-0 flex items-center pr-4 ${
-                              active ? "text-white" : "text-blue-600"
+                            className={`block truncate ${
+                              selected ? "font-semibold" : "font-normal"
                             }`}>
-                            {/* Check icon */}
-                            <svg
-                              className="h-5 w-5"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true">
-                              <path
-                                fillRule="evenodd"
-                                d="M16.704 5.296a1 1 0 00-1.408-1.408L8 11.184 4.704 7.888a1 1 0 00-1.408 1.408l4 4a1 1 0 001.408 0l8-8z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
+                            {option}
                           </span>
-                        ) : null}
-                      </>
-                    )}
-                  </Combobox.Option>
-                ))}
+                          {selected ? (
+                            <span
+                              className={`absolute inset-y-0 right-0 flex items-center pr-4 ${
+                                active ? "text-white" : "text-blue-600"
+                              }`}>
+                              <svg
+                                className="h-5 w-5"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                aria-hidden="true">
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.704 5.296a1 1 0 00-1.408-1.408L8 11.184 4.704 7.888a1 1 0 00-1.408 1.408l4 4a1 1 0 001.408 0l8-8z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </span>
+                          ) : null}
+                        </>
+                      )}
+                    </Combobox.Option>
+                  ))
+                ) : (
+                  <div className="px-4 py-2 text-sm text-gray-500">
+                    No competitions available
+                  </div>
+                )}
               </Combobox.Options>
             </Combobox>
           </div>
@@ -269,16 +281,12 @@ function BigForm() {
         </form>
       </FormProvider>
 
-      {/* If user is NOT signed in, show an overlay with a sign-in modal */}
+      {/* Overlay if user is not signed in */}
       {!isSignedIn && !user && (
         <div className="absolute inset-0 bg-white bg-opacity-5 backdrop-blur-sm flex flex-col items-center justify-center z-10">
           <div className="max-w-sm p-4 bg-white rounded-md shadow-lg flex flex-col gap-2 justify-center items-center">
-            <div className="">
-              <h2>Must be signed in to continue</h2>
-            </div>
-            <div className="">
-              <SignInButton />
-            </div>
+            <h2>Must be signed in to continue</h2>
+            <SignInButton />
           </div>
         </div>
       )}
