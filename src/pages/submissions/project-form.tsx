@@ -48,11 +48,13 @@ function BigForm() {
   );
 
   // Local state for the combobox value
-  const [selectedCompetition, setSelectedCompetition] = useState<string>("");
+  const [selectedCompetition, setSelectedCompetition] = useState<string | null>(
+    ""
+  );
 
   // When the selected competition changes, update react-hook-form's "competition" field
   React.useEffect(() => {
-    setValue("competition", selectedCompetition);
+    setValue("competition", selectedCompetition || "");
   }, [selectedCompetition, setValue]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
