@@ -1,6 +1,5 @@
 import { useCompetitions } from "@/context/EventContext";
 import { useMergedUser } from "@/context/UserContext";
-// import { Disclosure, Menu } from "@headlessui/react";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -11,6 +10,7 @@ import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
 import TopBanner from "@/ui/components/contentfulComponents/banner/topBanner";
 import UserDropdown from "@/ui/components/organisms/user/UserDropdown";
+import { UserDropDownItem } from "@/ui/components/organisms/user/UserDropDownItem";
 
 const findUpcomingEvent = (
   events: { title: string; startDate: string; endDate: string }[],
@@ -32,38 +32,6 @@ const findUpcomingEvent = (
     }) || null
   );
 };
-
-// function UserInfo() {
-//   return (
-//     <Menu.Item>
-//       {({ active }) => (
-//         <a
-//           href="/search"
-//           className={`${
-//             active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-//           } block px-4 py-2 text-sm`}>
-//           Profile
-//         </a>
-//       )}
-//     </Menu.Item>
-//   );
-// }
-
-// function AccountButton() {
-//   return (
-//     <Menu.Item>
-//       {({ active }) => (
-//         <a
-//           href="/settings"
-//           className={`${
-//             active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-//           } block px-4 py-2 text-sm`}>
-//           Settings
-//         </a>
-//       )}
-//     </Menu.Item>
-//   );
-// }
 
 function SignOutButton() {
   const { signOut } = useClerk();
@@ -284,22 +252,20 @@ export default function NavBarSearch() {
                     </SignInButton>
                   </SignedOut>
                   <SignedIn>
-                    {/* <UserButton
-                      appearance={{
-                        elements: {
-                          userButtonAvatarBox:
-                            "shadow-none ring-0 outline-none focus:outline-none focus:ring-0 focus:ring-offset-0",
-                          userButtonTrigger:
-                            "shadow-none ring-0 outline-none focus:outline-none focus:ring-0 focus:ring-offset-0",
-                          userButtonPopoverCard:
-                            "shadow-none ring-0 border-none outline-none focus:outline-none focus:ring-0 focus:ring-offset-0"
-                        }
-                      }}
-                    /> */}
                     <div className="flex justify-center items-center">
                       <UserDropdown>
-                        {/* <UserInfo />
-                        <AccountButton /> */}
+                        {mergedUser ? (
+                          <UserDropDownItem
+                            link={`/user/${mergedUser.clerkId}`}
+                            name="Account Settings"
+                          />
+                        ) : (
+                          // Fallback if mergedUser is not available, if needed.
+                          <UserDropDownItem
+                            link="/settings"
+                            name="Account Settings"
+                          />
+                        )}
                         <SignOutButton />
                       </UserDropdown>
                     </div>
