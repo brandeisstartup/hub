@@ -9,7 +9,7 @@ import TextInput from "@/ui/components/forms/inputs/text-input";
 import LongTextInput from "@/ui/components/forms/inputs/text-area";
 import { usePostProject } from "@/hooks/usePostProject";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
-import { useAuth, SignInButton } from "@clerk/nextjs";
+import { useAuth, SignInButton, SignIn } from "@clerk/nextjs";
 import { useMergedUser } from "@/context/UserContext";
 // Import the Combobox component from Headless UI
 import { Combobox } from "@headlessui/react";
@@ -283,9 +283,18 @@ function BigForm() {
 
       {/* Overlay if user is not signed in */}
       {!isSignedIn && !user && (
-        <div className="absolute inset-0 bg-white bg-opacity-5 backdrop-blur-sm flex flex-col items-center justify-center z-10">
-          <div className="max-w-sm p-4 bg-white rounded-md shadow-lg flex flex-col gap-2 justify-center items-center">
-            <h2>Must be signed in to continue</h2>
+        <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center z-50">
+          {/* Top section with logo and title */}
+
+          {/* Sign in prompt with matching background */}
+          <div className="max-w-sm p-6 bg-white bg-opacity-70 rounded-lg shadow-lg flex flex-col gap-4 justify-center items-center">
+            <div className="flex flex-col items-center mb-6">
+              <img src="/logo.webp" alt="Logo" className="h-24 mb-2" />
+            </div>
+            <p className="text-gray-700 text-center">
+              You must sign in or create an account by pressing the "Sign in
+              with Google" button below. You can edit your profile later.
+            </p>
             <SignInButton />
           </div>
         </div>

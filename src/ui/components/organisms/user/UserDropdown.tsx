@@ -20,9 +20,7 @@ export default function UserDropdown({ children }: UserDropdownProps) {
             className="h-8 w-8 rounded-full object-cover border-2 border-white"
           />
         ) : (
-          <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center border-2 border-white">
-            <span className="text-gray-600 font-medium">U</span>
-          </div>
+          <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600" />
         )}
       </Menu.Button>
       {/* Increase the width here from w-48 to w-64 (or use min-w-[16rem]) */}
@@ -37,9 +35,7 @@ export default function UserDropdown({ children }: UserDropdownProps) {
                 className="h-8 w-8 rounded-full object-cover"
               />
             ) : (
-              <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-600 font-medium">U</span>
-              </div>
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600" />
             )}
             <div className="flex-1">
               <div className="font-medium">
