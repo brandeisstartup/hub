@@ -9,7 +9,7 @@ import TextInput from "@/ui/components/forms/inputs/text-input";
 import LongTextInput from "@/ui/components/forms/inputs/text-area";
 import { usePostProject } from "@/hooks/usePostProject";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
-import { useAuth, SignInButton, SignIn } from "@clerk/nextjs";
+import { useAuth, SignInButton } from "@clerk/nextjs";
 import { useMergedUser } from "@/context/UserContext";
 // Import the Combobox component from Headless UI
 import { Combobox } from "@headlessui/react";
@@ -292,8 +292,11 @@ function BigForm() {
               <img src="/logo.webp" alt="Logo" className="h-24 mb-2" />
             </div>
             <p className="text-gray-700 text-center">
-              You must sign in or create an account by pressing the "Sign in
-              with Google" button below. You can edit your profile later.
+              <p className="text-gray-700 text-center">
+                You must sign in or create an account by pressing the &quot;Sign
+                in with Google&quot; button below. You can edit your profile
+                later.
+              </p>
             </p>
             <SignInButton />
           </div>

@@ -1,9 +1,7 @@
 import React from "react";
 import { SignIn } from "@clerk/nextjs";
 
-type Props = {};
-
-const Page = (props: Props) => {
+const Page = () => {
   return (
     <div className="min-h-screen flex">
       {/* Left half: Background image (hidden on small screens) */}
@@ -16,14 +14,13 @@ const Page = (props: Props) => {
       {/* Right half: Sign-in form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center bg-white p-8 font-sans">
         <div className="w-full max-w-md">
-          {/* Top section with logo, title and hint text */}
+          {/* Top section with title and hint text */}
           <div className="mb-8 text-center">
-            {/* <img src="/logo.webp" alt="Logo" className="mx-auto h-12 mb-4" /> */}
             <h1 className="text-2xl font-bold text-gray-800">
               Welcome to the Brandeis Startup Hub
             </h1>
             <p className="mt-2 text-gray-600">
-              Please sign in or create an account by using Goolgle and accepting
+              Please sign in or create an account by using Google and accepting
               Clerk. You can edit your profile later.
             </p>
           </div>
@@ -32,7 +29,7 @@ const Page = (props: Props) => {
           <SignIn
             appearance={{
               layout: {
-                // Hide the default logo since we already have one above
+                // Using the logo inside the sign-in component
                 logoImageUrl: "logo.webp",
                 logoPlacement: "inside"
               },
