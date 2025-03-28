@@ -1,15 +1,11 @@
 import { useCompetitions } from "@/context/EventContext";
 import { useMergedUser } from "@/context/UserContext";
-import { Disclosure, Menu } from "@headlessui/react";
+// import { Disclosure, Menu } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useMemo, useEffect } from "react";
-import {
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  SignOutButton
-} from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 
 import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
@@ -37,35 +33,50 @@ const findUpcomingEvent = (
   );
 };
 
-function UserInfo() {
-  return (
-    <Menu.Item>
-      {({ active }) => (
-        <a
-          href="/profile"
-          className={`${
-            active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-          } block px-4 py-2 text-sm`}>
-          Profile
-        </a>
-      )}
-    </Menu.Item>
-  );
-}
+// function UserInfo() {
+//   return (
+//     <Menu.Item>
+//       {({ active }) => (
+//         <a
+//           href="/search"
+//           className={`${
+//             active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+//           } block px-4 py-2 text-sm`}>
+//           Profile
+//         </a>
+//       )}
+//     </Menu.Item>
+//   );
+// }
 
-function AccountButton() {
+// function AccountButton() {
+//   return (
+//     <Menu.Item>
+//       {({ active }) => (
+//         <a
+//           href="/settings"
+//           className={`${
+//             active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+//           } block px-4 py-2 text-sm`}>
+//           Settings
+//         </a>
+//       )}
+//     </Menu.Item>
+//   );
+// }
+
+function SignOutButton() {
+  const { signOut } = useClerk();
+
   return (
-    <Menu.Item>
-      {({ active }) => (
-        <a
-          href="/settings"
-          className={`${
-            active ? "bg-gray-100 text-gray-900" : "text-gray-700"
-          } block px-4 py-2 text-sm`}>
-          Settings
-        </a>
-      )}
-    </Menu.Item>
+    // Clicking this button signs out a user
+    // and redirects them to the home page "/".
+    <button
+      className={`
+         "text-gray-700 block px-4 py-2 text-sm`}
+      onClick={() => signOut({ redirectUrl: "/" })}>
+      Sign out
+    </button>
   );
 }
 
@@ -287,8 +298,8 @@ export default function NavBarSearch() {
                     /> */}
                     <div className="flex justify-center items-center">
                       <UserDropdown>
-                        <UserInfo />
-                        <AccountButton />
+                        {/* <UserInfo />
+                        <AccountButton /> */}
                         <SignOutButton />
                       </UserDropdown>
                     </div>

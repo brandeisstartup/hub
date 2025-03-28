@@ -20,7 +20,7 @@ export default function UserDropdown({ children }: UserDropdownProps) {
             className="h-8 w-8 rounded-full object-cover border-2 border-white"
           />
         ) : (
-          <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
+          <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center border-2 border-white">
             <span className="text-gray-600 font-medium">U</span>
           </div>
         )}
