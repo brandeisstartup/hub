@@ -1,8 +1,9 @@
 import { useCompetitions } from "@/context/EventContext";
+import { useMergedUser } from "@/context/UserContext";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 import Logo from "@/ui/components/molecules/logo/logo";
@@ -32,6 +33,12 @@ const findUpcomingEvent = (
 
 export default function NavBarSearch() {
   const { competitions, upcomingEvents, loading } = useCompetitions();
+  const { user: mergedUser } = useMergedUser();
+
+  // Console log the merged user info when it changes.
+  useEffect(() => {
+    console.log("Merged User Info:", mergedUser);
+  }, [mergedUser]);
 
   // ✅ Use useMemo to prevent recalculating unless upcomingEvents changes
   const thisWeekEvent = useMemo(
@@ -231,13 +238,10 @@ export default function NavBarSearch() {
                     <UserButton
                       appearance={{
                         elements: {
-                          // Avatar container
                           userButtonAvatarBox:
                             "shadow-none ring-0 outline-none focus:outline-none focus:ring-0 focus:ring-offset-0",
-                          // The actual button element that gets focus
                           userButtonTrigger:
                             "shadow-none ring-0 outline-none focus:outline-none focus:ring-0 focus:ring-offset-0",
-                          // Popover card
                           userButtonPopoverCard:
                             "shadow-none ring-0 border-none outline-none focus:outline-none focus:ring-0 focus:ring-offset-0"
                         }
