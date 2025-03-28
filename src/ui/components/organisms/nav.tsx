@@ -254,18 +254,17 @@ export default function NavBarSearch() {
                   <SignedIn>
                     <div className="flex justify-center items-center">
                       <UserDropdown>
-                        {mergedUser ? (
+                        {mergedUser && (
                           <UserDropDownItem
                             link={`/user/${mergedUser.clerkId}`}
-                            name="Account Settings"
-                          />
-                        ) : (
-                          // Fallback if mergedUser is not available, if needed.
-                          <UserDropDownItem
-                            link="/settings"
-                            name="Account Settings"
+                            name="Edit Profile"
                           />
                         )}
+
+                        <UserDropDownItem
+                          link={`/myprojects`}
+                          name="My Projects"
+                        />
                         <SignOutButton />
                       </UserDropdown>
                     </div>

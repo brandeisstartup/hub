@@ -10,7 +10,9 @@ import LongTextInput from "@/ui/components/forms/inputs/text-area";
 import { usePostProject } from "@/hooks/usePostProject";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 // import { SignIn } from "@clerk/nextjs"; // Clerk's sign-in component
-import { useAuth } from "@clerk/nextjs"; // or "@clerk/clerk-react"
+import { useAuth, SignInButton } from "@clerk/nextjs"; // or "@clerk/clerk-react"
+
+import { useMergedUser } from "@/context/UserContext";
 
 // Interface for form values
 interface FormValues extends Record<string, unknown> {
@@ -22,6 +24,7 @@ interface FormValues extends Record<string, unknown> {
 
 function BigForm() {
   const { userId } = useAuth(); // or useUser() if you prefer
+  const { user } = useMergedUser();
   const isSignedIn = !!userId; // true if user is signed in
 
   const methods = useForm<FormValues>({ mode: "onSubmit" });
@@ -44,7 +47,7 @@ function BigForm() {
       short_description: data.blurb,
       long_description: data.description,
       competition: "",
-      team_members_emails: ["brandeisstartup@gmail.com"],
+      team_members_emails: [`${user?.email}`],
       video_url: data.videoUrl || null,
       image_url: uploadedImageUrl || null
     };
@@ -71,7 +74,15 @@ function BigForm() {
           onSubmit={handleSubmit(onSubmit)}
           className="w-full space-y-4 p-4 font-sans max-w-2xl backdrop-blur-sm">
           <Heading label={"Project Form"} />
-          <p>Add your project. You can add team members and edit this later.</p>
+          <h2>
+            Add your project. You can add team members and edit this later.
+          </h2>
+          <div>
+            <p className="text-blue-500">
+              Your name and email {user?.email} will be associated with this
+              project
+            </p>
+          </div>
 
           {/* Title Input */}
           <TextInput<FormValues>
@@ -164,9 +175,14 @@ function BigForm() {
 
       {/* If user is NOT signed in, show an overlay with a sign-in modal */}
       {!isSignedIn && (
-        <div className="absolute inset-0 bg-white bg-opacity-5 backdrop-blur-sm flex items-center justify-center z-10">
-          <div className="max-w-sm p-4 bg-white rounded-md shadow-lg">
-            Must be signed in to continue
+        <div className="absolute inset-0 bg-white bg-opacity-5 backdrop-blur-sm flex flex-col items-center justify-center z-10">
+          <div className="max-w-sm p-4 bg-white rounded-md shadow-lg flex flex-col gap-2 justify-center items-center">
+            <div className="">
+              <h2> Must be signed in to continue</h2>
+            </div>
+            <div className="">
+              <SignInButton />
+            </div>
           </div>
         </div>
       )}
