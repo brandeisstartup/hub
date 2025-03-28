@@ -9,15 +9,15 @@ import Layout from "@/pages/layouts/layout";
 import { ClerkProvider } from "@clerk/nextjs";
 import React, { Suspense } from "react";
 
-// // Import and configure NProgress
-// import Router from "next/router";
-// import NProgress from "nprogress";
-// import "nprogress/nprogress.css";
+// Import and configure NProgress
+import Router from "next/router";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
-// // Configure NProgress to start on route change
-// Router.events.on("routeChangeStart", () => NProgress.start());
-// Router.events.on("routeChangeComplete", () => NProgress.done());
-// Router.events.on("routeChangeError", () => NProgress.done());
+// Configure NProgress to start on route change
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 // Dynamically import the UserProvider (client-only)
 const UserProvider = dynamic(
