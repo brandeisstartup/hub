@@ -1,6 +1,7 @@
 import { useCompetitions } from "@/context/EventContext";
 import { useMergedUser } from "@/context/UserContext";
-import { Disclosure, Menu } from "@headlessui/react";
+// import { Disclosure, Menu } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useMemo, useEffect } from "react";

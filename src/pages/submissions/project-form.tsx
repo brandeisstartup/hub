@@ -9,7 +9,7 @@ import TextInput from "@/ui/components/forms/inputs/text-input";
 import LongTextInput from "@/ui/components/forms/inputs/text-area";
 import { usePostProject } from "@/hooks/usePostProject";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
-import { SignIn } from "@clerk/nextjs"; // Clerk's sign-in component
+// import { SignIn } from "@clerk/nextjs"; // Clerk's sign-in component
 import { useAuth } from "@clerk/nextjs"; // or "@clerk/clerk-react"
 
 // Interface for form values
@@ -21,7 +21,7 @@ interface FormValues extends Record<string, unknown> {
 }
 
 function BigForm() {
-  const { isLoaded, userId } = useAuth(); // or useUser() if you prefer
+  const { userId } = useAuth(); // or useUser() if you prefer
   const isSignedIn = !!userId; // true if user is signed in
 
   const methods = useForm<FormValues>({ mode: "onSubmit" });
