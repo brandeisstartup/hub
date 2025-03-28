@@ -283,9 +283,21 @@ function BigForm() {
 
       {/* Overlay if user is not signed in */}
       {!isSignedIn && !user && (
-        <div className="absolute inset-0 bg-white bg-opacity-5 backdrop-blur-sm flex flex-col items-center justify-center z-10">
-          <div className="max-w-sm p-4 bg-white rounded-md shadow-lg flex flex-col gap-2 justify-center items-center">
-            <h2>Must be signed in to continue</h2>
+        <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center z-50">
+          {/* Top section with logo and title */}
+
+          {/* Sign in prompt with matching background */}
+          <div className="max-w-sm p-6 bg-white bg-opacity-70 rounded-lg shadow-lg flex flex-col gap-4 justify-center items-center">
+            <div className="flex flex-col items-center mb-6">
+              <img src="/logo.webp" alt="Logo" className="h-24 mb-2" />
+            </div>
+            <p className="text-gray-700 text-center">
+              <p className="text-gray-700 text-center">
+                You must sign in or create an account by pressing the &quot;Sign
+                in with Google&quot; button below. You can edit your profile
+                later.
+              </p>
+            </p>
             <SignInButton />
           </div>
         </div>
