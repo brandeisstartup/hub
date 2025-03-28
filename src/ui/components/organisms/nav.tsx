@@ -1,6 +1,6 @@
 import { useCompetitions } from "@/context/EventContext";
 import { useMergedUser } from "@/context/UserContext";
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, Menu } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useMemo, useEffect } from "react";
@@ -36,6 +36,38 @@ const findUpcomingEvent = (
     }) || null
   );
 };
+
+function UserInfo() {
+  return (
+    <Menu.Item>
+      {({ active }) => (
+        <a
+          href="/profile"
+          className={`${
+            active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+          } block px-4 py-2 text-sm`}>
+          Profile
+        </a>
+      )}
+    </Menu.Item>
+  );
+}
+
+function AccountButton() {
+  return (
+    <Menu.Item>
+      {({ active }) => (
+        <a
+          href="/settings"
+          className={`${
+            active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+          } block px-4 py-2 text-sm`}>
+          Settings
+        </a>
+      )}
+    </Menu.Item>
+  );
+}
 
 export default function NavBarSearch() {
   const { competitions, upcomingEvents, loading } = useCompetitions();
@@ -254,8 +286,11 @@ export default function NavBarSearch() {
                       }}
                     /> */}
                     <div className="flex justify-center items-center">
-                      <UserDropdown />
-                      <SignOutButton />
+                      <UserDropdown>
+                        <UserInfo />
+                        <AccountButton />
+                        <SignOutButton />
+                      </UserDropdown>
                     </div>
                   </SignedIn>
                 </div>
