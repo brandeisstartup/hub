@@ -10,7 +10,7 @@ import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
 import TopBanner from "@/ui/components/contentfulComponents/banner/topBanner";
 import UserDropdown from "@/ui/components/organisms/user/UserDropdown";
-import { UserDropDownItem } from "@/ui/components/organisms/user/UserDropDownItem";
+// import UserDropDownItem from "@/ui/components/organisms/user/UserDropDownItem";
 
 const findUpcomingEvent = (
   events: { title: string; startDate: string; endDate: string }[],
@@ -229,14 +229,14 @@ export default function NavBarSearch() {
                               as={Link}
                               key={link.href}
                               href={link.href}
-                              className="block py-2 text-gray-50 hover:underline">
+                              className="block py-2 text-gray-50 hover:underline w-64 ">
                               {link.name}
                             </Disclosure.Button>
                           ))}
                         </div>
                       ))}
                       <Link
-                        href="#"
+                        href="sign-in"
                         className="text-white text-lg bg-BrandeisBrandShade text-center py-2 rounded-md">
                         Sign In
                       </Link>
@@ -254,17 +254,6 @@ export default function NavBarSearch() {
                   <SignedIn>
                     <div className="flex justify-center items-center">
                       <UserDropdown>
-                        {mergedUser && (
-                          <UserDropDownItem
-                            link={`/user/${mergedUser.clerkId}`}
-                            name="Edit Profile"
-                          />
-                        )}
-
-                        <UserDropDownItem
-                          link={`/user/my-projects`}
-                          name="My Projects"
-                        />
                         <SignOutButton />
                       </UserDropdown>
                     </div>
