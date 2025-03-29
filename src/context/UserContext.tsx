@@ -55,7 +55,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         email: clerkUser.primaryEmailAddress?.emailAddress || "",
         firstName: data.getUserByClerkId.firstName || clerkUser.firstName || "",
         lastName: data.getUserByClerkId.lastName || clerkUser.lastName || "",
-        imageUrl: data.getUserByClerkId.imageUrl || ""
+        imageUrl: data.getUserByClerkId.imageUrl || clerkUser.imageUrl
       };
     }
     return null;
