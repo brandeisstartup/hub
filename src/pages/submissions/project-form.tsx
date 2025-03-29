@@ -283,7 +283,7 @@ function BigForm() {
 
       {/* Overlay if user is not signed in */}
       {!isSignedIn && !user && (
-        <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center z-50">
+        <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center z-4">
           {/* Top section with logo and title */}
 
           {/* Sign in prompt with matching background */}
