@@ -262,7 +262,7 @@ export default function NavBarSearch() {
                         )}
 
                         <UserDropDownItem
-                          link={`/myprojects`}
+                          link={`/user/my-projects`}
                           name="My Projects"
                         />
                         <SignOutButton />
