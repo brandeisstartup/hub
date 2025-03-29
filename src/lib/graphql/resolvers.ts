@@ -96,6 +96,18 @@ export const resolvers = {
       prisma.users.findUnique({ where: { id } }),
     getUserByClerkId: async (_: unknown, { clerkId }: { clerkId: string }) => {
       return prisma.users.findUnique({ where: { clerkId } });
+    },
+    projectsByEmail: {
+      resolve: async (_: unknown, { email }: { email: string }) => {
+        return prisma.projects.findMany({
+          where: {
+            OR: [
+              { creator_email: { equals: email, mode: "insensitive" } },
+              { team_members_emails: { has: email } }
+            ]
+          }
+        });
+      }
     }
   },
 
