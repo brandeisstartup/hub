@@ -119,28 +119,33 @@ export default function NavBarSearch() {
         }))
       },
       {
-        name: "Resources",
+        name: "Articles & Resources",
         href: "/resources",
         isActive: "/404",
         links: [
           {
+            name: "Blog",
+            description: "Read our latest blog posts and news.",
+            href: "/blog"
+          },
+          {
+            name: "Articles",
+            description: "Explore insightful articles and research.",
+            href: "/articles"
+          },
+          {
+            name: "Help",
+            description: "Get help and support for your projects.",
+            href: "/help"
+          },
+          {
             name: "Funding Resources",
-            description: "Find funding resources at Brandeis",
+            description: "Discover funding opportunities at Brandeis.",
             href: "/resources#funding"
           },
           {
-            name: "Community Resources",
-            description: "Community resources inside and outside Brandeis",
-            href: "/resources#community"
-          },
-          {
-            name: "Patenting Resources",
-            description: "Protect your intellectual property",
-            href: "/resources#patents"
-          },
-          {
             name: "Software Resources",
-            description: "Free software and discounts for Brandeis students",
+            description: "Access free software and exclusive discounts.",
             href: "/resources#software"
           }
         ]
