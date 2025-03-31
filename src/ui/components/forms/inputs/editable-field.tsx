@@ -41,7 +41,7 @@ const EditableField: React.FC<EditableFieldProps> = ({
       <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
         <dt className="text-sm font-medium leading-6 text-gray-900">{label}</dt>
         <dd className="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-          <span className="flex-grow">{value}</span>
+          <span className="flex-grow max-w-md">{value}</span>
           <span className="ml-4 flex-shrink-0">
             <button
               type="button"
