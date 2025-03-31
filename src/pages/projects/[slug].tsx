@@ -200,7 +200,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
         {/* Left Column */}
         <section
           id="fixed"
-          className=" w-full lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible ">
+          className=" w-full  h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible ">
           <Heading label={title} />
 
           <dd className="flex flex-row gap-1 font-sans flex-wrap">
