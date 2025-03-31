@@ -2,31 +2,12 @@
 
 // import { useRouter } from "next/router";
 // import { useState } from "react";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import { useMergedUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs"; // Import useAuth from Clerk
-
-// -----------------------------
-// GraphQL Query to fetch projects by email
-// -----------------------------
-const PROJECTS_BY_EMAIL = gql`
-  query ProjectsByEmail($email: String!) {
-    projectsByEmail(email: $email) {
-      id
-      title
-      created_date
-      creator_email
-      short_description
-      long_description
-      competition
-      team_members_emails
-      video_url
-      image_url
-    }
-  }
-`;
+import { PROJECTS_BY_EMAIL } from "@/lib/graphql/queries";
 
 // -----------------------------
 // Component to render the list of projects for the signed-in user

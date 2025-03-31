@@ -40,7 +40,7 @@ export default function UserDropdown({ children }: UserDropdownProps) {
             description="View your projects and contributions"
           />
           <UserDropDownItem
-            link={`/user/${user?.clerkId}`}
+            link={`/user/edit-profile`}
             name="Edit Profile"
             description="Manage your personal information"
           />
