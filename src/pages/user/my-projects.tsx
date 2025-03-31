@@ -18,7 +18,8 @@ function ProjectsList() {
 
   const { data, loading, error } = useQuery(PROJECTS_BY_EMAIL, {
     variables: { email },
-    skip: !email
+    skip: !email,
+    fetchPolicy: "network-only"
   });
 
   if (userLoading) return <div>Loading user data...</div>;
