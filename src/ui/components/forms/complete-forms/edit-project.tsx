@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import toast from "react-hot-toast";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import EditableField from "@/ui/components/forms/inputs/editable-field";
 import EditableFieldList from "../inputs/editable-field-list";
+import ImageUploader from "@/ui/components/forms/inputs/image-uploader";
+import { UPDATE_PROJECT_FIELD } from "@/lib/graphql/mutations";
 
 interface EditProjectProps {
   id: number;
@@ -25,18 +29,45 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
     team_members_emails: [...props.team_members_emails] // Ensure fresh reference
   });
 
+  // State to control the key for ImageUploader to force remount
+  const [uploaderKey, setUploaderKey] = useState(0);
+
+  // Prepare the mutation hook using the provided UPDATE_PROJECT_FIELD mutation
+  const [updateProjectField] = useMutation(UPDATE_PROJECT_FIELD);
+
   const handleFieldUpdate = (fieldKey: string, newValue: string) => {
     console.log(`Updating ${fieldKey} to: ${newValue}`);
     setProject((prev) => ({ ...prev, [fieldKey]: newValue }));
+    toast.success(`${fieldKey} updated successfully!`);
   };
 
   const handleFieldListUpdate = (fieldKey: string, updatedValues: string[]) => {
     console.log(`Updating ${fieldKey} to:`, updatedValues);
-
     setProject((prev) => ({
       ...prev,
       [fieldKey]: [...updatedValues] // Ensure new reference
     }));
+    toast.success(`${fieldKey} updated successfully!`);
+  };
+
+  // Handler for image upload completion using UPDATE_PROJECT_FIELD mutation
+  const handleImageUploadComplete = async (url: string) => {
+    try {
+      const variables = {
+        id: props.id,
+        key: "image_url",
+        newValue: url
+      };
+      const { data } = await updateProjectField({ variables });
+      console.log("Image updated:", data);
+      setProject((prev) => ({ ...prev, image_url: url }));
+      // Force the ImageUploader to remount by updating the key
+      setUploaderKey((prev) => prev + 1);
+      toast.success("Project image updated successfully!");
+    } catch (err) {
+      console.error("Update failed:", err);
+      toast.error("Image update failed. Please try again.");
+    }
   };
 
   return (
@@ -74,15 +105,28 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
         onChange={handleFieldUpdate}
         projectId={props.id}
       />
-      <EditableField
-        label="Image URL"
-        fieldKey="image_url"
-        value={project.image_url}
-        onChange={handleFieldUpdate}
-        projectId={props.id}
-      />
 
-      {/* ✅ FIX: Use `project.team_members_emails` to ensure UI updates */}
+      {/* Image uploader row */}
+      <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <dt className="text-sm font-medium leading-6 text-gray-900">
+          Project Image
+        </dt>
+        <dd className="mt-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 justify-between">
+          <img
+            src={project.image_url}
+            alt="Project Image"
+            className="rounded w-28 h-28 object-cover"
+          />
+          <span className="ml-4 max-w-xxxs">
+            <ImageUploader
+              key={uploaderKey}
+              label=""
+              onUploadComplete={handleImageUploadComplete}
+            />
+          </span>
+        </dd>
+      </div>
+
       <EditableFieldList
         label="Team Members"
         fieldKey="team_members_email"
