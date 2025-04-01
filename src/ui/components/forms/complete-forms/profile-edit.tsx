@@ -129,11 +129,6 @@ const EditUser: React.FC<EditUserProps> = (props) => {
       />
 
       {/* The ImageUploader now receives a dynamic key */}
-      <ImageUploader
-        key={uploaderKey}
-        label="Change Profile Picture"
-        onUploadComplete={handleImageUploadComplete}
-      />
 
       <EditableFieldNumber
         label="Graduation Year"
@@ -149,6 +144,39 @@ const EditUser: React.FC<EditUserProps> = (props) => {
         onChange={handleFieldUpdate}
         userEmail={user.email}
       />
+      {/* <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"></div>
+      <div className="flex flex-row gap-2">
+        <img
+          src={user.imageUrl}
+          alt="Profile Picture"
+          className="rounded-full w-20 h-20 object-cover"
+        />
+        <ImageUploader
+          key={uploaderKey}
+          label=""
+          onUploadComplete={handleImageUploadComplete}
+        />
+      </div> */}
+
+      <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <dt className="text-sm font-medium leading-6 text-gray-900">
+          Profile Picture
+        </dt>
+        <dd className="mt-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 justify-between">
+          <img
+            src={user.imageUrl}
+            alt="Profile Picture"
+            className="rounded-full w-20 h-20 object-cover"
+          />
+          <span className="ml-4 flex-shrink-0">
+            <ImageUploader
+              key={uploaderKey}
+              label=""
+              onUploadComplete={handleImageUploadComplete}
+            />
+          </span>
+        </dd>
+      </div>
     </div>
   );
 };
