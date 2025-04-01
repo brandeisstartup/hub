@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import EditableField from "@/ui/components/forms/inputs/editable-field-user";
+import EditableFieldNumber from "@/ui/components/forms/inputs/editable-field-number";
 
 interface EditUserProps {
   email: string;
@@ -21,11 +22,18 @@ const EditUser: React.FC<EditUserProps> = (props) => {
     lastName: props.lastName || "",
     bio: props.bio || "",
     imageUrl: props.imageUrl || "",
-    graduationYear: props.graduationYear || null,
+    graduationYear: props.graduationYear ?? null, // allow null if not provided
     major: props.major || ""
   });
 
+  // Handler for text fields
   const handleFieldUpdate = (fieldKey: string, newValue: string) => {
+    console.log(`Updating ${fieldKey} to: ${newValue}`);
+    setUser((prev) => ({ ...prev, [fieldKey]: newValue }));
+  };
+
+  // Handler for numeric fields
+  const handleNumberFieldUpdate = (fieldKey: string, newValue: number) => {
     console.log(`Updating ${fieldKey} to: ${newValue}`);
     setUser((prev) => ({ ...prev, [fieldKey]: newValue }));
   };
@@ -79,11 +87,11 @@ const EditUser: React.FC<EditUserProps> = (props) => {
         onChange={handleFieldUpdate}
         userEmail={user.email}
       />
-      <EditableField
+      <EditableFieldNumber
         label="Graduation Year"
         fieldKey="graduationYear"
-        value={user.graduationYear ? String(user.graduationYear) : ""}
-        onChange={handleFieldUpdate}
+        value={user.graduationYear ?? 2028} // fallback to 0 if null
+        onChange={handleNumberFieldUpdate}
         userEmail={user.email}
       />
       <EditableField
