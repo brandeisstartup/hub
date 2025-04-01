@@ -55,6 +55,7 @@ export const GET_USER_BY_CLERK_ID = gql`
       id
       clerkId
       email
+      secondaryEmail
       firstName
       lastName
       bio

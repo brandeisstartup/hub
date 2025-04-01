@@ -10,6 +10,10 @@ import { useQuery } from "@apollo/client";
 import { GET_USER_BY_CLERK_ID } from "@/lib/graphql/queries";
 
 type User = {
+  secondaryEmail: string | undefined;
+  bio: string | undefined;
+  graduationYear: number | undefined;
+  major: string | undefined;
   clerkId: string;
   email: string;
   firstName?: string;
@@ -55,7 +59,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         email: clerkUser.primaryEmailAddress?.emailAddress || "",
         firstName: data.getUserByClerkId.firstName || clerkUser.firstName || "",
         lastName: data.getUserByClerkId.lastName || clerkUser.lastName || "",
-        imageUrl: data.getUserByClerkId.imageUrl || clerkUser.imageUrl
+        imageUrl: data.getUserByClerkId.imageUrl || clerkUser.imageUrl,
+        secondaryEmail: data.getUserByClerkId.secondaryEmail || undefined,
+        bio: data.getUserByClerkId.bio || undefined,
+        graduationYear: data.getUserByClerkId.graduationYear || undefined,
+        major: data.getUserByClerkId.major || undefined
       };
     }
     return null;

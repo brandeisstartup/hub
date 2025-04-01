@@ -36,6 +36,16 @@ interface UpdateUserArgs {
   major?: string;
 }
 
+interface UpdateUserData {
+  secondaryEmail?: string | null;
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
+  imageUrl?: string;
+  graduationYear?: number;
+  major?: string;
+}
+
 export const resolvers = {
   Query: {
     projects: async (_: unknown, { search }: { search?: string }) => {
@@ -137,22 +147,30 @@ export const resolvers = {
     ) => {
       return prisma.users.delete({ where: { clerkId } });
     },
-
     updateUser: async (_: unknown, args: UpdateUserArgs) => {
       if (!args.email) {
         throw new Error("Email is required to update a user.");
       }
+
+      // Build an update object that only includes fields that are defined
+      const updateData: UpdateUserData = {};
+
+      if (args.secondaryEmail !== undefined) {
+        // Optionally, convert an empty string to null
+        updateData.secondaryEmail =
+          args.secondaryEmail.trim() === "" ? null : args.secondaryEmail;
+      }
+      if (args.firstName !== undefined) updateData.firstName = args.firstName;
+      if (args.lastName !== undefined) updateData.lastName = args.lastName;
+      if (args.bio !== undefined) updateData.bio = args.bio;
+      if (args.imageUrl !== undefined) updateData.imageUrl = args.imageUrl;
+      if (args.graduationYear !== undefined)
+        updateData.graduationYear = args.graduationYear;
+      if (args.major !== undefined) updateData.major = args.major;
+
       return prisma.users.update({
         where: { email: args.email },
-        data: {
-          secondaryEmail: args.secondaryEmail,
-          firstName: args.firstName,
-          lastName: args.lastName,
-          bio: args.bio,
-          imageUrl: args.imageUrl,
-          graduationYear: args.graduationYear,
-          major: args.major
-        }
+        data: updateData
       });
     },
 
