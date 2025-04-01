@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
+import toast from "react-hot-toast"; // Import react-hot-toast
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import EditableField from "@/ui/components/forms/inputs/editable-field-user";
 import EditableFieldNumber from "@/ui/components/forms/inputs/editable-field-number";
@@ -45,8 +46,10 @@ const EditUser: React.FC<EditUserProps> = (props) => {
       const { data } = await updateUser({ variables });
       console.log(`Field ${fieldKey} updated to: ${newValue}`, data);
       setUser((prev) => ({ ...prev, [fieldKey]: newValue }));
+      toast.success(`${fieldKey} updated successfully!`);
     } catch (err) {
       console.error("Update failed:", err);
+      toast.error("Update failed. Please try again.");
     }
   };
 
@@ -63,8 +66,10 @@ const EditUser: React.FC<EditUserProps> = (props) => {
       const { data } = await updateUser({ variables });
       console.log(`Field ${fieldKey} updated to: ${newValue}`, data);
       setUser((prev) => ({ ...prev, [fieldKey]: newValue }));
+      toast.success(`${fieldKey} updated successfully!`);
     } catch (err) {
       console.error("Update failed:", err);
+      toast.error("Update failed. Please try again.");
     }
   };
 
@@ -80,8 +85,10 @@ const EditUser: React.FC<EditUserProps> = (props) => {
       setUser((prev) => ({ ...prev, imageUrl: url }));
       // Force the ImageUploader to remount by updating the key
       setUploaderKey((prev) => prev + 1);
+      toast.success("Profile picture updated successfully!");
     } catch (err) {
       console.error("Update failed:", err);
+      toast.error("Image update failed. Please try again.");
     }
   };
 
@@ -92,20 +99,6 @@ const EditUser: React.FC<EditUserProps> = (props) => {
         Update your profile information.
       </p>
 
-      <EditableField
-        label="Email"
-        fieldKey="email"
-        value={user.email}
-        onChange={handleFieldUpdate}
-        userEmail={user.email}
-      />
-      <EditableField
-        label="Secondary Email"
-        fieldKey="secondaryEmail"
-        value={user.secondaryEmail}
-        onChange={handleFieldUpdate}
-        userEmail={user.email}
-      />
       <EditableField
         label="First Name"
         fieldKey="firstName"
@@ -128,7 +121,25 @@ const EditUser: React.FC<EditUserProps> = (props) => {
         userEmail={user.email}
       />
 
-      {/* The ImageUploader now receives a dynamic key */}
+      <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <dt className="text-sm font-medium leading-6 text-gray-900">
+          Profile Picture
+        </dt>
+        <dd className="mt-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 justify-between">
+          <img
+            src={user.imageUrl}
+            alt="Profile Picture"
+            className="rounded-full w-28 h-28 object-cover"
+          />
+          <span className="ml-4 max-w-xxxs">
+            <ImageUploader
+              key={uploaderKey}
+              label=""
+              onUploadComplete={handleImageUploadComplete}
+            />
+          </span>
+        </dd>
+      </div>
 
       <EditableFieldNumber
         label="Graduation Year"
@@ -144,39 +155,13 @@ const EditUser: React.FC<EditUserProps> = (props) => {
         onChange={handleFieldUpdate}
         userEmail={user.email}
       />
-      {/* <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"></div>
-      <div className="flex flex-row gap-2">
-        <img
-          src={user.imageUrl}
-          alt="Profile Picture"
-          className="rounded-full w-20 h-20 object-cover"
-        />
-        <ImageUploader
-          key={uploaderKey}
-          label=""
-          onUploadComplete={handleImageUploadComplete}
-        />
-      </div> */}
-
-      <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-        <dt className="text-sm font-medium leading-6 text-gray-900">
-          Profile Picture
-        </dt>
-        <dd className="mt-1 flex items-center text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 justify-between">
-          <img
-            src={user.imageUrl}
-            alt="Profile Picture"
-            className="rounded-full w-20 h-20 object-cover"
-          />
-          <span className="ml-4 flex-shrink-0">
-            <ImageUploader
-              key={uploaderKey}
-              label=""
-              onUploadComplete={handleImageUploadComplete}
-            />
-          </span>
-        </dd>
-      </div>
+      <EditableField
+        label="Secondary Email"
+        fieldKey="secondaryEmail"
+        value={user.secondaryEmail}
+        onChange={handleFieldUpdate}
+        userEmail={user.email}
+      />
     </div>
   );
 };

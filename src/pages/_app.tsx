@@ -8,6 +8,7 @@ import "@/styles/globals.css";
 import Layout from "@/pages/layouts/layout";
 import { ClerkProvider } from "@clerk/nextjs";
 import React, { Suspense } from "react";
+import { Toaster } from "react-hot-toast";
 
 // Import and configure NProgress
 import Router from "next/router";
@@ -62,6 +63,33 @@ export default function App({ Component, pageProps }: AppProps) {
               }>
               <Layout>
                 <Component {...pageProps} />
+                <Toaster
+                  toastOptions={{
+                    // Define default styles for all toasts
+                    style: {
+                      background: "#333",
+                      color: "#fff",
+                      fontFamily: "Inter, sans-serif",
+                      borderRadius: "8px",
+                      padding: "16px",
+                      width: "100%"
+                    },
+                    // Specific styles for success toasts
+                    success: {
+                      style: {
+                        background: "green",
+                        color: "#fff"
+                      }
+                    },
+                    // Specific styles for error toasts
+                    error: {
+                      style: {
+                        background: "red",
+                        color: "#fff"
+                      }
+                    }
+                  }}
+                />
               </Layout>
             </Suspense>
           </UserProvider>
