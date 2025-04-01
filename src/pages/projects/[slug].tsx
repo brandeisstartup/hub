@@ -195,7 +195,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
   };
 
   return (
-    <main className="py-24">
+    <main className="py-24 font-sans">
       <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
         {/* Left Column */}
         <section
@@ -262,7 +262,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
         </section>
 
         {/* Right Column */}
-        <section className="w-full flex flex-col gap-6">
+        <section className="w-full flex flex-col gap-20">
           {/* Combined descriptions */}
           <div className="">
             <Heading label="Project Description" />
@@ -309,7 +309,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
             <dd className="list-disc list-inside">
               {(members || []).map((member, index) => (
                 <dl key={index} className="flex mt-2">
-                  <div className="flex flex-row gap-2">
+                  <div className="flex flex-row gap-2 fon">
                     <div className="w-24 h-24 bg-BrandeisBrandShade"></div>
                     <div className="flex flex-col gap-1 justify-around py-2">
                       <div>{member}</div>
@@ -326,7 +326,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
               ))}
               {(teamMembers || []).map((member, index) => (
                 <dl key={index} className="flex mt-2">
-                  <div className="flex flex-row gap-2">
+                  <div className="flex flex-row gap-2 font-sans">
                     <div className="w-24 h-24">
                       <Image
                         src={member.imageUrl || "/default-image.png"}
@@ -336,16 +336,15 @@ export default function ProjectPage({ project }: ServerSideProps) {
                       />
                     </div>
                     <div className="flex flex-col gap-1 ">
-                      <div>{member.firstName + " " + member.lastName}</div>
+                      <div className="font-semibold">
+                        {member.firstName + " " + member.lastName}
+                      </div>
                       <div>
                         {member.graduationYear &&
                           member.major &&
                           member.major + " " + member.graduationYear}
                       </div>
-                      <div className="max-w-2xl">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Ex minus beatae quod modi.
-                      </div>
+                      <div className="max-w-2xl">{member.bio}</div>
                     </div>
                   </div>
                 </dl>
