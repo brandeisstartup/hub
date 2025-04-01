@@ -66,3 +66,38 @@ export const DELETE_PROJECT_FIELD = gql`
     }
   }
 `;
+
+export const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUser(
+    $email: String!
+    $secondaryEmail: String
+    $firstName: String
+    $lastName: String
+    $bio: String
+    $imageUrl: String
+    $graduationYear: Int
+    $major: String
+  ) {
+    updateUser(
+      email: $email
+      secondaryEmail: $secondaryEmail
+      firstName: $firstName
+      lastName: $lastName
+      bio: $bio
+      imageUrl: $imageUrl
+      graduationYear: $graduationYear
+      major: $major
+    ) {
+      clerkId
+      id
+      email
+      secondaryEmail
+      firstName
+      lastName
+      bio
+      imageUrl
+      graduationYear
+      major
+    }
+  }
+`;

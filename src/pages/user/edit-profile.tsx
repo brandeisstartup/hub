@@ -2,8 +2,7 @@
 
 import { useMergedUser } from "@/context/UserContext";
 import { useAuth } from "@clerk/nextjs";
-import Heading from "@/ui/components/brandeisBranding/headings/heading";
-// import EditUser from "@/ui/components/forms/edit-user"; // Your form component for editing user profile
+import EditUser from "@/ui/components/forms/complete-forms/profile-edit"; // Your form component for editing user profile
 
 export default function EditUserPage() {
   const { isLoaded, isSignedIn } = useAuth();
@@ -28,7 +27,7 @@ export default function EditUserPage() {
     <main className="py-24">
       <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
         {/* Left Column: User Profile Data */}
-        <section className="w-full border p-8 lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
+        <section className="w-full border p-8 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
           <div className="flex items-center space-x-4">
             {user.imageUrl ? (
               <img
@@ -57,12 +56,16 @@ export default function EditUserPage() {
 
         {/* Right Column: Edit Profile Form */}
         <section className="w-full flex flex-col gap-6 border p-8">
-          <Heading label="Edit Your Profile" />
-          {/* Uncomment and use your edit form component when ready */}
-          {/* <EditUser user={user} /> */}
-          <div>
-            <p>Edit user form goes here.</p>
-          </div>
+          <EditUser
+            email={user.email}
+            secondaryEmail={user.secondaryEmail}
+            firstName={user.firstName}
+            lastName={user.lastName}
+            bio={user.bio}
+            imageUrl={user.imageUrl}
+            graduationYear={user.graduationYear}
+            major={user.major}
+          />
         </section>
       </div>
     </main>
