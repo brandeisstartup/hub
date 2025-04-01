@@ -119,7 +119,7 @@ function ImageUploader({ onUploadComplete, label }: ImageUploaderProps) {
           <label htmlFor="file-upload" className="cursor-pointer block">
             {isDragging
               ? "Release to drop your image"
-              : "Drag and drop your image here, or click to select."}
+              : "Drop your image here, or click to select."}
           </label>
           <input
             id="file-upload"
