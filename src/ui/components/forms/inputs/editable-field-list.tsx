@@ -67,7 +67,7 @@ const EditableFieldList: React.FC<EditableFieldListProps> = ({
                   <span>{email}</span>
                   <button
                     onClick={() => handleRemove(email)}
-                    className=" text-red-600 hover:text-red-800"
+                    className="inline-flex text-red-500 items-center px-4 py-2 border  text-sm font-medium rounded-md shadow-sm  transition duration-150"
                     disabled={loading}>
                     Remove
                   </button>
