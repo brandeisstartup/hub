@@ -7,8 +7,10 @@ import client from "@/lib/apolloClient";
 import "@/styles/globals.css";
 import Layout from "@/pages/layouts/layout";
 import { ClerkProvider } from "@clerk/nextjs";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import Script from "next/script";
+import { useRouter } from "next/router";
 
 // Import and configure NProgress
 import Router from "next/router";
@@ -26,7 +28,32 @@ const UserProvider = dynamic(
   { ssr: false }
 );
 
+// Declare a global type for window.gtag to avoid "any" issues.
+declare global {
+  interface Window {
+    gtag: (...args: unknown[]) => void;
+  }
+}
+
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
+  // Track page views for Google Analytics on route changes
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      if (typeof window !== "undefined" && window.gtag) {
+        window.gtag("config", "G-5JX5Y9NN1H", {
+          page_path: url
+        });
+      }
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <ClerkProvider
       appearance={{
@@ -54,7 +81,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <ApolloProvider client={client}>
         <CompetitionProvider>
           <UserProvider>
-            {/* Suspense fallback can be a spinner, loader, etc. */}
             <Suspense
               fallback={
                 <div className="fixed top-0 left-0 right-0 bg-gray-100 p-4 text-center">
@@ -62,10 +88,22 @@ export default function App({ Component, pageProps }: AppProps) {
                 </div>
               }>
               <Layout>
+                {/* Google Analytics Scripts */}
+                <Script
+                  strategy="afterInteractive"
+                  src="https://www.googletagmanager.com/gtag/js?id=G-5JX5Y9NN1H"
+                />
+                <Script id="gtag-init" strategy="afterInteractive">
+                  {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-5JX5Y9NN1H');
+                  `}
+                </Script>
                 <Component {...pageProps} />
                 <Toaster
                   toastOptions={{
-                    // Define default styles for all toasts
                     style: {
                       background: "#333",
                       color: "#fff",
@@ -74,14 +112,12 @@ export default function App({ Component, pageProps }: AppProps) {
                       padding: "16px",
                       width: "100%"
                     },
-                    // Specific styles for success toasts
                     success: {
                       style: {
                         background: "green",
                         color: "#fff"
                       }
                     },
-                    // Specific styles for error toasts
                     error: {
                       style: {
                         background: "red",
