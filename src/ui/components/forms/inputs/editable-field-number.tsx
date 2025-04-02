@@ -59,7 +59,7 @@ const EditableFieldNumber: React.FC<EditableFieldNumberProps> = ({
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="rounded-md bg-white font-medium text-BrandeisBrand hover:text-BrandeisBrandeTint">
+              className="inline-flex items-center px-4 py-2 border  text-sm font-medium rounded-md shadow-sm  transition duration-150">
               Update
             </button>
           </span>

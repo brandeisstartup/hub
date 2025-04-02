@@ -136,7 +136,7 @@ function BigForm() {
           <TextInput<FormValues>
             label="YouTube Video ID"
             name="videoUrl"
-            placeholder="Enter YouTube Video ID (e.g., dQw4w9WgXcQ)"
+            placeholder="Enter YouTube Video ID (e.g., dQw4w9WgXcQ found at the end of the Youtube URL)"
             register={register}
             type="text"
             error={errors.videoUrl}
