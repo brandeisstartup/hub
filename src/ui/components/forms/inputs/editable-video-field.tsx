@@ -52,7 +52,7 @@ const EditableVideoField: React.FC<EditableVideoFieldProps> = ({
       const updatedProject = await updateField(
         projectId,
         "video_url",
-        embedUrl
+        youtubeId
       );
       console.log("Video field updated", updatedProject);
       onChange(embedUrl);
