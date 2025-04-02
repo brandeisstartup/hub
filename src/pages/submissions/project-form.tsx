@@ -11,17 +11,14 @@ import { usePostProject } from "@/hooks/usePostProject";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import { useAuth, SignInButton } from "@clerk/nextjs";
 import { useMergedUser } from "@/context/UserContext";
-// Import the Combobox component from Headless UI
 import { Combobox } from "@headlessui/react";
-// Import competitions from context
 import { useCompetitions } from "@/context/EventContext";
 
-// Extend form values with competition field
 interface FormValues extends Record<string, unknown> {
   title: string;
   blurb: string; // short_description
   description: string; // long_description
-  videoUrl: string;
+  videoUrl: string; // Now just the YouTube video ID
   competition: string;
 }
 
@@ -35,6 +32,7 @@ function BigForm() {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors }
   } = methods;
   const router = useRouter();
@@ -42,27 +40,27 @@ function BigForm() {
   const { postProject } = usePostProject();
   const [loading, setLoading] = useState(false);
 
-  // Get competitions data from the Competition context
+  // Competitions from context
   const { upcomingEvents, loading: compLoading } = useCompetitions();
-
-  // Build competition options from the competitions data (assuming each competition has a "title" property)
-  const competitionOptions = useMemo(() => {
-    return upcomingEvents.map((comp) => comp.title);
-  }, [upcomingEvents]);
-
-  // Local state for the combobox value (allow string or null)
+  const competitionOptions = useMemo(
+    () => upcomingEvents.map((comp) => comp.title),
+    [upcomingEvents]
+  );
   const [selectedCompetition, setSelectedCompetition] = useState<string | null>(
     ""
   );
-
-  // Sync selected competition with the react-hook-form field "competition"
   useEffect(() => {
     setValue("competition", selectedCompetition || "");
   }, [selectedCompetition, setValue]);
 
+  // Watch the videoUrl field (which now holds just the YouTube video ID)
+  const youtubeId = watch("videoUrl");
+  const embedUrl = youtubeId
+    ? `https://www.youtube.com/embed/${youtubeId}`
+    : "";
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (!isSignedIn) return;
-
     const variables = {
       title: data.title,
       creator_email: `${user?.email}`,
@@ -78,8 +76,6 @@ function BigForm() {
       setLoading(true);
       const project = await postProject(variables);
       setLoading(false);
-
-      // Redirect to the new project page using a slugified title
       const projectSlug = slugify(project.title);
       router.push(`/projects/${projectSlug}`);
     } catch (error) {
@@ -90,7 +86,6 @@ function BigForm() {
 
   return (
     <section className="relative flex justify-center items-center py-12">
-      {/* Form */}
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -137,15 +132,30 @@ function BigForm() {
             rows={5}
           />
 
-          {/* Youtube URL Input */}
+          {/* YouTube Video ID Input */}
           <TextInput<FormValues>
-            label="Youtube URL"
+            label="YouTube Video ID"
             name="videoUrl"
-            placeholder="Enter Youtube URL"
+            placeholder="Enter YouTube Video ID (e.g., dQw4w9WgXcQ)"
             register={register}
-            type="url"
+            type="text"
             error={errors.videoUrl}
           />
+
+          {/* Video Preview */}
+          {youtubeId && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-600">Video Preview:</p>
+              <iframe
+                width="300"
+                height="169"
+                src={embedUrl}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="Video Preview"></iframe>
+            </div>
+          )}
 
           {/* Competition Combobox */}
           <div className="mt-4">
@@ -199,7 +209,7 @@ function BigForm() {
                             }`}>
                             {option}
                           </span>
-                          {selected ? (
+                          {selected && (
                             <span
                               className={`absolute inset-y-0 right-0 flex items-center pr-4 ${
                                 active ? "text-white" : "text-blue-600"
@@ -217,7 +227,7 @@ function BigForm() {
                                 />
                               </svg>
                             </span>
-                          ) : null}
+                          )}
                         </>
                       )}
                     </Combobox.Option>
@@ -284,19 +294,14 @@ function BigForm() {
       {/* Overlay if user is not signed in */}
       {!isSignedIn && !user && (
         <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center z-4">
-          {/* Top section with logo and title */}
-
-          {/* Sign in prompt with matching background */}
           <div className="max-w-sm p-6 bg-white bg-opacity-70 rounded-lg shadow-lg flex flex-col gap-4 justify-center items-center">
             <div className="flex flex-col items-center mb-6">
               <img src="/logo.webp" alt="Logo" className="h-24 mb-2" />
             </div>
             <p className="text-gray-700 text-center">
-              <p className="text-gray-700 text-center">
-                You must sign in or create an account by pressing the &quot;Sign
-                in with Google&quot; button below. You can edit your profile
-                later.
-              </p>
+              You must sign in or create an account by pressing the{" "}
+              <span className="font-semibold">Sign in with Google</span> button
+              below. You can edit your profile later.
             </p>
             <SignInButton />
           </div>

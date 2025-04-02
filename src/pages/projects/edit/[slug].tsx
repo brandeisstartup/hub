@@ -7,6 +7,7 @@ import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import { useDeleteProject } from "@/hooks/useDeleteProject";
 import { useState } from "react";
+import Link from "next/link";
 
 // ----- GRAPHQL INTERFACES -----
 interface GraphQLProject {
@@ -134,6 +135,11 @@ export default function ProjectPage({ project }: ServerSideProps) {
           {/* Share, Copy Link, and Delete Button */}
           <aside>
             <menu className="w-full flex justify-start gap-2">
+              <Link
+                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition"
+                href={`/projects/${project.title}`}>
+                View
+              </Link>
               <button
                 onClick={() => {
                   if (navigator.share) {
@@ -148,13 +154,13 @@ export default function ProjectPage({ project }: ServerSideProps) {
                   }
                 }}
                 className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
-                🔗 Share Project
+                Share
               </button>
 
               <button
                 onClick={() => setIsModalOpen(true)} // Open modal instead of confirm
                 className="mt-4 px-4 py-2 text-white font-sans border rounded bg-red-700 hover:bg-red-600 transition">
-                Delete Project
+                Delete
               </button>
             </menu>
           </aside>

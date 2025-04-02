@@ -17,24 +17,43 @@ const EditableVideoField: React.FC<EditableVideoFieldProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // We'll store the YouTube video ID as our input
-  const [youtubeId, setYoutubeId] = useState("");
+  const [youtubeId, setYoutubeId] = useState(value);
   // Preview URL built from the YouTube ID
-  const [previewUrl, setPreviewUrl] = useState("");
+  const [previewUrl, setPreviewUrl] = useState(value);
 
   const { updateField } = useUpdateProjectField();
 
   // When the component mounts or value changes, try to extract the YouTube ID from the current embed URL.
+  // useEffect(() => {
+  //   if (value) {
+  //     const regex = /youtube\.com\/embed\/([^?&]+)/;
+  //     const match = value.match(regex);
+  //     if (match && match[1]) {
+  //       setYoutubeId(match[1]);
+  //       setPreviewUrl(`https://www.youtube.com/embed/${match[1]}`);
+  //     } else {
+  //       setYoutubeId("");
+  //       setPreviewUrl("");
+  //     }
+  //   } else {
+  //     setYoutubeId("");
+  //     setPreviewUrl("");
+  //   }
+  // }, [value]);
+
   useEffect(() => {
     if (value) {
-      const regex = /youtube\.com\/embed\/([^?&]+)/;
-      const match = value.match(regex);
-      if (match && match[1]) {
-        setYoutubeId(match[1]);
-        setPreviewUrl(`https://www.youtube.com/embed/${match[1]}`);
-      } else {
-        setYoutubeId("");
-        setPreviewUrl("");
+      let id = value;
+      // If value looks like an embed URL, extract the id
+      if (value.includes("youtube.com/embed/")) {
+        const regex = /youtube\.com\/embed\/([^?&]+)/;
+        const match = value.match(regex);
+        if (match && match[1]) {
+          id = match[1];
+        }
       }
+      setYoutubeId(id);
+      setPreviewUrl(`https://www.youtube.com/embed/${id}`);
     } else {
       setYoutubeId("");
       setPreviewUrl("");
