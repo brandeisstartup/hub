@@ -6,6 +6,7 @@ import EditableField from "@/ui/components/forms/inputs/editable-field";
 import EditableFieldList from "../inputs/editable-field-list";
 import ImageUploader from "@/ui/components/forms/inputs/image-uploader";
 import { UPDATE_PROJECT_FIELD } from "@/lib/graphql/mutations";
+import EditableVideoField from "../inputs/editable-video-field";
 
 interface EditProjectProps {
   id: number;
@@ -34,6 +35,13 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
 
   // Prepare the mutation hook using the provided UPDATE_PROJECT_FIELD mutation
   const [updateProjectField] = useMutation(UPDATE_PROJECT_FIELD);
+  const [currentVideoUrl, setCurrentVideoUrl] = useState(project.video_url);
+
+  // Handler to update the video URL in the parent state once EditableVideoField successfully updates
+  const handleVideoUpdate = (newVideoUrl: string) => {
+    setCurrentVideoUrl(newVideoUrl);
+    // Optionally, you can perform additional actions like refreshing other parts of the UI
+  };
 
   const handleFieldUpdate = (fieldKey: string, newValue: string) => {
     console.log(`Updating ${fieldKey} to: ${newValue}`);
@@ -98,13 +106,6 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
         onChange={handleFieldUpdate}
         projectId={props.id}
       />
-      <EditableField
-        label="Video URL"
-        fieldKey="video_url"
-        value={project.video_url}
-        onChange={handleFieldUpdate}
-        projectId={props.id}
-      />
 
       {/* Image uploader row */}
       <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -127,6 +128,12 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
         </dd>
       </div>
 
+      <EditableVideoField
+        label="Youtube Video ID"
+        projectId={props.id}
+        value={currentVideoUrl}
+        onChange={handleVideoUpdate}
+      />
       <EditableFieldList
         label="Team Members"
         fieldKey="team_members_email"
