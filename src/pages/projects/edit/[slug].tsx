@@ -10,7 +10,7 @@ import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import { useDeleteProject } from "@/hooks/useDeleteProject";
 import { useState } from "react";
 import Link from "next/link";
-import { useAuth, useUser, SignInButton } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import slugify from "slugify";
 
 // ----- GRAPHQL INTERFACES -----
@@ -133,7 +133,7 @@ export default function ProjectPage({ project, userEmail }: ServerSideProps) {
   // Client-side Clerk authentication (should be present because of server-side check)
   const { isSignedIn } = useAuth();
   const { user } = useUser();
-
+  console.log("user signed in", isSignedIn);
   // Determine current user email from either client-side or server-side value.
   const currentEmail =
     user?.primaryEmailAddress?.emailAddress || userEmail || "";
