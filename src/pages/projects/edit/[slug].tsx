@@ -108,7 +108,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
       setLoading(true);
       await deleteProject(Number(id));
       setLoading(false);
-      router.push("/search"); // Redirect after deletion
+      router.push("/user/my-projects"); // Redirect after deletion
     } catch (err) {
       console.error("Failed to delete project:", err, error);
       alert("Failed to delete project. Please try again.");
