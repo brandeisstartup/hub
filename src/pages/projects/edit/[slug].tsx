@@ -1,5 +1,7 @@
+// pages/[slug].tsx
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
+import { getAuth, clerkClient } from "@clerk/nextjs/server";
 import { useRouter } from "next/router";
 import EditProject from "@/ui/components/forms/complete-forms/edit-project";
 import apolloClient from "@/lib/apolloClient";
@@ -8,6 +10,8 @@ import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import { useDeleteProject } from "@/hooks/useDeleteProject";
 import { useState } from "react";
 import Link from "next/link";
+import { useAuth, useUser, SignInButton } from "@clerk/nextjs";
+import slugify from "slugify";
 
 // ----- GRAPHQL INTERFACES -----
 interface GraphQLProject {
@@ -36,6 +40,7 @@ interface ProjectData {
 // ----- SSR PROPS & PARAMS -----
 interface ServerSideProps {
   project: ProjectData;
+  userEmail: string | null;
 }
 
 interface Params extends ParsedUrlQuery {
@@ -43,14 +48,35 @@ interface Params extends ParsedUrlQuery {
 }
 
 // ----- GET SERVER SIDE PROPS -----
+// This function checks for authentication and also retrieves the user's email from Clerk.
+// If the user is not authenticated, it redirects to the sign-in page.
 export const getServerSideProps: GetServerSideProps<
   ServerSideProps,
   Params
-> = async ({ params }) => {
-  if (!params?.slug) {
+> = async (ctx) => {
+  const { userId } = getAuth(ctx.req);
+  if (!userId) {
+    return {
+      redirect: {
+        destination: "/sign-in", // Adjust to your sign-in route.
+        permanent: false
+      }
+    };
+  }
+  // Fetch full user details from Clerk
+  let userEmail: string | null = null;
+  try {
+    const client = await clerkClient();
+    const user = await client.users.getUser(userId);
+    userEmail = user.primaryEmailAddress?.emailAddress || null;
+  } catch (err) {
+    console.error("Error fetching Clerk user:", err);
+  }
+
+  if (!ctx.params?.slug) {
     return { notFound: true };
   }
-  const { slug } = params;
+  const { slug } = ctx.params;
 
   let graphQLProject: GraphQLProject | null = null;
   try {
@@ -81,13 +107,14 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: {
-      project: mergedData
+      project: mergedData,
+      userEmail
     }
   };
 };
 
 // ----- PAGE COMPONENT -----
-export default function ProjectPage({ project }: ServerSideProps) {
+export default function ProjectPage({ project, userEmail }: ServerSideProps) {
   const {
     id,
     title,
@@ -99,9 +126,20 @@ export default function ProjectPage({ project }: ServerSideProps) {
     team_members_emails
   } = project;
   const router = useRouter();
-  const { deleteProject, error } = useDeleteProject();
+  const { deleteProject } = useDeleteProject();
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Client-side Clerk authentication (should be present because of server-side check)
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
+
+  // Determine current user email from either client-side or server-side value.
+  const currentEmail =
+    user?.primaryEmailAddress?.emailAddress || userEmail || "";
+  // Only allow if currentEmail is present and included in the team_members_emails.
+  const isAuthorized =
+    currentEmail && team_members_emails?.includes(currentEmail);
 
   const handleDelete = async () => {
     try {
@@ -110,11 +148,32 @@ export default function ProjectPage({ project }: ServerSideProps) {
       setLoading(false);
       router.push("/user/my-projects"); // Redirect after deletion
     } catch (err) {
-      console.error("Failed to delete project:", err, error);
+      console.error("Failed to delete project:", err);
       alert("Failed to delete project. Please try again.");
       setLoading(false);
     }
   };
+
+  // If the user is not authorized, render an overlay that blocks interaction.
+  if (!isAuthorized) {
+    return (
+      <main className="py-24 flex flex-col items-center justify-center">
+        <section className="w-full max-w-7xl flex flex-col gap-4">
+          <Heading label="Not Authorized" />
+          <p className="mt-4 text-gray-600">
+            You are not authorized to view or interact with this project.
+          </p>
+          <div>
+            <Link
+              href="/user/my-projects"
+              className="mt-6 px-4 py-2 border rounded hover:bg-gray-100">
+              Go Back
+            </Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="py-24">
@@ -122,22 +181,20 @@ export default function ProjectPage({ project }: ServerSideProps) {
         {/* Left Column */}
         <section
           id="fixed"
-          className="w-full border p-8  h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
+          className="w-full border p-8 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
           <Heading label={title} />
-
           <dd className="flex flex-row gap-1 font-sans flex-wrap">
             By:{" "}
             {(team_members_emails || []).map((email) => (
               <dl key={email}>{email}</dl>
             ))}
           </dd>
-
           {/* Share, Copy Link, and Delete Button */}
           <aside>
             <menu className="w-full flex justify-start gap-2">
               <Link
-                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition"
-                href={`/projects/${project.title}`}>
+                href={`/projects/${slugify(title)}`}
+                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
                 View
               </Link>
               <button
@@ -156,9 +213,8 @@ export default function ProjectPage({ project }: ServerSideProps) {
                 className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
                 Share
               </button>
-
               <button
-                onClick={() => setIsModalOpen(true)} // Open modal instead of confirm
+                onClick={() => setIsModalOpen(true)}
                 className="mt-4 px-4 py-2 text-white font-sans border rounded bg-red-700 hover:bg-red-600 transition">
                 Delete
               </button>
@@ -224,6 +280,9 @@ export default function ProjectPage({ project }: ServerSideProps) {
           </div>
         </div>
       )}
+
+      {/* Optional: If not signed in, an overlay could be shown.
+          However, server-side redirection should prevent non-authenticated users. */}
     </main>
   );
 }
