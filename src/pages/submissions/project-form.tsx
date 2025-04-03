@@ -13,6 +13,7 @@ import { useAuth, SignInButton } from "@clerk/nextjs";
 import { useMergedUser } from "@/context/UserContext";
 import { Combobox } from "@headlessui/react";
 import { useCompetitions } from "@/context/EventContext";
+import toast from "react-hot-toast";
 
 interface FormValues extends Record<string, unknown> {
   title: string;
@@ -77,10 +78,11 @@ function BigForm() {
       const project = await postProject(variables);
       setLoading(false);
       const projectSlug = slugify(project.title);
+      toast.success("Project created successfully!");
       router.push(`/projects/${projectSlug}`);
     } catch (error) {
       console.error("Error creating project:", error);
-      alert("There was an error creating the project.");
+      toast.error("Error creating project. Please try again!");
     }
   };
 
