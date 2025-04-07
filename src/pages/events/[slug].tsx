@@ -189,7 +189,7 @@ export default function CompetitionPage({ competition }: Props) {
         competition.fields.personSpotlightText &&
         competition.fields.personSpotlightLInk && (
           <PersonSpotlight
-            label={competition.fields.personSpotlightFirstName}
+            label={competition.fields.personSpotlightLabel}
             title={competition.fields.personSpotlightImage.fields.title}
             imageUrl={competition.fields.personSpotlightImage.fields.file.url}
             personSpotlightText={competition.fields.personSpotlightText}
