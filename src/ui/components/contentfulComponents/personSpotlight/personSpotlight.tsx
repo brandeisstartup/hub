@@ -10,6 +10,7 @@ type Props = {
   imageUrl: string;
   personSpotlightText: string;
   personSpotlightLInk: string;
+  linkText: string;
 };
 
 const PersonSpotlight = ({
@@ -19,7 +20,8 @@ const PersonSpotlight = ({
   title,
   imageUrl,
   personSpotlightLInk,
-  personSpotlightText
+  personSpotlightText,
+  linkText
 }: Props) => {
   return (
     <section className="bg-white ">
@@ -40,8 +42,7 @@ const PersonSpotlight = ({
             <p className="text-left ">{personSpotlightText}</p>
             <div className="underline text-orange-500">
               <a target="_blank" href={`${personSpotlightLInk}`}>
-                Learn more about
-                {" " + firstName} {lastName}
+                {linkText}
               </a>
             </div>
           </div>
