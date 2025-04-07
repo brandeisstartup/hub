@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import client from "@/lib/contentful";
 
 import { useCompetitions } from "@/context/EventContext";
-// import YouTubePage from "@/ui/components/organisms/youtube/YouTubePage";
+import YouTubePage from "@/ui/components/organisms/youtube/YouTubePage";
 import IbsGrid from "@/ui/components/brandeisBranding/data-display/3Column/IbsGrid";
 import SimpleImageGrid from "@/ui/components/brandeisBranding/data-display/4Column/SimpleImageGrid";
 import Hero from "@/ui/components/brandeisBranding/hero/Hero";
@@ -52,7 +52,7 @@ export default function Home({ homepageContent }: HomePageProps) {
           </>
         )}
       <SimpleImageGrid label={"All Events"} projects={competitions} />
-      {/* {homepageContent.showYoutubeVideos && <YouTubePage />} */}
+      {homepageContent.showYoutubeVideos && <YouTubePage />}
     </>
   );
 }

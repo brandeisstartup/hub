@@ -117,39 +117,39 @@ export default function NavBarSearch() {
           description: comp.navigationDescription,
           href: `/events/${comp.title.toLowerCase().replace(/\s+/g, "-")}`
         }))
-      },
-      {
-        name: "Articles & Resources",
-        href: "/resources",
-        isActive: "/404",
-        links: [
-          {
-            name: "Blog",
-            description: "Read our latest blog posts and news.",
-            href: "/blog"
-          },
-          {
-            name: "Articles",
-            description: "Explore insightful articles and research.",
-            href: "/articles"
-          },
-          {
-            name: "Help",
-            description: "Get help and support for your projects.",
-            href: "/help"
-          },
-          {
-            name: "Funding Resources",
-            description: "Discover funding opportunities at Brandeis.",
-            href: "/resources#funding"
-          },
-          {
-            name: "Software Resources",
-            description: "Access free software and exclusive discounts.",
-            href: "/resources#software"
-          }
-        ]
       }
+      // {
+      //   name: "Articles & Resources",
+      //   href: "/resources",
+      //   isActive: "/404",
+      //   links: [
+      //     {
+      //       name: "Blog",
+      //       description: "Read our latest blog posts and news.",
+      //       href: "/blog"
+      //     },
+      //     {
+      //       name: "Articles",
+      //       description: "Explore insightful articles and research.",
+      //       href: "/articles"
+      //     },
+      //     {
+      //       name: "Help",
+      //       description: "Get help and support for your projects.",
+      //       href: "/help"
+      //     },
+      //     {
+      //       name: "Funding Resources",
+      //       description: "Discover funding opportunities at Brandeis.",
+      //       href: "/resources#funding"
+      //     },
+      //     {
+      //       name: "Software Resources",
+      //       description: "Access free software and exclusive discounts.",
+      //       href: "/resources#software"
+      //     }
+      //   ]
+      // }
     ],
     [upcomingEvents, competitionsList]
   );
