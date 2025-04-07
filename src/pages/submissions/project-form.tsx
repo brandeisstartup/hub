@@ -42,10 +42,10 @@ function BigForm() {
   const [loading, setLoading] = useState(false);
 
   // Competitions from context
-  const { upcomingEvents, loading: compLoading } = useCompetitions();
+  const { competitions, loading: compLoading } = useCompetitions();
   const competitionOptions = useMemo(
-    () => upcomingEvents.map((comp) => comp.title),
-    [upcomingEvents]
+    () => competitions.map((comp) => comp.title),
+    [competitions]
   );
   const [selectedCompetition, setSelectedCompetition] = useState<string | null>(
     ""
