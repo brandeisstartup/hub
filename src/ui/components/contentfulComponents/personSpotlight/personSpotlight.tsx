@@ -41,8 +41,7 @@ const PersonSpotlight = ({
             <div className="underline text-orange-500">
               <a target="_blank" href={`${personSpotlightLInk}`}>
                 Learn more about
-                {firstName}
-                &apos;s insipiring story.
+                {" " + firstName} {lastName}
               </a>
             </div>
           </div>

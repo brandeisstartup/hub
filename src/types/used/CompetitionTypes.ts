@@ -32,6 +32,7 @@ export interface CompetitionFields {
   winnersYoutubeGridLabel: string;
   winnersYoutubeGrid: YoutubeWinnerItem[];
 
+  personSpotlightLabel: string;
   personSpotlightImage: ImageFile;
   personSpotlightText: string;
   personSpotlightLInk: string;
