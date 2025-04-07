@@ -35,6 +35,7 @@ export interface CompetitionFields {
   personSpotlightLabel: string;
   personSpotlightImage: ImageFile;
   personSpotlightText: string;
+  personSpotlightLinkText: string;
   personSpotlightLInk: string;
   personSpotlightFirstName: string;
   personSpotlightLastName: string;

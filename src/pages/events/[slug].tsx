@@ -186,8 +186,7 @@ export default function CompetitionPage({ competition }: Props) {
         competition.fields.personSpotlightLastName &&
         competition.fields.personSpotlightImage?.fields?.title &&
         competition.fields.personSpotlightImage?.fields?.file?.url &&
-        competition.fields.personSpotlightText &&
-        competition.fields.personSpotlightLInk && (
+        competition.fields.personSpotlightText && (
           <PersonSpotlight
             label={competition.fields.personSpotlightLabel}
             title={competition.fields.personSpotlightImage.fields.title}
@@ -196,6 +195,7 @@ export default function CompetitionPage({ competition }: Props) {
             personSpotlightLInk={competition.fields.personSpotlightLInk}
             firstName={competition.fields.personSpotlightFirstName}
             lastName={competition.fields.personSpotlightLastName}
+            linkText={competition.fields.personSpotlightLinkText}
           />
         )}
 

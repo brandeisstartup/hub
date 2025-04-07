@@ -28,7 +28,7 @@ const ContactInfo = ({ label, sectionBlurb, contacts }: Props) => {
                   key={`${contact.fields.firstName}-${index}`}
                   className="rounded-2xl  bg-gray-50 p-10">
                   <h3 className="text-base font-sans font-semibold leading-7 text-gray-900">
-                    {contact.fields.lastName} {contact.fields.firstName}
+                    {contact.fields.firstName} {contact.fields.lastName}
                   </h3>
                   {contact.fields.email && (
                     <dl className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
