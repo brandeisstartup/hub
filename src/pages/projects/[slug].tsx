@@ -19,7 +19,6 @@ import Image from "next/image";
 // ----- 1) FLATTENED INTERFACES -----
 
 /** Flattened shape of your Contentful fields (instead of nesting inside `fields`). */
-
 interface User {
   id: string;
   email: string;
@@ -29,6 +28,24 @@ interface User {
   imageUrl?: string;
   graduationYear?: number;
   major?: string;
+}
+
+interface ContentfulUser {
+  fields: {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+    bio?: string;
+    graduationYear?: number;
+    major?: string;
+    image?: {
+      fields: {
+        file: {
+          url: string;
+        };
+      };
+    };
+  };
 }
 
 interface FlattenedContentfulFields {
@@ -43,6 +60,7 @@ interface FlattenedContentfulFields {
       };
     };
   };
+  teamMembers?: ContentfulUser[];
 }
 
 /** GraphQL shape from your `GET_PROJECT_BY_SLUG` query. */
@@ -65,9 +83,10 @@ interface ProjectData {
   long_description?: string;
   competition?: string;
   members?: string[];
-  teamMembers?: User[]; // Updated as well
+  teamMembers?: (User | ContentfulUser)[];
   video_url?: string;
   imageUrl?: string;
+  isFeatured: boolean;
 }
 
 // ----- 2) SSR PROPS & PARAMS -----
@@ -77,6 +96,58 @@ interface ServerSideProps {
 
 interface Params extends ParsedUrlQuery {
   slug: string;
+}
+
+// ------------------------------
+// Helper to format image URLs
+// ------------------------------
+function formatImageUrl(url: string): string {
+  // If the URL is protocol-relative, add "https:".
+  if (url.startsWith("//")) {
+    return `https:${url}`;
+  }
+  return url;
+}
+
+// ------------------------------
+// TYPE GUARD & UNIFY FUNCTIONS
+// ------------------------------
+
+/**
+ * Type guard to determine if a team member is a ContentfulUser.
+ */
+function isContentfulUser(
+  member: User | ContentfulUser
+): member is ContentfulUser {
+  return (member as ContentfulUser).fields !== undefined;
+}
+
+/**
+ * Unify the user data from GraphQL (User) or Contentful (ContentfulUser)
+ * into a single, type-safe object that the component can render.
+ */
+function unifyTeamMember(member: User | ContentfulUser) {
+  if (isContentfulUser(member)) {
+    // It's a ContentfulUser
+    return {
+      firstName: member.fields.firstName || "",
+      lastName: member.fields.lastName || "",
+      bio: member.fields.bio || "",
+      graduationYear: member.fields.graduationYear,
+      major: member.fields.major,
+      imageUrl: member.fields.image?.fields.file.url || ""
+    };
+  } else {
+    // It's a GraphQL User
+    return {
+      firstName: member.firstName || "",
+      lastName: member.lastName || "",
+      bio: member.bio || "",
+      graduationYear: member.graduationYear,
+      major: member.major,
+      imageUrl: member.imageUrl || ""
+    };
+  }
 }
 
 // ----- 3) GET SERVER SIDE PROPS -----
@@ -98,24 +169,26 @@ export const getServerSideProps: GetServerSideProps<
       await contentfulClient.getEntries<Projectskeleton>({
         content_type: "projects"
       });
-
-    // 1) Find the matching item by slug
+    // Debug: Uncomment to inspect the raw response
+    // console.log(contentfulResponse);
+    // Find the matching item by slug
     const match = contentfulResponse.items.find((item) => {
       return (
         (item.fields.title as string).toLowerCase().replace(/\s+/g, "-") ===
         slug
       );
     });
-
-    // 2) Flatten its fields into `contentfulFlattened` if found
+    // Flatten its fields if found
     if (match) {
       contentfulFlattened = {
         title: match.fields.title,
         tagline: match.fields.tagline,
         about: match.fields.about,
         members: match.fields.members,
-        image: match.fields.image
+        image: match.fields.image,
+        teamMembers: match.fields.teamMembers // New complex object field
       };
+      // Debug: console.log(contentfulFlattened.teamMembers);
     }
   } catch (err) {
     console.error("Error fetching from Contentful:", err);
@@ -134,6 +207,7 @@ export const getServerSideProps: GetServerSideProps<
   } catch (err) {
     console.error("Error fetching from GraphQL:", err);
   }
+
   // If both are null, return 404
   if (!contentfulFlattened && !graphQLProject) {
     return { notFound: true };
@@ -143,16 +217,21 @@ export const getServerSideProps: GetServerSideProps<
   const mergedData: ProjectData = {
     title:
       contentfulFlattened?.title || graphQLProject?.title || "Untitled Project",
-    tagline: contentfulFlattened?.tagline ?? "",
+    tagline:
+      contentfulFlattened?.tagline || graphQLProject?.short_description || "",
     about: contentfulFlattened?.about ?? "",
-    short_description: graphQLProject?.short_description ?? "",
+    short_description:
+      graphQLProject?.short_description || contentfulFlattened?.tagline || "",
     long_description: graphQLProject?.long_description ?? "",
     competition: graphQLProject?.competition ?? "",
     members: contentfulFlattened?.members ?? [],
-    teamMembers: graphQLProject?.teamMembers ?? [], // NEW: Full team members data from GraphQL
+    teamMembers:
+      contentfulFlattened?.teamMembers || graphQLProject?.teamMembers || [],
     video_url: graphQLProject?.video_url ?? "",
     imageUrl:
-      contentfulFlattened?.image?.fields?.file?.url || graphQLProject?.image_url
+      contentfulFlattened?.image?.fields?.file?.url ||
+      graphQLProject?.image_url,
+    isFeatured: contentfulFlattened ? true : false
   };
 
   return {
@@ -172,13 +251,12 @@ export default function ProjectPage({ project }: ServerSideProps) {
     short_description,
     long_description,
     competition,
-    members,
     teamMembers,
     video_url,
     imageUrl
   } = project;
 
-  // Function to generate and download the QR Code for the current URL
+  // Generate and download QR Code for the current URL
   const downloadQRCode = async () => {
     if (typeof window !== "undefined") {
       try {
@@ -200,27 +278,34 @@ export default function ProjectPage({ project }: ServerSideProps) {
         {/* Left Column */}
         <section
           id="fixed"
-          className=" w-full  h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible ">
+          className="w-full h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
           <Heading label={title} />
 
           <dd className="flex flex-row gap-1 font-sans flex-wrap">
             By:
-            {(members || []).map((member) => (
-              <dl key={member}>{member}</dl>
-            ))}
-            {(teamMembers || []).map((member, index) => (
-              <dl key={index}>{member.firstName + " " + member.lastName}</dl>
-            ))}
+            {(teamMembers || []).map((member, index) => {
+              const unified = unifyTeamMember(member);
+              return (
+                <dl key={index}>
+                  {unified.firstName} {unified.lastName}
+                </dl>
+              );
+            })}
           </dd>
+
           {competition && (
             <p className="font-sans leading-8 text-sm">
               <span className="font-semibold">Competition:</span> {competition}
             </p>
           )}
 
-          {/* Render image if available from Contentful */}
+          {/* Render main project image if available */}
           {imageUrl && (
-            <img src={imageUrl} alt="Project Image" className="w-full mt-5" />
+            <img
+              src={formatImageUrl(imageUrl)}
+              alt="Project Image"
+              className="w-full mt-5"
+            />
           )}
 
           {/* Share, Copy Link, and QR Code Buttons */}
@@ -264,12 +349,12 @@ export default function ProjectPage({ project }: ServerSideProps) {
         {/* Right Column */}
         <section className="w-full flex flex-col gap-20">
           {/* Combined descriptions */}
-          <div className="">
+          <div>
             <Heading label="Project Description" />
-            {tagline && (
+            {!project.isFeatured && tagline && (
               <p className="my-6 text-lg leading-8 text-gray-600">{tagline}</p>
             )}
-            {short_description && !long_description && (
+            {project.isFeatured && short_description && !long_description && (
               <p className="my-6 text-lg leading-8 text-gray-600">
                 {short_description}
               </p>
@@ -277,8 +362,6 @@ export default function ProjectPage({ project }: ServerSideProps) {
             {about && (
               <p className="my-6 text-lg leading-8 text-gray-600">{about}</p>
             )}
-
-            {/* Show GraphQL fields if they exist */}
             {long_description && (
               <p className="my-6 text-lg leading-8 text-gray-600">
                 {long_description}
@@ -288,7 +371,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
 
           {/* Possibly show video from GraphQL */}
           {video_url && (
-            <div className="">
+            <div>
               <Heading label="Video" />
               <div className="relative w-full aspect-video mt-5">
                 <iframe
@@ -302,55 +385,36 @@ export default function ProjectPage({ project }: ServerSideProps) {
               </div>
             </div>
           )}
-
-          {/* Combine or list both sets of team members */}
-          <div className="">
-            <Heading label="Team Members" />
-            <dd className="list-disc list-inside">
-              {(members || []).map((member, index) => (
-                <dl key={index} className="flex mt-2">
-                  <div className="flex flex-row gap-2 fon">
-                    <div className="w-24 h-24 bg-BrandeisBrandShade"></div>
-                    <div className="flex flex-col gap-1 justify-around py-2">
-                      <div>{member}</div>
-                      <div>Year/Major</div>
-                      <div className="max-w-2xl text-wrap">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Ex minus beatae quod modi! Quaerat aspernatur ad,
-                        quam dolorum voluptate assumenda esse id illo quis magni
-                        quibusdam commodi atque, praesentium omnis?
-                      </div>
-                    </div>
+          {(teamMembers || []).map((member, index) => {
+            const unified = unifyTeamMember(member);
+            return (
+              <dl key={index} className="flex mt-2">
+                <div className="flex flex-row gap-2 font-sans">
+                  <div className="w-24 h-24">
+                    <Image
+                      src={formatImageUrl(
+                        unified.imageUrl || "/default-image.png"
+                      )}
+                      alt={`${unified.firstName} ${unified.lastName}`}
+                      width={96}
+                      height={96}
+                    />
                   </div>
-                </dl>
-              ))}
-              {(teamMembers || []).map((member, index) => (
-                <dl key={index} className="flex mt-2">
-                  <div className="flex flex-row gap-2 font-sans">
-                    <div className="w-24 h-24">
-                      <Image
-                        src={member.imageUrl || "/default-image.png"}
-                        alt={`${member.firstName} ${member.lastName}`}
-                        width={96}
-                        height={96}
-                      />
+                  <div className="flex flex-col gap-1">
+                    <div className="font-semibold">
+                      {unified.firstName} {unified.lastName}
                     </div>
-                    <div className="flex flex-col gap-1 ">
-                      <div className="font-semibold">
-                        {member.firstName + " " + member.lastName}
-                      </div>
-                      <div>
-                        {member.graduationYear &&
-                          member.major &&
-                          member.major + " " + member.graduationYear}
-                      </div>
-                      <div className="max-w-2xl">{member.bio}</div>
+                    <div>
+                      {unified.major && unified.graduationYear
+                        ? `${unified.major} ${unified.graduationYear}`
+                        : ""}
                     </div>
+                    <div className="max-w-2xl">{unified.bio}</div>
                   </div>
-                </dl>
-              ))}
-            </dd>
-          </div>
+                </div>
+              </dl>
+            );
+          })}
         </section>
       </div>
     </main>

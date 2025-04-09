@@ -203,12 +203,31 @@ export type CompetitionSkeleton = EntrySkeletonType<
 // Define the typed Contentful Entry
 export type CompetitionEntry = Entry<CompetitionSkeleton>;
 
+export interface ContentfulUser {
+  fields: {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+    bio?: string;
+    graduationYear?: number;
+    major?: string;
+    image?: {
+      fields: {
+        file: {
+          url: string;
+        };
+      };
+    };
+  };
+}
+
 export interface ProjectFields {
   title: string;
   tagline: string;
   about: string;
   members: string[];
   image: ImageFile;
+  teamMembers?: ContentfulUser[];
 }
 
 /**
