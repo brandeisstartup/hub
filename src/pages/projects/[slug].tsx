@@ -2,7 +2,7 @@
 
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import QRCode from "qrcode";
+// import QRCode from "qrcode";
 
 // ----- CONTENTFUL TYPES & CLIENT -----
 import contentfulClient from "@/lib/contentful";
@@ -264,20 +264,20 @@ export default function ProjectPage({ project }: ServerSideProps) {
   } = project;
 
   // Generate and download QR Code for the current URL
-  const downloadQRCode = async () => {
-    if (typeof window !== "undefined") {
-      try {
-        const currentUrl = window.location.href;
-        const qrDataUrl = await QRCode.toDataURL(currentUrl);
-        const link = document.createElement("a");
-        link.href = qrDataUrl;
-        link.download = `${title}-qr-code.png`;
-        link.click();
-      } catch (error) {
-        console.error("Error generating QR Code", error);
-      }
-    }
-  };
+  // const downloadQRCode = async () => {
+  //   if (typeof window !== "undefined") {
+  //     try {
+  //       const currentUrl = window.location.href;
+  //       const qrDataUrl = await QRCode.toDataURL(currentUrl);
+  //       const link = document.createElement("a");
+  //       link.href = qrDataUrl;
+  //       link.download = `${title}-qr-code.png`;
+  //       link.click();
+  //     } catch (error) {
+  //       console.error("Error generating QR Code", error);
+  //     }
+  //   }
+  // };
 
   return (
     <main className="py-24 font-sans">
