@@ -1,6 +1,6 @@
 import React from "react";
 
-const TermsPrivacy: React.FC = () => {
+const TermsPrivacy = () => {
   return (
     <div className="flex justify-center items-center flex-col p-10">
       <div className="max-w-5xl flex flex-col gap-4 font-sans py-5">

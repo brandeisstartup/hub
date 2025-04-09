@@ -1,8 +1,6 @@
 import React from "react";
 
-type Props = {};
-
-const terms = (props: Props) => {
+const terms = () => {
   return (
     <div className="flex justify-center items-center flex-col p-10">
       <div className="max-w-5xl flex flex-col gap-4 font-sans py-5">
