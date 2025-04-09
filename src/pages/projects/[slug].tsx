@@ -2,7 +2,7 @@
 
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import QRCode from "qrcode";
+// import QRCode from "qrcode";
 
 // ----- CONTENTFUL TYPES & CLIENT -----
 import contentfulClient from "@/lib/contentful";
@@ -264,20 +264,20 @@ export default function ProjectPage({ project }: ServerSideProps) {
   } = project;
 
   // Generate and download QR Code for the current URL
-  const downloadQRCode = async () => {
-    if (typeof window !== "undefined") {
-      try {
-        const currentUrl = window.location.href;
-        const qrDataUrl = await QRCode.toDataURL(currentUrl);
-        const link = document.createElement("a");
-        link.href = qrDataUrl;
-        link.download = `${title}-qr-code.png`;
-        link.click();
-      } catch (error) {
-        console.error("Error generating QR Code", error);
-      }
-    }
-  };
+  // const downloadQRCode = async () => {
+  //   if (typeof window !== "undefined") {
+  //     try {
+  //       const currentUrl = window.location.href;
+  //       const qrDataUrl = await QRCode.toDataURL(currentUrl);
+  //       const link = document.createElement("a");
+  //       link.href = qrDataUrl;
+  //       link.download = `${title}-qr-code.png`;
+  //       link.click();
+  //     } catch (error) {
+  //       console.error("Error generating QR Code", error);
+  //     }
+  //   }
+  // };
 
   return (
     <main className="py-24 font-sans">
@@ -285,7 +285,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
         {/* Left Column */}
         <section
           id="fixed"
-          className="w-full h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
+          className="border p-8 w-full h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
           <Heading label={title} />
 
           <dd className="flex flex-row gap-1 font-sans flex-wrap">
@@ -300,6 +300,11 @@ export default function ProjectPage({ project }: ServerSideProps) {
             })}
           </dd>
 
+          {!project.isFeatured && tagline && <p className="my-6 ">{tagline}</p>}
+          {project.isFeatured && short_description && !long_description && (
+            <p className="my-6 ">{short_description}</p>
+          )}
+
           {competition && (
             <p className="font-sans leading-8 text-sm">
               <span className="font-semibold">Competition:</span> {competition}
@@ -311,7 +316,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
             <img
               src={formatImageUrl(imageUrl)}
               alt="Project Image"
-              className="w-full mt-5"
+              className="w-full mt-5 "
             />
           )}
 
@@ -344,55 +349,53 @@ export default function ProjectPage({ project }: ServerSideProps) {
                 📋 Copy Link
               </button>
 
-              <button
+              {/* <button
                 onClick={downloadQRCode}
                 className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
                 📥 QR Code
-              </button>
+              </button> */}
             </menu>
           </aside>
         </section>
 
         {/* Right Column */}
-        <section className="w-full flex flex-col gap-20">
+        <section className="w-full flex flex-col gap-10 border p-8">
           {/* Combined descriptions */}
           <div>
             <Heading label="Project Description" />
-            {!project.isFeatured && tagline && (
-              <p className="my-6 text-lg leading-8 text-gray-600">{tagline}</p>
-            )}
-            {project.isFeatured && short_description && !long_description && (
-              <p className="my-6 text-lg leading-8 text-gray-600">
-                {short_description}
-              </p>
-            )}
+
             {about && (
-              <p className="my-6 text-lg leading-8 text-gray-600">{about}</p>
+              <p className="my-3 text-lg leading-8 text-gray-600">{about}</p>
             )}
             {long_description && (
-              <p className="my-6 text-lg leading-8 text-gray-600">
+              <p className="my-3 text-lg leading-8 text-gray-600">
                 {long_description}
               </p>
             )}
           </div>
-
+          <hr />
           {/* Possibly show video from GraphQL */}
           {video_url && (
-            <div>
-              <Heading label="Video" />
-              <div className="relative w-full aspect-video mt-5">
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src={`https://www.youtube.com/embed/${video_url}`}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
+            <>
+              <div>
+                <Heading label="Video" />
+                <div className="relative w-full aspect-video mt-5">
+                  <iframe
+                    className="absolute inset-0 w-full h-full"
+                    src={`https://www.youtube.com/embed/${video_url}`}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
               </div>
-            </div>
+              <hr />
+            </>
           )}
+
           <div className="flex gap-4 flex-col">
+            <Heading label="Team Members" />
             {(teamMembers || []).map((member, index) => {
               const unified = unifyTeamMember(member);
               return (
