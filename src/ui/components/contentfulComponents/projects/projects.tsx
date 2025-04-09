@@ -21,34 +21,49 @@ const Projects = ({ projects, label, extend = false }: Props) => {
     setDisplayCount((prevCount) => prevCount + 4); // Load 4 more projects each time
   };
 
+  const validProjects = projects.filter(
+    (project) =>
+      project?.fields?.title &&
+      project.fields.image.fields.file.url &&
+      project.fields.tagline &&
+      project?.fields?.title.trim() !== ""
+  );
+
   return (
     <section className="flex justify-center">
       <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
         <Heading label={label} />
         <div className="grid_container grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full mt-8">
-          {projects
+          {validProjects
             .slice(0, extend ? displayCount : projects.length)
-            .map((project) => (
-              <section
-                key={project.fields.title}
-                className="w-full flex flex-col mb-6">
+            .map((project, index) => (
+              <section key={index} className="w-full flex flex-col mb-6">
                 <div className="flex flex-col h-full gap-3">
-                  <Image
-                    src={`https:${project.fields.image.fields.file.url}`}
-                    alt={project.fields.title}
-                    className="aspect-ratio"
-                    width={500}
-                    height={500}
-                  />
+                  {project?.fields?.image?.fields?.file?.url ? (
+                    <Image
+                      src={`https:${project.fields.image.fields.file.url}`}
+                      alt={project?.fields?.title || "Project image"}
+                      className="aspect-ratio"
+                      width={500}
+                      height={500}
+                    />
+                  ) : (
+                    <div className="w-full h-64 bg-gray-200 flex items-center justify-center">
+                      <span>No image available</span>
+                    </div>
+                  )}
                   <a
-                    href={`/projects/${slugify(project.fields.title, {
-                      lower: true
-                    })}`}
+                    href={`/projects/${slugify(
+                      project?.fields?.title || "untitled",
+                      {
+                        lower: true
+                      }
+                    )}`}
                     className="text-xl font-bold font-serif text-BrandeisBrand mt-2 hover:underline">
-                    {project.fields.title}
+                    {project?.fields?.title || "Untitled Project"}
                   </a>
                   <p className="text-body4 text-BrandeisBodyText">
-                    {project.fields.tagline}
+                    {project?.fields?.tagline || ""}
                   </p>
                 </div>
               </section>
