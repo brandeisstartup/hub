@@ -183,6 +183,7 @@ export interface Project {
     about: string;
     image: ImageFile;
     members: string[];
+    videoUrl?: string;
   };
 }
 
@@ -228,6 +229,8 @@ export interface ProjectFields {
   members: string[];
   image: ImageFile;
   teamMembers?: ContentfulUser[];
+  video_url?: string;
+  videoUrl?: string;
 }
 
 /**

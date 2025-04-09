@@ -9,6 +9,14 @@ import Link from "next/link";
 
 // Define TypeScript Interfaces
 
+function formatImageUrl(url: string): string {
+  // If the URL is protocol-relative, add "https:".
+  if (url.startsWith("//")) {
+    return `https:${url}`;
+  }
+  return url;
+}
+
 interface User {
   id: string;
   email: string;
@@ -25,6 +33,7 @@ interface FlattenedContentfulFields {
   tagline?: string;
   about?: string;
   members?: string[];
+  competition?: string | null;
   image?: {
     fields: {
       file: {
@@ -56,6 +65,7 @@ export interface ProjectData {
   teamMembers?: User[];
   video_url?: string;
   imageUrl?: string;
+  image_url?: string;
   isContentful?: boolean;
 }
 
@@ -86,7 +96,6 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
   const filteredProjects = initialProjects.filter((project) =>
     project.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
-
   return (
     <div className="flex justify-center items-center">
       <div className="p-6 relative w-full max-w-8xl font-sans">
@@ -115,15 +124,32 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
                       : slugify(project.title, { strict: true })
                   }`}
                   className="block">
-                  <h2 className="text-xl font-semibold">{project.title}</h2>
-                  <p>
-                    {project.short_description || "No description available"}
-                  </p>
-                  {project.competition && (
-                    <p className="text-sm text-gray-500">
-                      Competition: {project.competition}
-                    </p>
-                  )}
+                  <div className="flex items-center space-x-4">
+                    {/* Render the image if one is available */}
+                    {(project.imageUrl || project.image_url) && (
+                      <img
+                        src={formatImageUrl(
+                          project.imageUrl || project.image_url || ""
+                        )}
+                        alt="Project Image"
+                        className="w-24 h-24 object-cover rounded" // Adjust size here (w-24/h-24)
+                      />
+                    )}
+
+                    <div>
+                      <h2 className="text-xl font-semibold">{project.title}</h2>
+                      {project.competition && (
+                        <p className="text-sm text-gray-500">
+                          Competition: {project.competition}
+                        </p>
+                      )}
+                      <p>
+                        {project.short_description ||
+                          project.tagline ||
+                          "No description available"}
+                      </p>
+                    </div>
+                  </div>
                 </Link>
               </li>
             ))
@@ -179,7 +205,7 @@ export async function getServerSideProps() {
       about: "",
       short_description: gProject.short_description || "",
       long_description: gProject.long_description || "",
-      competition: gProject.competition || "",
+      competition: gProject.competition?.trim() || "",
       members: [],
       teamMembers: gProject.teamMembers || [],
       video_url: gProject.video_url || "",
@@ -189,20 +215,25 @@ export async function getServerSideProps() {
   });
 
   // Merge Contentful projects into the merged map (set isContentful to true)
+  // Merge Contentful projects into the merged map (set isContentful to true)
   contentfulProjects.forEach((cProject) => {
     const slug = slugify(cProject.title.toLowerCase(), {
       lower: true,
       strict: true
     });
     if (mergedMap[slug]) {
-      // Merge fields from Contentful into the existing GraphQL project
+      // Merge fields from Contentful into the existing GraphQL project.
+      // Use cProject.competition only if it is a nonempty string.
       mergedMap[slug] = {
         title: cProject.title || mergedMap[slug].title,
         tagline: cProject.tagline ?? mergedMap[slug].tagline,
         about: cProject.about ?? mergedMap[slug].about,
         short_description: mergedMap[slug].short_description, // from GraphQL
         long_description: mergedMap[slug].long_description, // from GraphQL
-        competition: mergedMap[slug].competition, // from GraphQL
+        competition:
+          (cProject.competition?.trim() && cProject.competition.trim()) ||
+          mergedMap[slug].competition ||
+          "",
         members: cProject.members || [],
         teamMembers: mergedMap[slug].teamMembers,
         video_url: mergedMap[slug].video_url,
@@ -216,7 +247,7 @@ export async function getServerSideProps() {
         about: cProject.about ?? "",
         short_description: "",
         long_description: "",
-        competition: "",
+        competition: cProject.competition?.trim() || "",
         members: cProject.members || [],
         teamMembers: [],
         video_url: "",
