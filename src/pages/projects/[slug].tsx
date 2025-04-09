@@ -53,6 +53,7 @@ interface FlattenedContentfulFields {
   tagline?: string;
   about?: string;
   members?: string[];
+  videoUrl?: string;
   image?: {
     fields: {
       file: {
@@ -61,6 +62,7 @@ interface FlattenedContentfulFields {
     };
   };
   teamMembers?: ContentfulUser[];
+  video_url?: string;
 }
 
 /** GraphQL shape from your `GET_PROJECT_BY_SLUG` query. */
@@ -186,7 +188,8 @@ export const getServerSideProps: GetServerSideProps<
         about: match.fields.about,
         members: match.fields.members,
         image: match.fields.image,
-        teamMembers: match.fields.teamMembers // New complex object field
+        teamMembers: match.fields.teamMembers, // New complex object field
+        video_url: match.fields.videoUrl
       };
       // Debug: console.log(contentfulFlattened.teamMembers);
     }
@@ -227,7 +230,11 @@ export const getServerSideProps: GetServerSideProps<
     members: contentfulFlattened?.members ?? [],
     teamMembers:
       contentfulFlattened?.teamMembers || graphQLProject?.teamMembers || [],
-    video_url: graphQLProject?.video_url ?? "",
+    video_url:
+      graphQLProject?.video_url ||
+      contentfulFlattened?.videoUrl ||
+      contentfulFlattened?.video_url ||
+      "",
     imageUrl:
       contentfulFlattened?.image?.fields?.file?.url ||
       graphQLProject?.image_url,
@@ -243,7 +250,7 @@ export const getServerSideProps: GetServerSideProps<
 
 // ----- 4) PAGE COMPONENT -----
 export default function ProjectPage({ project }: ServerSideProps) {
-  console.log(project);
+  // console.log(project);
   const {
     title,
     tagline,
@@ -385,36 +392,38 @@ export default function ProjectPage({ project }: ServerSideProps) {
               </div>
             </div>
           )}
-          {(teamMembers || []).map((member, index) => {
-            const unified = unifyTeamMember(member);
-            return (
-              <dl key={index} className="flex mt-2">
-                <div className="flex flex-row gap-2 font-sans">
-                  <div className="w-24 h-24">
-                    <Image
-                      src={formatImageUrl(
-                        unified.imageUrl || "/default-image.png"
-                      )}
-                      alt={`${unified.firstName} ${unified.lastName}`}
-                      width={96}
-                      height={96}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="font-semibold">
-                      {unified.firstName} {unified.lastName}
+          <div className="flex gap-4 flex-col">
+            {(teamMembers || []).map((member, index) => {
+              const unified = unifyTeamMember(member);
+              return (
+                <dl key={index} className="flex mt-2">
+                  <div className="flex flex-row gap-2 font-sans">
+                    <div className="w-24 h-24">
+                      <Image
+                        src={formatImageUrl(
+                          unified.imageUrl || "/default-image.png"
+                        )}
+                        alt={`${unified.firstName} ${unified.lastName}`}
+                        width={96}
+                        height={96}
+                      />
                     </div>
-                    <div>
-                      {unified.major && unified.graduationYear
-                        ? `${unified.major} ${unified.graduationYear}`
-                        : ""}
+                    <div className="flex flex-col gap-1">
+                      <div className="font-semibold">
+                        {unified.firstName} {unified.lastName}
+                      </div>
+                      <div>
+                        {unified.major && unified.graduationYear
+                          ? `${unified.major} ${unified.graduationYear}`
+                          : ""}
+                      </div>
+                      <div className="max-w-2xl">{unified.bio}</div>
                     </div>
-                    <div className="max-w-2xl">{unified.bio}</div>
                   </div>
-                </div>
-              </dl>
-            );
-          })}
+                </dl>
+              );
+            })}
+          </div>
         </section>
       </div>
     </main>
