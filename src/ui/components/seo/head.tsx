@@ -18,6 +18,7 @@ export interface CustomHeadProps {
   type?: string;
   siteName?: string;
   locale?: string;
+  ogLogo?: string; // new prop for og:logo
 
   // Twitter Card
   twitterCard?: string;
@@ -39,7 +40,7 @@ export interface CustomHeadProps {
 const CustomHead = ({
   title = "Brandeis Startup Hub",
   description = "Brandeis Startup Hub",
-  keywords = "brandeis, startup, projects, technology, university, harvard, mit, entrpreneuship, brandeis international business school",
+  keywords = "brandeis, startup, projects, technology, university, harvard, mit, entrepreneurship, brandeis international business school",
   author = "Brandeis Startup Hub",
   canonicalUrl,
 
@@ -62,7 +63,8 @@ const CustomHead = ({
 
   favicon,
 
-  extraMetaTags = []
+  extraMetaTags = [],
+  ogLogo // destructure new prop
 }: CustomHeadProps) => (
   <Head>
     {/* Primary */}
@@ -83,16 +85,17 @@ const CustomHead = ({
     {favicon && <link rel="icon" href={favicon} />}
 
     {/* Open Graph */}
+    {locale && <meta property="og:locale" content={locale} />}
+    {url && <meta property="og:url" content={url} />}
+    <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    {url && <meta property="og:url" content={url} />}
     {image && <meta property="og:image" content={image} />}
     {imageAlt && <meta property="og:image:alt" content={imageAlt} />}
     {imageWidth && <meta property="og:image:width" content={imageWidth} />}
     {imageHeight && <meta property="og:image:height" content={imageHeight} />}
-    <meta property="og:type" content={type} />
     {siteName && <meta property="og:site_name" content={siteName} />}
-    {locale && <meta property="og:locale" content={locale} />}
+    {ogLogo && <meta property="og:logo" content={ogLogo} />}
 
     {/* Twitter Card */}
     <meta name="twitter:card" content={twitterCard} />
