@@ -8,6 +8,7 @@ import { useMergedUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs"; // Import useAuth from Clerk
 import { PROJECTS_BY_EMAIL } from "@/lib/graphql/queries";
+import CustomHead from "@/ui/components/seo/head";
 
 // -----------------------------
 // Component to render the list of projects for the signed-in user
@@ -100,41 +101,54 @@ export default function ProjectPage() {
   const userName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
 
   return (
-    <main className="py-24">
-      <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
-        {/* Left Column: User Profile Data */}
-        <section className="w-full border p-8 lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
-          <div className="flex items-center space-x-4">
-            {user.imageUrl ? (
-              <img
-                src={user.imageUrl}
-                alt="User avatar"
-                className="h-14 w-14 rounded-full object-cover border-2 border-gray-200"
-              />
-            ) : (
-              <div className="h-14 w-14 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600" />
-            )}
-            <h2 className="text-2xl font-sans md:text-4xl self-start text-start">
-              {userName}
-            </h2>
-          </div>
-          <dd className="flex flex-row gap-1 font-sans flex-wrap mt-2">
-            <span className="font-medium">Email: </span>
-            <span>{user.email}</span>
-          </dd>
-          <div className="mt-4 text-sm text-gray-700">
-            <p>
-              This is your profile information. You can update your details
-              later in your account settings.
-            </p>
-          </div>
-        </section>
+    <>
+      <CustomHead
+        title={"My Projects"}
+        description={"My Projects Page"}
+        // replace with your real site URL, or derive from NEXT_PUBLIC_SITE_URL
+        url="https://www.brandeisstartup.com"
+        image={"/lemberg.webp"}
+        imageAlt={"lemberb"}
+        type="website"
+        siteName="Brandeis Startup Hub"
+        twitterCard="summary_large_image"
+      />
+      <main className="py-24">
+        <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
+          {/* Left Column: User Profile Data */}
+          <section className="w-full border p-8 lg:sticky lg:top-36 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
+            <div className="flex items-center space-x-4">
+              {user.imageUrl ? (
+                <img
+                  src={user.imageUrl}
+                  alt="User avatar"
+                  className="h-14 w-14 rounded-full object-cover border-2 border-gray-200"
+                />
+              ) : (
+                <div className="h-14 w-14 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600" />
+              )}
+              <h2 className="text-2xl font-sans md:text-4xl self-start text-start">
+                {userName}
+              </h2>
+            </div>
+            <dd className="flex flex-row gap-1 font-sans flex-wrap mt-2">
+              <span className="font-medium">Email: </span>
+              <span>{user.email}</span>
+            </dd>
+            <div className="mt-4 text-sm text-gray-700">
+              <p>
+                This is your profile information. You can update your details
+                later in your account settings.
+              </p>
+            </div>
+          </section>
 
-        {/* Right Column: List of Projects */}
-        <section className="w-full flex flex-col gap-6 border p-8">
-          <ProjectsList />
-        </section>
-      </div>
-    </main>
+          {/* Right Column: List of Projects */}
+          <section className="w-full flex flex-col gap-6 border p-8">
+            <ProjectsList />
+          </section>
+        </div>
+      </main>
+    </>
   );
 }
