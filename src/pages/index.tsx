@@ -39,6 +39,8 @@ export default function Home({ homepageContent }: HomePageProps) {
         type="website"
         siteName="Brandeis Startup Hub"
         twitterCard="summary_large_image"
+        ogLogo={"https://www.brandeisstartup.com/logo.png"}
+        locale="en_US"
       />
       <Hero
         heroImage={homepageContent.heroImage.fields.file.url}
