@@ -34,11 +34,13 @@ export default function Home({ homepageContent }: HomePageProps) {
         description={homepageContent.description}
         // replace with your real site URL, or derive from NEXT_PUBLIC_SITE_URL
         url="https://www.brandeisstartup.com"
-        image={homepageContent.heroImage.fields.file.url}
+        image={"https://www.brandeisstartup.com/logo.png"}
         imageAlt={homepageContent.header}
         type="website"
         siteName="Brandeis Startup Hub"
         twitterCard="summary_large_image"
+        ogLogo={"https://www.brandeisstartup.com/logo.png"}
+        locale="en_US"
       />
       <Hero
         heroImage={homepageContent.heroImage.fields.file.url}
