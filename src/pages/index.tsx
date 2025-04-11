@@ -7,6 +7,7 @@ import IbsGrid from "@/ui/components/brandeisBranding/data-display/3Column/IbsGr
 import SimpleImageGrid from "@/ui/components/brandeisBranding/data-display/4Column/SimpleImageGrid";
 import Hero from "@/ui/components/brandeisBranding/hero/Hero";
 import { ImageFile } from "@/types/used/CompetitionTypes";
+import CustomHead from "@/ui/components/seo/head";
 
 type HomePageProps = {
   homepageContent: {
@@ -28,6 +29,17 @@ export default function Home({ homepageContent }: HomePageProps) {
 
   return (
     <>
+      <CustomHead
+        title={"Home"}
+        description={homepageContent.description}
+        // replace with your real site URL, or derive from NEXT_PUBLIC_SITE_URL
+        url="https://www.brandeisstartup.com"
+        image={homepageContent.heroImage.fields.file.url}
+        imageAlt={homepageContent.header}
+        type="website"
+        siteName="Brandeis Startup Hub"
+        twitterCard="summary_large_image"
+      />
       <Hero
         heroImage={homepageContent.heroImage.fields.file.url}
         header={homepageContent.header}
@@ -83,8 +95,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
     return {
       props: {
         homepageContent: {
-          title: "Default Homepage Title",
-          description: "Default description in case of error"
+          title: "Brandeis Startup Hub",
+          description: "Brandeis Startup Hub",
+          keywords:
+            "brandeis, startup, projects, technology, university, harvard, mit, entrpreneuship, brandeis international business school",
+          author: "Brandeis Startup Hub"
         }
       }
     };

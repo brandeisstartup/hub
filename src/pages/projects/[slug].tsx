@@ -15,6 +15,7 @@ import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries";
 // ----- UI COMPONENTS -----
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Image from "next/image";
+import CustomHead from "@/ui/components/seo/head";
 
 // ----- 1) FLATTENED INTERFACES -----
 
@@ -280,155 +281,169 @@ export default function ProjectPage({ project }: ServerSideProps) {
   // };
 
   return (
-    <main className="py-24 font-sans">
-      <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
-        {/* Left Column */}
-        <section
-          id="fixed"
-          className="border p-8 w-full h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
-          <Heading label={title} />
+    <>
+      <CustomHead
+        title={project.title}
+        description={short_description}
+        image={imageUrl}
+        imageAlt={project.title}
+        type="article"
+        siteName={project.title}
+        twitterCard="summary_large_image"
+      />
+      <main className="py-24 font-sans">
+        <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
+          {/* Left Column */}
+          <section
+            id="fixed"
+            className="border p-8 w-full h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
+            <Heading label={title} />
 
-          <dd className="flex flex-row gap-1 font-sans flex-wrap">
-            By:
-            {(teamMembers || []).map((member, index) => {
-              const unified = unifyTeamMember(member);
-              return (
-                <dl key={index}>
-                  {unified.firstName} {unified.lastName}
-                </dl>
-              );
-            })}
-          </dd>
+            <dd className="flex flex-row gap-1 font-sans flex-wrap">
+              By:
+              {(teamMembers || []).map((member, index) => {
+                const unified = unifyTeamMember(member);
+                return (
+                  <dl key={index}>
+                    {unified.firstName} {unified.lastName}
+                  </dl>
+                );
+              })}
+            </dd>
 
-          {!project.isFeatured && tagline && <p className="my-6 ">{tagline}</p>}
-          {project.isFeatured && short_description && !long_description && (
-            <p className="my-6 ">{short_description}</p>
-          )}
+            {!project.isFeatured && tagline && (
+              <p className="my-6 ">{tagline}</p>
+            )}
+            {project.isFeatured && short_description && !long_description && (
+              <p className="my-6 ">{short_description}</p>
+            )}
 
-          {competition && (
-            <p className="font-sans leading-8 text-sm">
-              <span className="font-semibold">Competition:</span> {competition}
-            </p>
-          )}
+            {competition && (
+              <p className="font-sans leading-8 text-sm">
+                <span className="font-semibold">Competition:</span>{" "}
+                {competition}
+              </p>
+            )}
 
-          {/* Render main project image if available */}
-          {imageUrl && (
-            <img
-              src={formatImageUrl(imageUrl)}
-              alt="Project Image"
-              className="w-full mt-5 "
-            />
-          )}
+            {/* Render main project image if available */}
+            {imageUrl && (
+              <img
+                src={formatImageUrl(imageUrl)}
+                alt="Project Image"
+                className="w-full mt-5 "
+              />
+            )}
 
-          {/* Share, Copy Link, and QR Code Buttons */}
-          <aside>
-            <menu className="w-full flex justify-start gap-2">
-              <button
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({
-                      title: title,
-                      text: `Check out this project: ${title}`,
-                      url: window.location.href
-                    });
-                  } else {
+            {/* Share, Copy Link, and QR Code Buttons */}
+            <aside>
+              <menu className="w-full flex justify-start gap-2">
+                <button
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({
+                        title: title,
+                        text: `Check out this project: ${title}`,
+                        url: window.location.href
+                      });
+                    } else {
+                      navigator.clipboard.writeText(window.location.href);
+                      alert("URL copied to clipboard!");
+                    }
+                  }}
+                  className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
+                  🔗 Share Project
+                </button>
+
+                <button
+                  onClick={() => {
                     navigator.clipboard.writeText(window.location.href);
-                    alert("URL copied to clipboard!");
-                  }
-                }}
-                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
-                🔗 Share Project
-              </button>
+                    alert("🔗 Project link copied to clipboard!");
+                  }}
+                  className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
+                  📋 Copy Link
+                </button>
 
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert("🔗 Project link copied to clipboard!");
-                }}
-                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
-                📋 Copy Link
-              </button>
-
-              {/* <button
+                {/* <button
                 onClick={downloadQRCode}
                 className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
                 📥 QR Code
               </button> */}
-            </menu>
-          </aside>
-        </section>
+              </menu>
+            </aside>
+          </section>
 
-        {/* Right Column */}
-        <section className="w-full flex flex-col gap-10 border p-8">
-          {/* Combined descriptions */}
-          <div>
-            <Heading label="Project Description" />
+          {/* Right Column */}
+          <section className="w-full flex flex-col gap-10 border p-8">
+            {/* Combined descriptions */}
+            <div>
+              <Heading label="Project Description" />
 
-            {about && (
-              <p className="my-3 text-lg leading-8 text-gray-600">{about}</p>
-            )}
-            {long_description && (
-              <p className="my-3 text-lg leading-8 text-gray-600">
-                {long_description}
-              </p>
-            )}
-          </div>
-          <hr />
-          {/* Possibly show video from GraphQL */}
-          {video_url && (
-            <>
-              <div>
-                <Heading label="Video" />
-                <div className="relative w-full aspect-video mt-5">
-                  <iframe
-                    className="absolute inset-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/${video_url}`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-              <hr />
-            </>
-          )}
-
-          <div className="flex gap-4 flex-col">
-            <Heading label="Team Members" />
-            {(teamMembers || []).map((member, index) => {
-              const unified = unifyTeamMember(member);
-              return (
-                <dl key={index} className="flex mt-2">
-                  <div className="flex flex-row gap-2 font-sans">
-                    <div className="w-24 h-24">
-                      <Image
-                        src={formatImageUrl(
-                          unified.imageUrl || "/default-image.png"
-                        )}
-                        alt={`${unified.firstName} ${unified.lastName}`}
-                        width={96}
-                        height={96}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <div className="font-semibold">
-                        {unified.firstName} {unified.lastName}
-                      </div>
-                      <div>
-                        {unified.major && unified.graduationYear
-                          ? `${unified.major} ${unified.graduationYear}`
-                          : ""}
-                      </div>
-                      <div className="max-w-2xl">{unified.bio}</div>
-                    </div>
+              {about && (
+                <p className="my-3 text-lg leading-8 text-gray-600">{about}</p>
+              )}
+              {long_description && (
+                <p className="my-3 text-lg leading-8 text-gray-600">
+                  {long_description}
+                </p>
+              )}
+            </div>
+            <hr />
+            {/* Possibly show video from GraphQL */}
+            {video_url && (
+              <>
+                <div>
+                  <Heading label="Video" />
+                  <div className="relative w-full aspect-video mt-5">
+                    <iframe
+                      className="absolute inset-0 w-full h-full"
+                      src={`https://www.youtube.com/embed/${video_url}`}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    />
                   </div>
-                </dl>
-              );
-            })}
-          </div>
-        </section>
-      </div>
-    </main>
+                </div>
+                <hr />
+              </>
+            )}
+
+            <div className="flex gap-4 flex-col">
+              <Heading label="Team Members" />
+              {(teamMembers || []).map((member, index) => {
+                const unified = unifyTeamMember(member);
+                return (
+                  <dl key={index} className="flex mt-2">
+                    <div className="flex flex-row gap-2 font-sans">
+                      <div className="w-24 h-24">
+                        <Image
+                          src={formatImageUrl(
+                            unified.imageUrl || "/default-image.png"
+                          )}
+                          alt={`${unified.firstName} ${unified.lastName}`}
+                          width={96}
+                          height={96}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="font-semibold">
+                          {unified.firstName} {unified.lastName}
+                        </div>
+                        <div>
+                          {unified.major && unified.graduationYear
+                            ? `${unified.major} ${unified.graduationYear}`
+                            : ""}
+                        </div>
+                        <div className="max-w-2xl">{unified.bio}</div>
+                      </div>
+                    </div>
+                  </dl>
+                );
+              })}
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
   );
 }
