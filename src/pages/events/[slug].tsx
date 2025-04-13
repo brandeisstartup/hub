@@ -19,7 +19,6 @@ import Faq from "@/ui/components/contentfulComponents/faq/faq";
 import Projects from "@/ui/components/contentfulComponents/projects/projects";
 import Hero from "@/ui/components/brandeisBranding/hero/Hero";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
-import Prizes from "@/ui/components/brandeisBranding/data-display/prizes/prizes";
 import Button from "@/ui/components/brandeisBranding/buttons/button";
 import CustomHead from "@/ui/components/seo/head";
 import PrizesList from "@/ui/components/brandeisBranding/data-display/prizes/pirzesList";
