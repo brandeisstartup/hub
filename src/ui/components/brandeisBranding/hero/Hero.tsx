@@ -31,11 +31,11 @@ const Hero = ({
       {/* 🔹 Hero Content (Higher z-index to stay above the overlay) */}
       <div className="hidden w-full gap-2 md:flex mt-10 flex-col text-white px-4 max-w-8xl font-sans relative z-10">
         <div className="text-start flex flex-col w-full max-w-5xl ">
-          <h1 className=" text-medium [text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-sans text-5xl">
+          <h1 className=" text-medium [text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-sans text-7xl">
             {header}
           </h1>
           {description && (
-            <p className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-serif mt-4 text-lg text-bold w-full max-w-3xl md:text-xl">
+            <p className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-serif mt-4 text-lg text-bold w-full max-w-3xl md:text-2xl">
               {description}
             </p>
           )}

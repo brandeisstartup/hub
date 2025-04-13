@@ -19,9 +19,10 @@ import Faq from "@/ui/components/contentfulComponents/faq/faq";
 import Projects from "@/ui/components/contentfulComponents/projects/projects";
 import Hero from "@/ui/components/brandeisBranding/hero/Hero";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
-import Prizes from "@/ui/components/brandeisBranding/data-display/prizes/prizes";
 import Button from "@/ui/components/brandeisBranding/buttons/button";
 import CustomHead from "@/ui/components/seo/head";
+import PrizesList from "@/ui/components/brandeisBranding/data-display/prizes/pirzesList";
+import Raffle from "@/ui/components/brandeisBranding/data-display/prizes/raffle";
 
 // import { pitchSummitData } from "@/data/competition";
 
@@ -174,19 +175,31 @@ export default function CompetitionPage({ competition }: Props) {
             </ResponsiveGrid>
           )}
 
-        {competition.fields.prizesLabel &&
-          competition.fields.prizes &&
-          competition.fields.raffleMainText &&
-          competition.fields.raffleSubText &&
-          competition.fields.raffleImage?.fields?.file?.url && (
-            <Prizes
-              label={competition.fields.prizesLabel}
-              prizes={competition.fields.prizes}
-              raffleHeading={competition.fields.raffleMainText}
-              raffleSubtext={competition.fields.raffleSubText}
-              raffleImage={competition.fields.raffleImage.fields.file.url}
-            />
-          )}
+        {competition.fields.prizesLabel && competition.fields.prizes && (
+          <section className="bg-white" id="prizes">
+            <div className="mx-auto max-w-8xl px-6 py-24 sm:py-32 lg:px-4 lg:py-16">
+              <div className="mx-auto max-w-8xl">
+                <Heading label={competition.fields.prizesLabel} />
+
+                {/* prize grid */}
+                <PrizesList prizes={competition.fields.prizes} />
+
+                {/* raffle card */}
+                {competition.fields.raffleMainText &&
+                  competition.fields.raffleSubText &&
+                  competition.fields.raffleImage?.fields?.file?.url && (
+                    <Raffle
+                      raffleHeading={competition.fields.raffleMainText}
+                      raffleSubtext={competition.fields.raffleSubText}
+                      raffleImage={
+                        competition.fields.raffleImage.fields.file.url
+                      }
+                    />
+                  )}
+              </div>
+            </div>
+          </section>
+        )}
 
         {competition.fields.projects && (
           <Projects

@@ -1,0 +1,42 @@
+field_name,value,suggested_value
+Title,,The title of the event (max 256 chars)
+Thumbnail,,Image URL or asset ID (required)
+Short Description (blurb),,Up to 256 characters; follow size/input/media rules
+Description,,Detailed description (max 50 000 chars); follow size/input/media rules
+Navigation Description,,Up to 256 characters; follow size/input/media rules
+Start Date,,YYYY-MM-DD (required)
+End Date,,YYYY-MM-DD; end date of event
+Call To Action Label,,Up to 256 characters; appears in Hero if Hero Image available
+Call To Action Link,,URL or path; appears in Hero if Hero Image available
+About Label,,Up to 256 characters; if missing, component will not appear
+About,,Long detailed description (max 50 000 chars); use `[Link Text]"URL"` for links
+Hero Image,,Image URL or asset ID
+Hero Secondary Button Label,,More Info
+Hero Secondary Button Link,,/about
+Intro Video Youtube ID,,YouTube video ID from shareable link
+Requirements,,List requirements (one per line)
+Schedule Label,,Up to 256 characters
+Schedule Events,,Define schedule events
+Prizes Label,,Prizes
+Prizes,,List of prizes
+Raffle Main Text,,Apple Airpods MAX Raffle
+Raffle Sub Text,"Note: Attendance at entire event is required.",If missing, component will not appear
+Raffle Image,,Image URL or asset ID
+Winners Youtube Grid Label,,Label for YouTube grid (e.g., Winners)
+Winners Youtube Grid,,List of video IDs or embed codes
+Project Blocks Label,,Up to 256 characters
+Projects,,Use the Project content type (list of project IDs)
+Person Spotlight Label,,Label to show Person Spotlight component
+Person Spotlight First Name,,John
+Person Spotlight Last Name,,Doe
+Person Spotlight Image,,Image URL or asset ID (must be WebP)
+Person Spotlight Text,,Text for Person Spotlight
+Person Spotlight Link Text,,CTA link text
+Person Spotlight CTA Link,,CTA link URL
+People Section Label,,People
+Frequently asked questions (FAQs),,List FAQs (question|answer)
+Contact Information,,Contact details
+showEventResources,,Yes or No
+Event Resources Label,,Resources
+Event Resources,,List of resource links
+ShowBreakoutRooms,,Yes or No (if “Yes”, breakout rooms will appear)

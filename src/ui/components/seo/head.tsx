@@ -18,7 +18,7 @@ export interface CustomHeadProps {
   type?: string;
   siteName?: string;
   locale?: string;
-  ogLogo?: string; // new prop for og:logo
+  ogLogo?: string;
 
   // Twitter Card
   twitterCard?: string;
@@ -42,29 +42,29 @@ const CustomHead = ({
   description = "Brandeis Startup Hub",
   keywords = "brandeis, startup, projects, technology, university, harvard, mit, entrepreneurship, brandeis international business school",
   author = "Brandeis Startup Hub",
-  canonicalUrl,
+  canonicalUrl = "",
 
-  url,
-  image,
-  imageAlt,
-  imageWidth,
-  imageHeight,
+  url = "",
+  image = "",
+  imageAlt = "",
+  imageWidth = "",
+  imageHeight = "",
   type = "website",
-  siteName,
-  locale,
+  siteName = "",
+  locale = "",
 
   twitterCard = "summary_large_image",
-  twitterSite,
-  twitterCreator,
+  twitterSite = "",
+  twitterCreator = "",
 
   viewport = "width=device-width, initial-scale=1",
   robots = "index,follow",
-  themeColor,
+  themeColor = "",
 
-  favicon,
+  favicon = "",
 
   extraMetaTags = [],
-  ogLogo // destructure new prop
+  ogLogo = ""
 }: CustomHeadProps) => (
   <Head>
     {/* Primary */}
@@ -76,34 +76,32 @@ const CustomHead = ({
     {/* Browser hints */}
     <meta name="viewport" content={viewport} />
     <meta name="robots" content={robots} />
-    {themeColor && <meta name="theme-color" content={themeColor} />}
+    <meta name="theme-color" content={themeColor} />
 
-    {/* Canonical */}
-    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-
-    {/* Favicon */}
-    {favicon && <link rel="icon" href={favicon} />}
+    {/* Canonical & Favicon */}
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href={favicon} />
 
     {/* Open Graph */}
-    {locale && <meta property="og:locale" content={locale} />}
-    {url && <meta property="og:url" content={url} />}
+    <meta property="og:locale" content={locale} />
+    <meta property="og:url" content={url} />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    {image && <meta property="og:image" content={image} />}
-    {imageAlt && <meta property="og:image:alt" content={imageAlt} />}
-    {imageWidth && <meta property="og:image:width" content={imageWidth} />}
-    {imageHeight && <meta property="og:image:height" content={imageHeight} />}
-    {siteName && <meta property="og:site_name" content={siteName} />}
-    {ogLogo && <meta property="og:logo" content={ogLogo} />}
+    <meta property="og:image" content={image} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:image:width" content={imageWidth} />
+    <meta property="og:image:height" content={imageHeight} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:logo" content={ogLogo} />
 
     {/* Twitter Card */}
     <meta name="twitter:card" content={twitterCard} />
-    {twitterSite && <meta name="twitter:site" content={twitterSite} />}
-    {twitterCreator && <meta name="twitter:creator" content={twitterCreator} />}
+    <meta name="twitter:site" content={twitterSite} />
+    <meta name="twitter:creator" content={twitterCreator} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    {image && <meta name="twitter:image" content={image} />}
+    <meta name="twitter:image" content={image} />
 
     {/* Extra meta tags */}
     {extraMetaTags.map((m, i) =>
