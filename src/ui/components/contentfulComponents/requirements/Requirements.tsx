@@ -20,7 +20,7 @@ const Requirements = ({ heading, requirements }: Props) => {
                 {req.fields.requirement}
               </dt>
               <dd className="mt-4 lg:col-span-7 lg:mt-0">
-                <ol className="text-base leading-7 text-gray-600">
+                <ol className="font-sans text-lg leading-7 text-gray-600">
                   {req.fields.explanation.map((exp, index) => (
                     <li key={`${exp}-${index}`} className="">
                       {exp}

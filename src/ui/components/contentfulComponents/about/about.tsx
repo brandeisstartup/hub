@@ -47,11 +47,11 @@ const highlightLinks = (text: string) => {
 
 const About = ({ title, heading, description }: AboutProps) => {
   return (
-    <section id={title.toLowerCase()} className="py-24 sm:pt-32">
-      <div className="mx-auto max-w-8xl px-4">
+    <section id={title.toLowerCase()} className=" sm:pt-32">
+      <div className="mx-auto max-w-8xl px-4 pt-8 md:pt-0">
         <div className="mx-auto max-w-8xl lg:mx-0">
           <Heading label={heading} />
-          <p className="text-sm leading-6 md:text-left mt-6 md:text-base md:leading-7 text-gray-600">
+          <p className="font-sans text-sm leading-6 md:text-left mt-6 md:text-xl md:leading-7 text-gray-600">
             {highlightLinks(description)}
           </p>
         </div>
