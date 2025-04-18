@@ -16,6 +16,9 @@ import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Image from "next/image";
 import CustomHead from "@/ui/components/seo/head";
+import Breadcrumb, {
+  BreadcrumbItem
+} from "@/ui/components/brandeisBranding/breadcrumbs";
 
 // ----- 1) FLATTENED INTERFACES -----
 
@@ -280,6 +283,12 @@ export default function ProjectPage({ project }: ServerSideProps) {
   //   }
   // };
 
+  const crumbs: BreadcrumbItem[] = [
+    { label: "Home", href: "/" },
+    { label: "Projects", href: "/search" },
+    { label: project.title } // no href → current page
+  ];
+
   return (
     <>
       <CustomHead
@@ -291,7 +300,13 @@ export default function ProjectPage({ project }: ServerSideProps) {
         siteName={project.title}
         twitterCard="summary_large_image"
       />
-      <main className="py-24 font-sans">
+      <div className=" w-full ">
+        <div className="max-w-8xl mx-auto p-6 font-sans mt-5">
+          {" "}
+          <Breadcrumb items={crumbs} />
+        </div>
+      </div>
+      <main className="py-12 font-sans">
         <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
           {/* Left Column */}
           <section

@@ -8,6 +8,9 @@ import Link from "next/link";
 import { useCompetitions } from "@/context/EventContext";
 import { CompetitionFields } from "@/types/used/CompetitionTypes";
 import Image from "next/image";
+import Breadcrumb, {
+  BreadcrumbItem
+} from "@/ui/components/brandeisBranding/breadcrumbs";
 
 // Helper: ensure protocol on Contentful image URLs
 function formatImageUrl(url: string): string {
@@ -114,6 +117,11 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     [group: string]: string[];
   }>({ Year: [], Competition: [] });
 
+  const crumbs: BreadcrumbItem[] = [
+    { label: "Home", href: "/" },
+    { label: "Projects" }
+  ];
+
   // simulate loading
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
@@ -180,144 +188,152 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
   });
 
   return (
-    <div className="max-w-8xl mx-auto p-6 font-sans">
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="w-full md:w-60">
-          <input
-            type="text"
-            className="border rounded p-2 w-full text-sm mb-4"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <h2 className="text-lg font-medium mb-2">Filter Projects</h2>
-          <div className="space-y-4">
-            {Object.entries(FILTERS).map(([group, opts]) => (
-              <Disclosure key={group} defaultOpen>
-                {() => (
-                  <div className="border rounded p-2">
-                    <Disclosure.Button className="w-full text-left font-semibold">
-                      {group}
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="mt-2">
-                      {opts.map((opt) => {
-                        const isSel =
-                          selectedFilters[group]?.includes(opt) || false;
-                        return (
-                          <label
-                            key={opt}
-                            className="flex items-center mb-2 text-sm ">
-                            <input
-                              type="checkbox"
-                              checked={isSel}
-                              className="mr-2"
-                              onChange={() => handleFilterChange(group, opt)}
-                            />
-                            {opt}
-                          </label>
-                        );
-                      })}
-                    </Disclosure.Panel>
-                  </div>
-                )}
-              </Disclosure>
-            ))}
-          </div>
+    <>
+      <div className=" w-full ">
+        <div className="max-w-8xl mx-auto p-6 font-sans mt-5">
+          {" "}
+          <Breadcrumb items={crumbs} />
         </div>
-        <div
-          className="  flex-1 flex flex-col 
+      </div>
+      <div className="max-w-8xl mx-auto p-6 font-sans mt-5">
+        <div className="flex flex-col md:flex-row gap-8">
+          <div className="w-full md:w-60">
+            <input
+              type="text"
+              className="border rounded p-2 w-full text-sm mb-4"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <h2 className="text-lg font-medium mb-2">Filter Projects</h2>
+            <div className="space-y-4">
+              {Object.entries(FILTERS).map(([group, opts]) => (
+                <Disclosure key={group} defaultOpen>
+                  {() => (
+                    <div className="border rounded p-2">
+                      <Disclosure.Button className="w-full text-left font-semibold">
+                        {group}
+                      </Disclosure.Button>
+                      <Disclosure.Panel className="mt-2">
+                        {opts.map((opt) => {
+                          const isSel =
+                            selectedFilters[group]?.includes(opt) || false;
+                          return (
+                            <label
+                              key={opt}
+                              className="flex items-center mb-2 text-sm ">
+                              <input
+                                type="checkbox"
+                                checked={isSel}
+                                className="mr-2"
+                                onChange={() => handleFilterChange(group, opt)}
+                              />
+                              {opt}
+                            </label>
+                          );
+                        })}
+                      </Disclosure.Panel>
+                    </div>
+                  )}
+                </Disclosure>
+              ))}
+            </div>
+          </div>
+          <div
+            className="  flex-1 flex flex-col 
     min-h-[750px] 
     flex-shrink-0 
     xs:min-w-full 
     sm:min-w-[690px] 
     lg:min-w-[1060px] 
 ">
-          <h1 className="text-3xl font-medium mb-2">Startup Hub Search</h1>
-          {/* <p className="text-gray-700 mb-6">
+            {/* <h1 className="text-3xl font-medium mb-2">Startup Hub Search</h1> */}
+            {/* <p className="text-gray-700 mb-6">
             Jumpstart your app development process with pre-built solutions from
             Vercel and our community.
           </p> */}
-          <div className="flex-1 l">
-            {loading ? (
-              <SkeletonLoader />
-            ) : (
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {filteredProjects.length ? (
-                  filteredProjects.map((project) => {
-                    const year =
-                      project.created_date?.substring(0, 4) ||
-                      project.createdAt?.substring(0, 4) ||
-                      "N/A";
+            <div className="flex-1 l">
+              {loading ? (
+                <SkeletonLoader />
+              ) : (
+                <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {filteredProjects.length ? (
+                    filteredProjects.map((project) => {
+                      const year =
+                        project.created_date?.substring(0, 4) ||
+                        project.createdAt?.substring(0, 4) ||
+                        "N/A";
 
-                    // —— DESCRIPTION TRUNCATION LOGIC ——
-                    const fullDesc =
-                      project.short_description || project.tagline || "";
-                    const maxLen = 100;
-                    const isLong = fullDesc.length > maxLen;
-                    const summary = isLong
-                      ? fullDesc.slice(0, maxLen).trimEnd() + "…"
-                      : fullDesc;
+                      // —— DESCRIPTION TRUNCATION LOGIC ——
+                      const fullDesc =
+                        project.short_description || project.tagline || "";
+                      const maxLen = 100;
+                      const isLong = fullDesc.length > maxLen;
+                      const summary = isLong
+                        ? fullDesc.slice(0, maxLen).trimEnd() + "…"
+                        : fullDesc;
 
-                    // —— SLUG FOR “READ MORE” LINK ——
-                    const slug = project.isContentful
-                      ? slugify(project.title, { lower: true, strict: true })
-                      : slugify(project.title, { strict: true });
+                      // —— SLUG FOR “READ MORE” LINK ——
+                      const slug = project.isContentful
+                        ? slugify(project.title, { lower: true, strict: true })
+                        : slugify(project.title, { strict: true });
 
-                    return (
-                      <li
-                        key={project.title}
-                        className="border p-4 hover:bg-gray-100 transition">
-                        <Link href={`/projects/${slug}`} className="block">
-                          <div className="flex items-start space-x-4">
-                            {/* Image */}
-                            {project.imageUrl && (
-                              <div className="relative w-32 h-32 flex-shrink-0 overflow-hidden rounded">
-                                <Image
-                                  src={project.imageUrl}
-                                  alt={project.title}
-                                  fill
-                                  className="object-cover"
-                                  sizes="96px"
-                                />
-                              </div>
-                            )}
-
-                            {/* Text */}
-                            <div className="flex-1">
-                              <h2 className="text-md font-semibold">
-                                {project.title}{" "}
-                              </h2>
-                              <span className="text-sm text-gray-500 ">
-                                {year}
-                              </span>
-                              <p className="text-sm text-gray-700 mt-1">
-                                {summary}
-                              </p>
-
-                              {isLong && (
-                                <Link
-                                  href={`/projects/${slug}`}
-                                  className="text-blue-500 text-sm hover:underline mt-1 block">
-                                  Read more
-                                </Link>
+                      return (
+                        <li
+                          key={project.title}
+                          className="border p-4 hover:bg-gray-100 transition">
+                          <Link href={`/projects/${slug}`} className="block">
+                            <div className="flex items-start space-x-4">
+                              {/* Image */}
+                              {project.imageUrl && (
+                                <div className="relative w-32 h-32 flex-shrink-0 overflow-hidden rounded">
+                                  <Image
+                                    src={project.imageUrl}
+                                    alt={project.title}
+                                    fill
+                                    className="object-cover"
+                                    sizes="96px"
+                                  />
+                                </div>
                               )}
+
+                              {/* Text */}
+                              <div className="flex-1">
+                                <h2 className="text-md font-semibold">
+                                  {project.title}{" "}
+                                </h2>
+                                <span className="text-sm text-gray-500 ">
+                                  {year}
+                                </span>
+                                <p className="text-sm text-gray-700 mt-1">
+                                  {summary}
+                                </p>
+
+                                {isLong && (
+                                  <Link
+                                    href={`/projects/${slug}`}
+                                    className="text-blue-500 text-sm hover:underline mt-1 block">
+                                    Read more
+                                  </Link>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                      </li>
-                    );
-                  })
-                ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <p>No projects found.</p>
-                  </div>
-                )}
-              </ul>
-            )}
+                          </Link>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <p>No projects found.</p>
+                    </div>
+                  )}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
