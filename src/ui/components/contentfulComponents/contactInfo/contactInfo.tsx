@@ -36,7 +36,7 @@ const ContactInfo = ({ label, sectionBlurb, contacts }: Props) => {
                         <dt className="sr-only">Email</dt>
                         <dd>
                           <Link
-                            className="font-semibold text-blue-600"
+                            className="font-semibold text-blue-600 font-sans"
                             href={`mailto:${contact.fields.email}`}>
                             {contact.fields.email}
                           </Link>

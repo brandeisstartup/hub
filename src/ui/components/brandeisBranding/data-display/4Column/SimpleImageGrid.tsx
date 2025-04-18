@@ -21,7 +21,7 @@ const SimpleImageGrid = ({ projects, label, extend = false }: Props) => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center" id="events">
       <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
         <Heading label={label} />
         <div className="grid_container  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full mt-8">
@@ -38,10 +38,10 @@ const SimpleImageGrid = ({ projects, label, extend = false }: Props) => {
                   />
                   <Link
                     href={`/events/${slugify(project.title, { lower: true })}`}
-                    className="text-xl font-bold font-serif text-BrandeisBrand mt-2 hover:underline">
+                    className="text-2xl font-bold font-sans text-BrandeisBrand mt-2 hover:underline">
                     {project.title}
                   </Link>
-                  <p className="text-body4 text-BrandeisBodyText">
+                  <p className="text-md text-BrandeisBodyText">
                     {project.shortDescription}
                   </p>
                 </div>
