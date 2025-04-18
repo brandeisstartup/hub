@@ -189,7 +189,7 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <h2 className="text-lg font-semibold mb-2">Filter Templates</h2>
+          <h2 className="text-lg font-semibold mb-2">Filter Projects</h2>
           <div className="space-y-4">
             {Object.entries(FILTERS).map(([group, opts]) => (
               <Disclosure key={group} defaultOpen>
