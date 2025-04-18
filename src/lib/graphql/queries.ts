@@ -32,6 +32,7 @@ export const GET_ALL_PROJECTS = gql`
       short_description
       image_url
       competition
+      created_date
     }
   }
 `;
