@@ -111,6 +111,10 @@ const CustomHead = ({
         <meta key={i} property={m.property!} content={m.content} />
       )
     )}
+    <meta
+      name="google-site-verification"
+      content="HRQ9rgPcG1Y75Kb4YgBnUoqQ7DmrSyo8EI9ZrtOaT3E"
+    />
   </Head>
 );
 
