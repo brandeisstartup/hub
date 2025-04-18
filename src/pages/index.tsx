@@ -65,16 +65,16 @@ export default function Home({ homepageContent }: HomePageProps) {
             skills that will serve them in their careers and beyond. This hub is
             not only a place for fostering entrepreneurship and teamwork, but
             also for students to easily display their work and share it with
-            potential employers. Whether it's through events, collaborative
+            potential employers. Whether it&apos;s through events, collaborative
             projects, or individual achievements, the Hub offers a platform for
             students to showcase their efforts and expand their professional
             network. The Hub is run by <strong>Philippe Wells</strong> at the{" "}
             <strong>Brandeis International Business School</strong>, providing
             mentorship and guidance to help students thrive in the fast-paced
-            world of entrepreneurship. Philippe's leadership has shaped the Hub
-            into a space where innovation and collaboration thrive, making it an
-            essential resource for all Brandeis students looking to launch their
-            entrepreneurial careers.
+            world of entrepreneurship. Philippe&apos;s leadership has shaped the
+            Hub into a space where innovation and collaboration thrive, making
+            it an essential resource for all Brandeis students looking to launch
+            their entrepreneurial careers.
           </p>
         </div>
       </div>
