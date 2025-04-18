@@ -1,21 +1,55 @@
 import { useState, useEffect } from "react";
+import { Disclosure } from "@headlessui/react";
 import client from "@/lib/apolloClient";
 import contentfulClient from "@/lib/contentful";
 import { GET_ALL_PROJECTS } from "@/lib/graphql/queries";
 import slugify from "slugify";
 import Link from "next/link";
-import CustomHead from "@/ui/components/seo/head";
+import { useCompetitions } from "@/context/EventContext";
+import { CompetitionFields } from "@/types/used/CompetitionTypes";
+import Image from "next/image";
 
-// Define TypeScript Interfaces
-
+// Helper: ensure protocol on Contentful image URLs
 function formatImageUrl(url: string): string {
-  // If the URL is protocol-relative, add "https:".
   if (url.startsWith("//")) {
     return `https:${url}`;
   }
   return url;
 }
 
+// Debounce hook
+function useDebounce<T>(value: T, delay: number = 500): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
+}
+
+// Skeleton loader for initial loading state
+function SkeletonLoader() {
+  return (
+    <ul className="mt-4 grid grid-cols-2 gap-4">
+      {Array.from({ length: 17 }).map((_, i) => (
+        <li key={i} className="border p-4">
+          <div className="animate-pulse flex space-x-4">
+            <div className="rounded bg-gray-300 h-24 w-24" />
+            <div className="flex-1 space-y-4 py-1">
+              <div className="h-4 bg-gray-300 rounded w-3/4" />
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-300 rounded" />
+                <div className="h-4 bg-gray-300 rounded w-5/6" />
+              </div>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// TypeScript interfaces
 interface User {
   id: string;
   email: string;
@@ -33,13 +67,9 @@ interface FlattenedContentfulFields {
   about?: string;
   members?: string[];
   competition?: string | null;
-  image?: {
-    fields: {
-      file: {
-        url: string;
-      };
-    };
-  };
+  videoUrl?: string;
+  image?: { fields: { file: { url: string } } };
+  createdAt: string; // pulled from sys.createdAt
 }
 
 interface GraphQLProject {
@@ -48,62 +78,27 @@ interface GraphQLProject {
   short_description?: string;
   long_description?: string;
   competition?: string;
+  created_date?: string;
   teamMembers?: User[];
   video_url?: string;
   image_url?: string;
 }
 
 export interface ProjectData {
+  id?: string;
   title: string;
   tagline?: string;
   about?: string;
   short_description?: string;
   long_description?: string;
   competition?: string;
+  created_date?: string;
+  createdAt?: string;
   members?: string[];
   teamMembers?: User[];
   video_url?: string;
   imageUrl?: string;
-  image_url?: string;
   isContentful?: boolean;
-}
-
-// ----- Debounce Hook for Search Input -----
-function useDebounce(value: string, delay: number = 500) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => clearTimeout(handler);
-  }, [value, delay]);
-
-  return debouncedValue;
-}
-
-// ----- Skeleton Loader Component -----
-function SkeletonLoader() {
-  // Using TailwindCSS classes to create pulsating skeleton boxes
-  return (
-    <ul className="mt-4 grid grid-cols-3 gap-4">
-      {Array.from({ length: 17 }).map((_, i) => (
-        <li key={i} className="border p-4">
-          <div className="animate-pulse flex space-x-4">
-            <div className="rounded bg-gray-300 h-24 w-24"></div>
-            <div className="flex-1 space-y-4 py-1">
-              <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-              <div className="space-y-2">
-                <div className="h-4 bg-gray-300 rounded"></div>
-                <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-              </div>
-            </div>
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
 }
 
 interface SearchPageProps {
@@ -111,207 +106,317 @@ interface SearchPageProps {
 }
 
 export default function SearchPage({ initialProjects }: SearchPageProps) {
+  const { competitions, loading: compLoading } = useCompetitions();
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [loading, setLoading] = useState(true);
+  const [selectedFilters, setSelectedFilters] = useState<{
+    [group: string]: string[];
+  }>({ Year: [], Competition: [] });
 
-  // Simulate a short loading state on mount
+  // simulate loading
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000); // Adjust delay as needed
+    const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Filter projects based on search term
-  const filteredProjects = initialProjects.filter((project) =>
-    project.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+  const startYear = 2024;
+  const currentYear = new Date().getFullYear();
+  const yearOptions = Array.from(
+    { length: currentYear - startYear + 1 },
+    (_, i) => (startYear + i).toString()
   );
+  const competitionOptions = compLoading
+    ? []
+    : competitions.map((c: CompetitionFields) => c.title.trim());
+
+  const FILTERS = {
+    Year: yearOptions,
+    Competition: competitionOptions
+  };
+
+  const handleFilterChange = (group: string, value: string) => {
+    setSelectedFilters((prev) => {
+      const set = new Set(prev[group] || []);
+      if (set.has(value)) {
+        set.delete(value);
+      } else {
+        set.add(value);
+      }
+      return {
+        ...prev,
+        [group]: Array.from(set)
+      };
+    });
+  };
+
+  const filteredProjects = initialProjects.filter((project) => {
+    // 1) trim & lowercase once
+    const cleanSearch = debouncedSearchTerm.trim().toLowerCase();
+
+    // 2) title match
+    const title = project.title.trim().toLowerCase();
+    let ok = title.includes(cleanSearch);
+
+    // 3) competition filter (if applied)
+    if (ok && selectedFilters.Competition.length) {
+      // trim any whitespace on the project’s competition
+      const comp = project.competition?.trim() ?? "";
+      // also trim the selected filter values just in case
+      const active = selectedFilters.Competition.map((v) => v.trim());
+      ok = active.includes(comp);
+    }
+
+    // 4) year filter (unchanged, since years don’t have spaces)
+    if (ok && selectedFilters.Year.length) {
+      const year =
+        project.created_date?.substring(0, 4) ||
+        project.createdAt?.substring(0, 4) ||
+        "";
+      ok = selectedFilters.Year.includes(year.trim());
+    }
+
+    return ok;
+  });
 
   return (
-    <>
-      <CustomHead
-        title={"Search"}
-        description={"Search"}
-        url="https://www.brandeisstartup.com"
-        image={"/lemberg.webp"}
-        imageAlt={"Search"}
-        type="website"
-        siteName="Brandeis Startup Hub"
-        twitterCard="summary_large_image"
-      />
-      <div className="flex justify-center items-center">
-        <div className="p-6 relative w-full max-w-8xl font-sans">
-          <h1 className="text-2xl font-bold mb-4">Search Projects</h1>
-
-          {/* Search Input */}
+    <div className="max-w-8xl mx-auto p-6 font-sans">
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="w-full md:w-60">
           <input
             type="text"
-            className="border p-2 w-full"
-            placeholder="Search for projects..."
+            className="border rounded p-2 w-full text-sm mb-4"
+            placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <h2 className="text-lg font-medium mb-2">Filter Projects</h2>
+          <div className="space-y-4">
+            {Object.entries(FILTERS).map(([group, opts]) => (
+              <Disclosure key={group} defaultOpen>
+                {() => (
+                  <div className="border rounded p-2">
+                    <Disclosure.Button className="w-full text-left font-semibold">
+                      {group}
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="mt-2">
+                      {opts.map((opt) => {
+                        const isSel =
+                          selectedFilters[group]?.includes(opt) || false;
+                        return (
+                          <label
+                            key={opt}
+                            className="flex items-center mb-2 text-sm ">
+                            <input
+                              type="checkbox"
+                              checked={isSel}
+                              className="mr-2"
+                              onChange={() => handleFilterChange(group, opt)}
+                            />
+                            {opt}
+                          </label>
+                        );
+                      })}
+                    </Disclosure.Panel>
+                  </div>
+                )}
+              </Disclosure>
+            ))}
+          </div>
+        </div>
+        <div
+          className="  flex-1 flex flex-col 
+    min-h-[750px] 
+    flex-shrink-0 
+    xs:min-w-full 
+    sm:min-w-[690px] 
+    lg:min-w-[1060px] 
+">
+          <h1 className="text-3xl font-medium mb-2">Startup Hub Search</h1>
+          {/* <p className="text-gray-700 mb-6">
+            Jumpstart your app development process with pre-built solutions from
+            Vercel and our community.
+          </p> */}
+          <div className="flex-1 l">
+            {loading ? (
+              <SkeletonLoader />
+            ) : (
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {filteredProjects.length ? (
+                  filteredProjects.map((project) => {
+                    const year =
+                      project.created_date?.substring(0, 4) ||
+                      project.createdAt?.substring(0, 4) ||
+                      "N/A";
 
-          {/* Render Skeleton Loader or Results */}
-          {loading ? (
-            <SkeletonLoader />
-          ) : (
-            <ul className="mt-4 grid grid-cols-3 gap-4">
-              {filteredProjects.length > 0 ? (
-                filteredProjects.map((project) => (
-                  <li
-                    key={project.title}
-                    className="border p-4 hover:bg-gray-100 transition">
-                    <Link
-                      href={`/projects/${
-                        project.isContentful
-                          ? slugify(project.title, {
-                              lower: true,
-                              strict: true
-                            })
-                          : slugify(project.title, { strict: true })
-                      }`}
-                      className="block">
-                      <div className="flex items-center space-x-4">
-                        {/* Render the image if one is available */}
-                        {(project.imageUrl || project.image_url) && (
-                          <img
-                            src={formatImageUrl(
-                              project.imageUrl || project.image_url || ""
+                    // —— DESCRIPTION TRUNCATION LOGIC ——
+                    const fullDesc =
+                      project.short_description || project.tagline || "";
+                    const maxLen = 100;
+                    const isLong = fullDesc.length > maxLen;
+                    const summary = isLong
+                      ? fullDesc.slice(0, maxLen).trimEnd() + "…"
+                      : fullDesc;
+
+                    // —— SLUG FOR “READ MORE” LINK ——
+                    const slug = project.isContentful
+                      ? slugify(project.title, { lower: true, strict: true })
+                      : slugify(project.title, { strict: true });
+
+                    return (
+                      <li
+                        key={project.title}
+                        className="border p-4 hover:bg-gray-100 transition">
+                        <Link href={`/projects/${slug}`} className="block">
+                          <div className="flex items-start space-x-4">
+                            {/* Image */}
+                            {project.imageUrl && (
+                              <div className="relative w-32 h-32 flex-shrink-0 overflow-hidden rounded">
+                                <Image
+                                  src={project.imageUrl}
+                                  alt={project.title}
+                                  fill
+                                  className="object-cover"
+                                  sizes="96px"
+                                />
+                              </div>
                             )}
-                            alt="Project Image"
-                            className="w-24 h-24 object-cover rounded" // Adjust size here (w-24/h-24)
-                          />
-                        )}
-                        <div>
-                          <h2 className="text-xl font-semibold">
-                            {project.title}
-                          </h2>
-                          {project.competition && (
-                            <p className="text-sm text-gray-500">
-                              Competition: {project.competition}
-                            </p>
-                          )}
-                          <p>
-                            {project.short_description ||
-                              project.tagline ||
-                              "No description available"}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <p>No projects found.</p>
-              )}
-            </ul>
-          )}
+
+                            {/* Text */}
+                            <div className="flex-1">
+                              <h2 className="text-md font-semibold">
+                                {project.title}{" "}
+                              </h2>
+                              <span className="text-sm text-gray-500 ">
+                                {year}
+                              </span>
+                              <p className="text-sm text-gray-700 mt-1">
+                                {summary}
+                              </p>
+
+                              {isLong && (
+                                <Link
+                                  href={`/projects/${slug}`}
+                                  className="text-blue-500 text-sm hover:underline mt-1 block">
+                                  Read more
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <p>No projects found.</p>
+                  </div>
+                )}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
-// ----- Fetch Data on Server Side -----
 export async function getServerSideProps() {
-  // ----- A) FETCH GRAPHQL PROJECTS -----
+  // 1) Fetch GraphQL projects
   let graphqlProjects: GraphQLProject[] = [];
   try {
     const { data } = await client.query({
       query: GET_ALL_PROJECTS,
-      fetchPolicy: "no-cache" // ensures fresh data for SSR
+      fetchPolicy: "no-cache"
     });
     graphqlProjects = data?.projects ?? [];
-  } catch (error) {
-    console.error("Error fetching projects from GraphQL:", error);
+  } catch (err) {
+    console.error("Error fetching GraphQL projects:", err);
   }
 
-  // ----- B) FETCH CONTENTFUL PROJECTS -----
+  // 2) Fetch Contentful projects and force‑cast to FlattenedContentfulFields[]
   let contentfulProjects: FlattenedContentfulFields[] = [];
   try {
-    const contentfulResponse = await contentfulClient.getEntries({
+    const resp = await contentfulClient.getEntries({
       content_type: "projects"
     });
-    contentfulProjects = contentfulResponse.items.map(
-      (item) => item.fields as unknown as FlattenedContentfulFields
-    );
-  } catch (error) {
-    console.error("Error fetching projects from Contentful:", error);
+
+    contentfulProjects = resp.items.map((item) => ({
+      title: String(item.fields.title),
+      tagline: item.fields.tagline as string,
+      about: item.fields.about as string,
+      members: item.fields.members as string[],
+      competition: item.fields.competition as string | null,
+      videoUrl: item.fields.videoUrl as string,
+      image: item.fields.image as { fields: { file: { url: string } } },
+      createdAt: item.sys.createdAt
+    })) as FlattenedContentfulFields[];
+  } catch (err) {
+    console.error("Error fetching Contentful projects:", err);
   }
 
-  // ----- C) MERGE PROJECTS FROM BOTH SOURCES -----
+  // 3) Merge GraphQL + Contentful into a single map by slug
   const mergedMap: Record<string, ProjectData> = {};
 
-  // Add GraphQL projects to the merged map (set isContentful to false)
-  graphqlProjects.forEach((gProject) => {
-    const slug = slugify((gProject.title || "untitled").toLowerCase(), {
+  graphqlProjects.forEach((g) => {
+    const slug = slugify((g.title || "untitled").toLowerCase(), {
       lower: true,
       strict: true
     });
     mergedMap[slug] = {
-      title: gProject.title || "Untitled Project",
-      tagline: "",
-      about: "",
-      short_description: gProject.short_description || "",
-      long_description: gProject.long_description || "",
-      competition: gProject.competition?.trim() || "",
-      members: [],
-      teamMembers: gProject.teamMembers || [],
-      video_url: gProject.video_url || "",
-      imageUrl: gProject.image_url || "",
+      id: g.id,
+      title: g.title || "Untitled Project",
+      short_description: g.short_description || "",
+      long_description: g.long_description || "",
+      competition: g.competition || "",
+      created_date: g.created_date || "",
+      teamMembers: g.teamMembers || [],
+      video_url: g.video_url || "",
+      imageUrl: g.image_url || "",
       isContentful: false
     };
   });
 
-  // Merge Contentful projects into the merged map (set isContentful to true)
-  contentfulProjects.forEach((cProject) => {
-    const slug = slugify(cProject.title.toLowerCase(), {
+  contentfulProjects.forEach((c) => {
+    const slug = slugify(c.title.toLowerCase(), {
       lower: true,
       strict: true
     });
+
     if (mergedMap[slug]) {
-      // Merge fields from Contentful into the existing GraphQL project.
       mergedMap[slug] = {
-        title: cProject.title || mergedMap[slug].title,
-        tagline: cProject.tagline ?? mergedMap[slug].tagline,
-        about: cProject.about ?? mergedMap[slug].about,
-        short_description: mergedMap[slug].short_description, // from GraphQL
-        long_description: mergedMap[slug].long_description, // from GraphQL
-        competition:
-          (cProject.competition?.trim() && cProject.competition.trim()) ||
-          mergedMap[slug].competition ||
-          "",
-        members: cProject.members || [],
-        teamMembers: mergedMap[slug].teamMembers,
-        video_url: mergedMap[slug].video_url,
-        imageUrl: cProject.image?.fields?.file?.url || mergedMap[slug].imageUrl,
+        ...mergedMap[slug],
+        short_description: c.tagline ?? mergedMap[slug].tagline,
+        about: c.about ?? mergedMap[slug].about,
+        competition: c.competition ?? mergedMap[slug].competition,
+        createdAt: c.createdAt,
+        video_url: c.videoUrl ?? mergedMap[slug].video_url,
+        imageUrl: c.image?.fields?.file?.url
+          ? formatImageUrl(c.image.fields.file.url)
+          : "",
+
         isContentful: true
       };
     } else {
       mergedMap[slug] = {
-        title: cProject.title,
-        tagline: cProject.tagline ?? "",
-        about: cProject.about ?? "",
-        short_description: "",
-        long_description: "",
-        competition: cProject.competition?.trim() || "",
-        members: cProject.members || [],
-        teamMembers: [],
-        video_url: "",
-        imageUrl: cProject.image?.fields?.file?.url || "",
+        title: c.title,
+        short_description: c.tagline ?? "",
+        about: c.about ?? "",
+        competition: c.competition ?? "",
+        createdAt: c.createdAt,
+        video_url: c.videoUrl ?? "",
+        imageUrl: c.image?.fields?.file?.url
+          ? formatImageUrl(c.image.fields.file.url)
+          : "",
+
         isContentful: true
       };
     }
   });
 
-  // Convert mergedMap to an array
-  const mergedProjects: ProjectData[] = Object.values(mergedMap);
-
   return {
     props: {
-      initialProjects: mergedProjects
+      initialProjects: Object.values(mergedMap)
     }
   };
 }
