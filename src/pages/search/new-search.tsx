@@ -5,6 +5,8 @@ import contentfulClient from "@/lib/contentful";
 import { GET_ALL_PROJECTS } from "@/lib/graphql/queries";
 import slugify from "slugify";
 import Link from "next/link";
+import { useCompetitions } from "@/context/EventContext";
+import { CompetitionFields } from "@/types/used/CompetitionTypes";
 
 // Helper: ensure protocol on Contentful image URLs
 function formatImageUrl(url: string): string {
@@ -103,6 +105,7 @@ interface SearchPageProps {
 }
 
 export default function SearchPage({ initialProjects }: SearchPageProps) {
+  const { competitions, loading: compLoading } = useCompetitions();
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [loading, setLoading] = useState(true);
@@ -116,9 +119,19 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     return () => clearTimeout(timer);
   }, []);
 
+  const startYear = 2023;
+  const currentYear = new Date().getFullYear();
+  const yearOptions = Array.from(
+    { length: currentYear - startYear + 1 },
+    (_, i) => (startYear + i).toString()
+  );
+  const competitionOptions = compLoading
+    ? []
+    : competitions.map((c: CompetitionFields) => c.title.trim());
+
   const FILTERS = {
-    Year: ["1743", "2021", "2022", "2023", "2024", "2025"],
-    Competition: ["Internal", "External", "Ain Family Start-Up Award"]
+    Year: yearOptions,
+    Competition: competitionOptions
   };
 
   const handleFilterChange = (group: string, value: string) => {
@@ -136,18 +149,18 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     });
   };
 
-  const filteredProjects = initialProjects.filter((proj) => {
+  const filteredProjects = initialProjects.filter((project) => {
     // 1) trim & lowercase once
     const cleanSearch = debouncedSearchTerm.trim().toLowerCase();
 
     // 2) title match
-    const title = proj.title.trim().toLowerCase();
+    const title = project.title.trim().toLowerCase();
     let ok = title.includes(cleanSearch);
 
     // 3) competition filter (if applied)
     if (ok && selectedFilters.Competition.length) {
       // trim any whitespace on the project’s competition
-      const comp = proj.competition?.trim() ?? "";
+      const comp = project.competition?.trim() ?? "";
       // also trim the selected filter values just in case
       const active = selectedFilters.Competition.map((v) => v.trim());
       ok = active.includes(comp);
@@ -156,8 +169,8 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     // 4) year filter (unchanged, since years don’t have spaces)
     if (ok && selectedFilters.Year.length) {
       const year =
-        proj.created_date?.substring(0, 4) ||
-        proj.createdAt?.substring(0, 4) ||
+        project.created_date?.substring(0, 4) ||
+        project.createdAt?.substring(0, 4) ||
         "";
       ok = selectedFilters.Year.includes(year.trim());
     }
@@ -211,40 +224,47 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
           </div>
         </div>
         <div className="flex-1 flex flex-col min-h-[600px]">
-          <h1 className="text-3xl font-bold mb-2">Find your Template</h1>
-          <p className="text-gray-700 mb-6">
+          <h1 className="text-3xl font-bold mb-2">Startup Hub Search</h1>
+          {/* <p className="text-gray-700 mb-6">
             Jumpstart your app development process with pre-built solutions from
             Vercel and our community.
-          </p>
+          </p> */}
           <div className="flex-1">
             {loading ? (
               <SkeletonLoader />
             ) : (
               <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredProjects.length ? (
-                  filteredProjects.map((proj) => {
+                  filteredProjects.map((project, index) => {
                     const year =
-                      proj.created_date?.substring(0, 4) ||
-                      proj.createdAt?.substring(0, 4) ||
+                      project.created_date?.substring(0, 4) ||
+                      project.createdAt?.substring(0, 4) ||
                       "N/A";
                     return (
                       <li
-                        key={proj.id || proj.title}
+                        key={index}
                         className="border p-4 rounded hover:bg-gray-50 transition">
                         <Link
-                          href={`/projects/${slugify(proj.title)}`}
+                          href={`/projects/${
+                            project.isContentful
+                              ? slugify(project.title, {
+                                  lower: true,
+                                  strict: true
+                                })
+                              : slugify(project.title, { strict: true })
+                          }`}
                           passHref>
                           <div className="block">
                             <h2 className="text-xl font-semibold">
-                              {proj.title}
+                              {project.title}
                             </h2>
                             <p className="text-sm text-gray-600">
-                              {proj.short_description ||
+                              {project.short_description ||
                                 "No description available"}
                             </p>
-                            {proj.competition && (
+                            {project.competition && (
                               <p className="mt-1 text-sm text-gray-500">
-                                Competition: {proj.competition}
+                                Competition: {project.competition}
                               </p>
                             )}
                             <p className="mt-1 text-sm text-gray-500">
