@@ -108,6 +108,23 @@ interface SearchPageProps {
   initialProjects: ProjectData[];
 }
 
+function parseYear(raw: string): string {
+  if (!raw) return "N/A";
+  let ms: number;
+
+  // purely numeric? assume seconds if ≤10 digits, else milliseconds
+  if (/^\d+$/.test(raw)) {
+    ms = raw.length <= 10 ? Number(raw) * 1000 : Number(raw);
+  } else {
+    // ISO‑string or other
+    const parsed = Date.parse(raw);
+    ms = isNaN(parsed) ? 0 : parsed;
+  }
+
+  const d = new Date(ms);
+  return isNaN(d.getTime()) ? "N/A" : d.getFullYear().toString();
+}
+
 export default function SearchPage({ initialProjects }: SearchPageProps) {
   const { competitions, loading: compLoading } = useCompetitions();
   const [searchTerm, setSearchTerm] = useState("");
@@ -177,11 +194,9 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
 
     // 4) year filter (unchanged, since years don’t have spaces)
     if (ok && selectedFilters.Year.length) {
-      const year =
-        project.created_date?.substring(0, 4) ||
-        project.createdAt?.substring(0, 4) ||
-        "";
-      ok = selectedFilters.Year.includes(year.trim());
+      const raw = project.createdAt || project.created_date || "";
+      const year = parseYear(raw);
+      ok = selectedFilters.Year.includes(year);
     }
 
     return ok;
@@ -195,7 +210,7 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
           <Breadcrumb items={crumbs} />
         </div>
       </div>
-      <div className="max-w-8xl mx-auto p-6 font-sans mt-5">
+      <div className="max-w-8xl mx-auto p-6 font-sans">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="w-full md:w-60">
             <input
@@ -245,7 +260,7 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     flex-shrink-0 
     xs:min-w-full 
     sm:min-w-[690px] 
-    lg:min-w-[1060px] 
+    lg:min-w-[1060px] mb-20
 ">
             {/* <h1 className="text-3xl font-medium mb-2">Startup Hub Search</h1> */}
             {/* <p className="text-gray-700 mb-6">
@@ -259,10 +274,9 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
                 <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {filteredProjects.length ? (
                     filteredProjects.map((project) => {
-                      const year =
-                        project.created_date?.substring(0, 4) ||
-                        project.createdAt?.substring(0, 4) ||
-                        "N/A";
+                      const raw =
+                        project.createdAt || project.created_date || "";
+                      const year = parseYear(raw);
 
                       // —— DESCRIPTION TRUNCATION LOGIC ——
                       const fullDesc =
@@ -281,12 +295,12 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
                       return (
                         <li
                           key={project.title}
-                          className="border p-4 hover:bg-gray-100 transition">
+                          className="border hover:bg-gray-100 transition">
                           <Link href={`/projects/${slug}`} className="block">
                             <div className="flex items-start space-x-4">
                               {/* Image */}
                               {project.imageUrl && (
-                                <div className="relative w-32 h-32 flex-shrink-0 overflow-hidden rounded">
+                                <div className="relative w-32 h-32 flex-shrink-0 overflow-hidden">
                                   <Image
                                     src={project.imageUrl}
                                     alt={project.title}
@@ -299,7 +313,7 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
 
                               {/* Text */}
                               <div className="flex-1">
-                                <h2 className="text-md font-semibold">
+                                <h2 className="text-md font-semibold mt-2">
                                   {project.title}{" "}
                                 </h2>
                                 <span className="text-sm text-gray-500 ">
@@ -312,7 +326,7 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
                                 {isLong && (
                                   <Link
                                     href={`/projects/${slug}`}
-                                    className="text-blue-500 text-sm hover:underline mt-1 block">
+                                    className="text-blue-500 text-xs hover:underline  block">
                                     Read more
                                   </Link>
                                 )}
