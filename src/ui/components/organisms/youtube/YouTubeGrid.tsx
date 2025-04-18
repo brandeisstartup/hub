@@ -52,7 +52,7 @@ const YouTubeGrid = ({ videos, label, extend = false }: Props) => {
                     href={createVideoUrl(video.videoId)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xl font-bold font-serif text-BrandeisBrand mt-2 hover:underline">
+                    className="text-2xl font-bold font-sans text-BrandeisBrand mt-2 hover:underline">
                     {video.title}
                   </a>
                 </div>

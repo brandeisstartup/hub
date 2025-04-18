@@ -33,8 +33,8 @@ const IbsGrid = ({
   data
 }: Props) => {
   return (
-    <div id={href} className="bg-BrandeisBrandGray flex justify-center">
-      <div className="wrapper flex flex-col w-full justify-center md:flex-row pt-20 pb-20 px-4 max-w-8xl">
+    <div id={href} className="bg-white flex justify-center">
+      <div className="wrapper flex flex-col w-full justify-center md:flex-row pt-18 pb-18 px-4 max-w-8xl">
         <div className="heading w-full flex justify-center md:w-[25%]">
           <Heading label={label} />
         </div>
@@ -57,7 +57,7 @@ const IbsGrid = ({
                   className="text-2xl font-bold font-sans text-BrandeisBrand mt-2 hover:underline">
                   {program.title}
                 </Link>
-                <p className="text-body text-BrandeisBodyText">
+                <p className="text-md text-BrandeisBodyText">
                   {program.shortDescription}
                 </p>
               </div>

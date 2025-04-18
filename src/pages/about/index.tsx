@@ -43,7 +43,7 @@ export default function Home({ homepageContent }: HomePageProps) {
         ogLogo={"https://www.brandeisstartup.com/logo.png"}
         locale="en_US"
       />
-      <Hero
+      {/* <Hero
         heroImage={homepageContent.heroImage.fields.file.url}
         header={homepageContent.header}
         description={homepageContent.description}
@@ -51,24 +51,31 @@ export default function Home({ homepageContent }: HomePageProps) {
         primaryLink={homepageContent.heroPrimaryButtonLink}
         secondaryLabel={homepageContent.heroSecondaryButtonLabel}
         secondaryLink={homepageContent.heroSecondaryButtonLink}
-      />
-      <div className="flex justify-center" id="about">
-        <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
-          <Heading
-            label={
-              "What is the Brandeis Entrepreneurship and Collaboration Hub?"
-            }
-          />
+      /> */}
 
-          <p className="mb-4 font-sans">
+      <div className="flex justify-center" id="abou">
+        <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
+          <Heading label={"What is the Brandeis Startup Hub?"} />
+
+          <p className="mb-4">
+            The Brandeis Entrepreneurship and Collaboration Hub is a dynamic
+            space designed to empower students to discover grants, awards, and
+            unique opportunities that will help them grow as entrepreneurs.
+          </p>
+
+          <p className="mb-4">
             Here, students can collaborate on innovative projects, building
             skills that will serve them in their careers and beyond. This hub is
             not only a place for fostering entrepreneurship and teamwork, but
             also for students to easily display their work and share it with
-            potential employers. Whether it's through events, collaborative
-            projects, or individual achievements, the Hub offers a platform for
-            students to showcase their efforts and expand their professional
-            network. The Hub is run by <strong>Philippe Wells</strong> at the{" "}
+            potential employers.
+          </p>
+
+          <p className="mb-4">
+            Whether it's through events, collaborative projects, or individual
+            achievements, the Hub offers a platform for students to showcase
+            their efforts and expand their professional network. The Hub is run
+            by <strong>Philippe Wells</strong> at the{" "}
             <strong>Brandeis International Business School</strong>, providing
             mentorship and guidance to help students thrive in the fast-paced
             world of entrepreneurship. Philippe's leadership has shaped the Hub
@@ -78,22 +85,6 @@ export default function Home({ homepageContent }: HomePageProps) {
           </p>
         </div>
       </div>
-      {!loading &&
-        homepageContent.showAllEventsListBlock &&
-        upcomingEvents.length > 0 && (
-          <>
-            <IbsGrid
-              label="Upcoming"
-              href="#programs"
-              data={upcomingEvents}
-              // showButton={true}
-              // buttonLabel={"Learn More"}
-              // buttonLink="/about"
-            />
-          </>
-        )}
-      <SimpleImageGrid label={"All Events"} projects={competitions} />
-      {homepageContent.showYoutubeVideos && <YouTubePage />}
     </>
   );
 }
