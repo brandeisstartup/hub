@@ -299,17 +299,30 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
                           <Link href={`/projects/${slug}`} className="block">
                             <div className="flex items-start space-x-4">
                               {/* Image */}
-                              {project.imageUrl && (
-                                <div className="relative w-32 h-32 flex-shrink-0 overflow-hidden">
+                              <div className="relative w-32 h-32 flex-shrink-0 overflow-hidden ">
+                                {project.imageUrl != "" || project.imageUrl ? (
                                   <Image
-                                    src={project.imageUrl}
+                                    src={`${project.imageUrl}`}
                                     alt={project.title}
                                     fill
                                     className="object-cover"
                                     sizes="96px"
                                   />
-                                </div>
-                              )}
+                                ) : (
+                                  // fallback gradient + title
+                                  <div
+                                    className="
+                                  flex items-center justify-center
+                                  w-full h-full
+                                  text-white text-xs font-semibold text-center p-2
+                                  bg-gradient-to-br
+                                  from-blue-800
+                                  to-blue-600
+                                ">
+                                    {project.title}
+                                  </div>
+                                )}
+                              </div>
 
                               {/* Text */}
                               <div className="flex-1">
