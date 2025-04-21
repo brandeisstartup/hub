@@ -349,6 +349,20 @@ export default function ProjectPage({ project }: ServerSideProps) {
               />
             )}
 
+            {(imageUrl == "" || !imageUrl) && (
+              <div
+                className="
+                                  flex items-center justify-center
+                                  w-full h-[400px]
+                                  text-white text-4xl font-semibold text-center p-2
+                                  bg-gradient-to-br
+                                  from-blue-800
+                                  to-blue-600
+                                ">
+                {project.title}
+              </div>
+            )}
+
             {/* Share, Copy Link, and QR Code Buttons */}
             <aside>
               <menu className="w-full flex justify-start gap-2">
