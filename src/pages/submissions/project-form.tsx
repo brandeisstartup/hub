@@ -109,8 +109,11 @@ function BigForm() {
             name="title"
             placeholder="Enter title"
             register={register}
-            required
             error={errors.title}
+            required
+            /* one-shot pattern: only letters, numbers & spaces, 1–40 chars */
+            pattern={/^[A-Za-z0-9 ]{3,25}$/}
+            patternMessage="Title must be 3–25 characters, and only letters, numbers & spaces (no : - % # @ etc)."
           />
 
           {/* Blurb Input */}
@@ -138,10 +141,15 @@ function BigForm() {
           <TextInput<FormValues>
             label="YouTube Video ID"
             name="videoUrl"
-            placeholder="Enter YouTube Video ID (e.g., dQw4w9WgXcQ found at the end of the Youtube URL)"
+            placeholder="Enter YouTube Video ID (e.g., dQw4w9WgXcQ)"
             register={register}
             type="text"
             error={errors.videoUrl}
+            required
+            pattern={
+              /^(?!(?:https?:\/\/|www\.|.*youtube\.com|.*youtu\.be))[A-Za-z0-9_-]{11}$/
+            }
+            patternMessage="Please enter exactly the 11‐character Youtube ID (NOT the full URL). Make sure preview works"
           />
 
           {/* Video Preview */}

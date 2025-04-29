@@ -1,4 +1,3 @@
-// components/TextInput.tsx
 import React from "react";
 import type {
   FieldError,
@@ -20,6 +19,9 @@ export interface TextInputProps<
   required?: boolean;
   /** Optional register options, merged with the required rule if `required` is true. */
   options?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
+  /** Optional regex pattern to validate input, with custom message. */
+  pattern?: RegExp;
+  patternMessage?: string;
 }
 
 export const TextInput = <
@@ -32,11 +34,21 @@ export const TextInput = <
   placeholder = "",
   type = "text",
   required = false,
+  pattern,
+  patternMessage,
   options = {}
 }: TextInputProps<TFieldValues>) => {
   // Merge required rule if `required` prop is true and not already provided.
   if (required && !options.required) {
     options.required = `${label || "This field"} is required`;
+  }
+
+  // Merge regex pattern rule if provided and not already in options.
+  if (pattern && !options.pattern) {
+    options.pattern = {
+      value: pattern,
+      message: patternMessage || `${label || "This field"} is invalid`
+    };
   }
 
   return (
