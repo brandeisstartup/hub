@@ -41,7 +41,7 @@ function SignOutButton() {
 }
 
 export default function NavBarSearch() {
-  const { competitions, upcomingEvents, loading } = useCompetitions();
+  const { upcomingEvents, loading } = useCompetitions();
   const { user: mergedUser } = useMergedUser();
 
   useEffect(() => {
@@ -127,7 +127,7 @@ export default function NavBarSearch() {
         )}
 
         <Disclosure as="main" className="bg-BrandeisBrand shadow">
-          {({ open }) => (
+          {({}) => (
             <>
               <div className="mx-auto w-full px-2 sm:px-4 lg:px-8">
                 <div className="flex h-[4.3rem] justify-between">
@@ -151,9 +151,9 @@ export default function NavBarSearch() {
                           ))}
                         </div>
                       ) : (
-                        dynamicNavigation.map((item) =>
+                        dynamicNavigation.map((item, index) =>
                           item.name === "Events" ? (
-                            <div className="w-full max-w-md">
+                            <div key={index} className="w-full max-w-md">
                               <div className="relative">
                                 <Link
                                   key={item.name}
