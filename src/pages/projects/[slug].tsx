@@ -20,6 +20,7 @@ import Breadcrumb, {
   BreadcrumbItem
 } from "@/ui/components/brandeisBranding/breadcrumbs";
 
+import { formatImageUrl } from "@/utils";
 // ----- 1) FLATTENED INTERFACES -----
 
 /** Flattened shape of your Contentful fields (instead of nesting inside `fields`). */
@@ -102,17 +103,6 @@ interface ServerSideProps {
 
 interface Params extends ParsedUrlQuery {
   slug: string;
-}
-
-// ------------------------------
-// Helper to format image URLs
-// ------------------------------
-function formatImageUrl(url: string): string {
-  // If the URL is protocol-relative, add "https:".
-  if (url.startsWith("//")) {
-    return `https:${url}`;
-  }
-  return url;
 }
 
 // ------------------------------

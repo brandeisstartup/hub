@@ -4,6 +4,7 @@ import slugify from "slugify";
 
 import { CompetitionFields } from "@/types/used/CompetitionTypes";
 import Heading from "../../headings/heading";
+import { formatDate } from "@/utils";
 
 type Props = {
   label: string;
@@ -12,16 +13,6 @@ type Props = {
   // showButton?: boolean;
   // buttonLabel?: string;
   // buttonLink?: string;
-};
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric"
-  }).format(date);
 };
 
 const IbsGrid = ({
