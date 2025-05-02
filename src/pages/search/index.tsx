@@ -33,7 +33,7 @@ function useDebounce<T>(value: T, delay: number = 500): T {
 // Skeleton loader for initial loading state
 function SkeletonLoader() {
   return (
-    <ul className="mt-4 grid grid-cols-2 gap-4">
+    <ul className="grid grid-cols-1 xl:grid-cols-2 gap-4">
       {Array.from({ length: 17 }).map((_, i) => (
         <li key={i} className="border p-4">
           <div className="animate-pulse flex space-x-4">
@@ -73,6 +73,7 @@ interface FlattenedContentfulFields {
   videoUrl?: string;
   image?: { fields: { file: { url: string } } };
   createdAt: string; // pulled from sys.createdAt
+  year: number;
 }
 
 interface GraphQLProject {
@@ -110,13 +111,17 @@ interface SearchPageProps {
 
 function parseYear(raw: string): string {
   if (!raw) return "N/A";
-  let ms: number;
 
-  // purely numeric? assume seconds if ≤10 digits, else milliseconds
+  // if it's exactly YYYY, just return it
+  if (/^\d{4}$/.test(raw)) {
+    return raw;
+  }
+
+  let ms: number;
   if (/^\d+$/.test(raw)) {
+    // still want to treat a long Unix timestamp as ms
     ms = raw.length <= 10 ? Number(raw) * 1000 : Number(raw);
   } else {
-    // ISO‑string or other
     const parsed = Date.parse(raw);
     ms = isNaN(parsed) ? 0 : parsed;
   }
@@ -145,19 +150,21 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  const startYear = 2024;
+  const startYear = 2023;
   const currentYear = new Date().getFullYear();
   const yearOptions = Array.from(
     { length: currentYear - startYear + 1 },
-    (_, i) => (startYear + i).toString()
+    (_, i) => (currentYear - i).toString()
   );
   const competitionOptions = compLoading
     ? []
-    : competitions.map((c: CompetitionFields) => c.title.trim());
+    : competitions
+        .filter((c: CompetitionFields) => c.showInSearch)
+        .map((c: CompetitionFields) => c.title.trim());
 
   const FILTERS = {
-    Year: yearOptions,
-    Competition: competitionOptions
+    Competition: competitionOptions,
+    Year: yearOptions
   };
 
   const handleFilterChange = (group: string, value: string) => {
@@ -262,16 +269,11 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     sm:min-w-[690px] 
     lg:min-w-[1060px] mb-20
 ">
-            {/* <h1 className="text-3xl font-medium mb-2">Startup Hub Search</h1> */}
-            {/* <p className="text-gray-700 mb-6">
-            Jumpstart your app development process with pre-built solutions from
-            Vercel and our community.
-          </p> */}
             <div className="flex-1 l">
               {loading ? (
                 <SkeletonLoader />
               ) : (
-                <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <ul className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                   {filteredProjects.length ? (
                     filteredProjects.map((project) => {
                       const raw =
@@ -337,11 +339,9 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
                                 </p>
 
                                 {isLong && (
-                                  <Link
-                                    href={`/projects/${slug}`}
-                                    className="text-blue-500 text-xs hover:underline  block">
+                                  <p className="text-blue-500 text-xs hover:underline  block">
                                     Read more
-                                  </Link>
+                                  </p>
                                 )}
                               </div>
                             </div>
@@ -392,7 +392,7 @@ export async function getServerSideProps() {
       competition: item.fields.competition as string | null,
       videoUrl: item.fields.videoUrl as string,
       image: item.fields.image as { fields: { file: { url: string } } },
-      createdAt: item.sys.createdAt
+      createdAt: String(item.fields.year)
     })) as FlattenedContentfulFields[];
   } catch (err) {
     console.error("Error fetching Contentful projects:", err);
@@ -457,9 +457,21 @@ export async function getServerSideProps() {
     }
   });
 
+  const allProjects = Object.values(mergedMap);
+
+  const contentfulFirst = allProjects
+    .filter((p) => p.isContentful)
+    .sort((a, b) => a.title.localeCompare(b.title));
+
+  const graphqlNext = allProjects
+    .filter((p) => !p.isContentful)
+    .sort((a, b) => a.title.localeCompare(b.title));
+
+  const sortedProjects = [...contentfulFirst, ...graphqlNext];
+
   return {
     props: {
-      initialProjects: Object.values(mergedMap)
+      initialProjects: sortedProjects
     }
   };
 }

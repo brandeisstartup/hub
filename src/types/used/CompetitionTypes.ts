@@ -11,6 +11,9 @@ export interface CompetitionFields {
   isGrant: boolean;
   thumbnail: ImageFile;
 
+  showInSearch: boolean;
+  showInNav: boolean;
+
   ctaButtonLabel: string;
   ctaButtonLink: string;
 
@@ -59,6 +62,8 @@ export interface CompetitionFields {
   showEventResources: boolean;
   eventResourcesLabel: string;
   eventResources: EventResource[];
+
+  showBreakoutRooms: boolean;
 }
 
 export interface FAQ {
