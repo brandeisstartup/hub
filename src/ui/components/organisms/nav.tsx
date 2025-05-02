@@ -12,6 +12,7 @@ import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
 import TopBanner from "@/ui/components/contentfulComponents/banner/topBanner";
 import UserDropdown from "@/ui/components/organisms/user/UserDropdown";
+import { formatDate } from "@/utils";
 
 const findUpcomingEvent = (
   events: { title: string; startDate: string; endDate: string }[],
@@ -54,14 +55,6 @@ export default function NavBarSearch() {
     () => findUpcomingEvent(upcomingEvents, 7),
     [upcomingEvents]
   );
-
-  const formatDate = (dateString: string) =>
-    new Intl.DateTimeFormat("en-US", {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-      year: "numeric"
-    }).format(new Date(dateString));
 
   const upcomingLinks = useMemo(() => {
     if (upcomingEvents.length > 0) {

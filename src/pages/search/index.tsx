@@ -11,14 +11,7 @@ import Image from "next/image";
 import Breadcrumb, {
   BreadcrumbItem
 } from "@/ui/components/brandeisBranding/breadcrumbs";
-
-// Helper: ensure protocol on Contentful image URLs
-function formatImageUrl(url: string): string {
-  if (url.startsWith("//")) {
-    return `https:${url}`;
-  }
-  return url;
-}
+import { formatImageUrl } from "@/utils";
 
 // Debounce hook
 function useDebounce<T>(value: T, delay: number = 500): T {

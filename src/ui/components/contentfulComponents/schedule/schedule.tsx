@@ -11,13 +11,12 @@ type Props = {
 const formatDateTime = (dateTimeString: string) => {
   const date = new Date(dateTimeString);
   return date.toLocaleString("en-US", {
-    // Full weekday name (e.g., "Monday")
     year: "numeric",
-    month: "long", // Full month name (e.g., "February")
+    month: "long",
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
-    hour12: true // Ensures AM/PM format
+    hour12: true
   });
 };
 
