@@ -1,3 +1,5 @@
+"use client";
+
 import { useCompetitions } from "@/context/EventContext";
 import { useMergedUser } from "@/context/UserContext";
 import { Disclosure } from "@headlessui/react";
@@ -48,13 +50,11 @@ export default function NavBarSearch() {
     console.log("Merged User Info:", mergedUser);
   }, [mergedUser]);
 
-  // find “Happening This Week”
   const thisWeekEvent = useMemo(
     () => findUpcomingEvent(upcomingEvents, 7),
     [upcomingEvents]
   );
 
-  // helper to format dates if you still need them for descriptions
   const formatDate = (dateString: string) =>
     new Intl.DateTimeFormat("en-US", {
       weekday: "long",
@@ -63,7 +63,6 @@ export default function NavBarSearch() {
       year: "numeric"
     }).format(new Date(dateString));
 
-  // ――― 1) Build “Upcoming” dropdown items or a fallback message
   const upcomingLinks = useMemo(() => {
     if (upcomingEvents.length > 0) {
       return upcomingEvents.map((event) => ({
@@ -83,7 +82,6 @@ export default function NavBarSearch() {
     ];
   }, [upcomingEvents]);
 
-  // ――― 2) Build your nav array; “Events” is now a simple link
   const dynamicNavigation = useMemo(
     () => [
       {
@@ -109,7 +107,7 @@ export default function NavBarSearch() {
       },
       {
         name: "Events",
-        href: "/#events" // plain link
+        href: "/#events"
       }
     ],
     [upcomingLinks]
@@ -127,7 +125,7 @@ export default function NavBarSearch() {
         )}
 
         <Disclosure as="main" className="bg-BrandeisBrand shadow">
-          {({}) => (
+          {() => (
             <>
               <div className="mx-auto w-full px-2 sm:px-4 lg:px-8">
                 <div className="flex h-[4.3rem] justify-between">
@@ -143,10 +141,10 @@ export default function NavBarSearch() {
                     <div className="hidden lg:ml-6 lg:flex py-3 px-2">
                       {loading ? (
                         <div className="flex space-x-4">
-                          {[...Array(4)].map((_, i) => (
+                          {dynamicNavigation.map((_, i) => (
                             <div
                               key={i}
-                              className="h-6 w-24 bg-BrandeisBrand animate-pulse rounded"
+                              className="h-6 w-24 bg-BrandeisBrandShade opacity-50 animate-pulse rounded-md"
                             />
                           ))}
                         </div>
@@ -188,9 +186,11 @@ export default function NavBarSearch() {
                   {/* Auth */}
                   <SignedOut>
                     <SignInButton>
-                      <button className="h-12 hidden lg:flex lg:items-center text-white text-lg font-bold border border-white px-4 py-3 rounded-md hover:bg-white hover:text-black transition">
-                        Sign In
-                      </button>
+                      <div className="flex justify-center items-center">
+                        <button className="h-12 hidden lg:flex lg:items-center text-white text-lg font-bold border border-white px-4 py-3 rounded-md hover:bg-white hover:text-black transition">
+                          Sign In
+                        </button>
+                      </div>
                     </SignInButton>
                   </SignedOut>
                   <SignedIn>
@@ -213,37 +213,52 @@ export default function NavBarSearch() {
                   </Disclosure.Button>
                 </div>
 
-                {dynamicNavigation.map((item) => (
-                  <div key={item.name}>
-                    {item.name === "Events" ? (
-                      <Disclosure.Button
-                        as={Link}
-                        href={item.href}
-                        className="block py-2 text-gray-50 hover:underline w-64">
-                        {item.name}
-                      </Disclosure.Button>
-                    ) : (
-                      <>
-                        <p className="text-lg font-semibold">{item.name}</p>
-                        {item.links!.map((link) => (
-                          <Disclosure.Button
-                            as={Link}
-                            key={link.href}
-                            href={link.href}
-                            className="block py-2 text-gray-50 hover:underline w-64">
-                            {link.name}
-                          </Disclosure.Button>
-                        ))}
-                      </>
-                    )}
+                {loading ? (
+                  <div className="space-y-3 mt-4">
+                    {dynamicNavigation.map((_, i) => (
+                      <div
+                        key={i}
+                        className="h-5 w-40 bg-BrandeisBrandShade opacity-50 animate-pulse rounded-md"
+                      />
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  dynamicNavigation.map((item) => (
+                    <div key={item.name}>
+                      {item.name === "Events" ? (
+                        <Disclosure.Button
+                          as={Link}
+                          href={item.href}
+                          className="block py-2 text-gray-50 hover:underline w-64">
+                          {item.name}
+                        </Disclosure.Button>
+                      ) : (
+                        <>
+                          <p className="text-lg font-semibold">{item.name}</p>
+                          {item.links!.map((link) => (
+                            <Disclosure.Button
+                              as={Link}
+                              key={link.href}
+                              href={link.href}
+                              className="block py-2 text-gray-50 hover:underline w-64">
+                              {link.name}
+                            </Disclosure.Button>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  ))
+                )}
 
-                <Link
-                  href="sign-in"
-                  className="text-white text-lg bg-BrandeisBrandShade text-center py-2 rounded-md">
-                  Sign In
-                </Link>
+                {loading ? (
+                  <div className="h-8 w-32 bg-BrandeisBrandShade opacity-50 animate-pulse rounded-md mt-4" />
+                ) : (
+                  <Link
+                    href="sign-in"
+                    className="text-white text-lg bg-BrandeisBrandShade text-center py-2 rounded-md mt-4">
+                    Sign In
+                  </Link>
+                )}
               </Disclosure.Panel>
             </>
           )}
