@@ -125,12 +125,39 @@ function parseYear(raw: string): string {
 
 export default function SearchPage({ initialProjects }: SearchPageProps) {
   const { competitions, loading: compLoading } = useCompetitions();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(() => {
+    if (typeof window === "undefined") return "";
+    try {
+      const saved = sessionStorage.getItem("projectSearchState");
+      return saved ? JSON.parse(saved).searchTerm : "";
+    } catch {
+      return "";
+    }
+  });
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [loading, setLoading] = useState(true);
-  const [selectedFilters, setSelectedFilters] = useState<{
-    [group: string]: string[];
-  }>({ Year: [], Competition: [] });
+  const [selectedFilters, setSelectedFilters] = useState<
+    Record<FilterGroup, string[]>
+  >(() => {
+    if (typeof window === "undefined") return { Year: [], Competition: [] };
+    try {
+      const saved = sessionStorage.getItem("projectSearchState");
+      return saved
+        ? JSON.parse(saved).selectedFilters
+        : { Year: [], Competition: [] };
+    } catch {
+      return { Year: [], Competition: [] };
+    }
+  });
+
+  // 3) Single save effect: whenever the user changes search or filters, update storage
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    sessionStorage.setItem(
+      "projectSearchState",
+      JSON.stringify({ searchTerm, selectedFilters })
+    );
+  }, [searchTerm, selectedFilters]);
 
   const crumbs: BreadcrumbItem[] = [
     { label: "Home", href: "/" },
@@ -160,17 +187,18 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     Year: yearOptions
   };
 
-  const handleFilterChange = (group: string, value: string) => {
+  type FilterGroup = keyof typeof FILTERS; // "Competition" | "Year"
+  const filterEntries = Object.entries(FILTERS) as [FilterGroup, string[]][];
+
+  const handleFilterChange = (group: FilterGroup, value: string) => {
     setSelectedFilters((prev) => {
-      const set = new Set(prev[group] || []);
-      if (set.has(value)) {
-        set.delete(value);
-      } else {
-        set.add(value);
-      }
+      const s = new Set(prev[group]);
+      if (s.has(value)) s.delete(value);
+      else s.add(value);
+
       return {
         ...prev,
-        [group]: Array.from(set)
+        [group]: Array.from(s)
       };
     });
   };
@@ -222,7 +250,7 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
             />
             <h2 className="text-lg font-medium mb-2">Filter Projects</h2>
             <div className="space-y-4">
-              {Object.entries(FILTERS).map(([group, opts]) => (
+              {filterEntries.map(([group, opts]) => (
                 <Disclosure key={group} defaultOpen>
                   {() => (
                     <div className="border rounded p-2">
