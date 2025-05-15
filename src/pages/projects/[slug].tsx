@@ -1,18 +1,12 @@
-// pages/projects/[slug].tsx
-
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-// import QRCode from "qrcode";
 
-// ----- CONTENTFUL TYPES & CLIENT -----
 import contentfulClient from "@/lib/contentful";
 import { Projectskeleton } from "@/types/used/CompetitionTypes";
 
-// ----- APOLLO CLIENT & QUERY -----
 import apolloClient from "@/lib/apolloClient";
 import { GET_PROJECT_BY_SLUG } from "@/lib/graphql/queries";
 
-// ----- UI COMPONENTS -----
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Image from "next/image";
 import CustomHead from "@/ui/components/seo/head";
@@ -21,9 +15,7 @@ import Breadcrumb, {
 } from "@/ui/components/brandeisBranding/breadcrumbs";
 
 import { formatImageUrl } from "@/utils";
-// ----- 1) FLATTENED INTERFACES -----
 
-/** Flattened shape of your Contentful fields (instead of nesting inside `fields`). */
 interface User {
   id: string;
   email: string;
@@ -77,7 +69,7 @@ interface GraphQLProject {
   short_description?: string;
   long_description?: string;
   competition?: string;
-  teamMembers?: User[]; // Updated: now an array of User objects
+  teamMembers?: User[];
   video_url?: string;
   image_url?: string;
 }
@@ -96,7 +88,6 @@ interface ProjectData {
   isFeatured: boolean;
 }
 
-// ----- 2) SSR PROPS & PARAMS -----
 interface ServerSideProps {
   project: ProjectData;
 }
@@ -105,26 +96,14 @@ interface Params extends ParsedUrlQuery {
   slug: string;
 }
 
-// ------------------------------
-// TYPE GUARD & UNIFY FUNCTIONS
-// ------------------------------
-
-/**
- * Type guard to determine if a team member is a ContentfulUser.
- */
 function isContentfulUser(
   member: User | ContentfulUser
 ): member is ContentfulUser {
   return (member as ContentfulUser).fields !== undefined;
 }
 
-/**
- * Unify the user data from GraphQL (User) or Contentful (ContentfulUser)
- * into a single, type-safe object that the component can render.
- */
 function unifyTeamMember(member: User | ContentfulUser) {
   if (isContentfulUser(member)) {
-    // It's a ContentfulUser
     return {
       firstName: member.fields.firstName || "",
       lastName: member.fields.lastName || "",
@@ -134,7 +113,6 @@ function unifyTeamMember(member: User | ContentfulUser) {
       imageUrl: member.fields.image?.fields.file.url || ""
     };
   } else {
-    // It's a GraphQL User
     return {
       firstName: member.firstName || "",
       lastName: member.lastName || "",
@@ -146,7 +124,6 @@ function unifyTeamMember(member: User | ContentfulUser) {
   }
 }
 
-// ----- 3) GET SERVER SIDE PROPS -----
 export const getServerSideProps: GetServerSideProps<
   ServerSideProps,
   Params
@@ -157,7 +134,6 @@ export const getServerSideProps: GetServerSideProps<
 
   const { slug } = params;
 
-  // -- A) FETCH FROM CONTENTFUL (STORE FLATTENED) --
   let contentfulFlattened: FlattenedContentfulFields | null = null;
 
   try {
@@ -165,16 +141,14 @@ export const getServerSideProps: GetServerSideProps<
       await contentfulClient.getEntries<Projectskeleton>({
         content_type: "projects"
       });
-    // Debug: Uncomment to inspect the raw response
-    // console.log(contentfulResponse);
-    // Find the matching item by slug
+
     const match = contentfulResponse.items.find((item) => {
       return (
         (item.fields.title as string).toLowerCase().replace(/\s+/g, "-") ===
         slug
       );
     });
-    // Flatten its fields if found
+
     if (match) {
       contentfulFlattened = {
         title: match.fields.title,
@@ -182,35 +156,31 @@ export const getServerSideProps: GetServerSideProps<
         about: match.fields.about,
         members: match.fields.members,
         image: match.fields.image,
-        teamMembers: match.fields.teamMembers, // New complex object field
+        teamMembers: match.fields.teamMembers,
         video_url: match.fields.videoUrl
       };
-      // Debug: console.log(contentfulFlattened.teamMembers);
     }
   } catch (err) {
     console.error("Error fetching from Contentful:", err);
   }
 
-  // -- B) FETCH FROM GRAPHQL (STORE DIRECTLY) --
   let graphQLProject: GraphQLProject | null = null;
 
   try {
     const { data } = await apolloClient.query({
       query: GET_PROJECT_BY_SLUG,
       variables: { slug },
-      fetchPolicy: "no-cache" // ensures fresh data for SSR
+      fetchPolicy: "no-cache"
     });
     graphQLProject = data?.project || null;
   } catch (err) {
     console.error("Error fetching from GraphQL:", err);
   }
 
-  // If both are null, return 404
   if (!contentfulFlattened && !graphQLProject) {
     return { notFound: true };
   }
 
-  // -- C) MERGE INTO A SINGLE ProjectData SHAPE --
   const mergedData: ProjectData = {
     title:
       contentfulFlattened?.title || graphQLProject?.title || "Untitled Project",
@@ -242,9 +212,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-// ----- 4) PAGE COMPONENT -----
 export default function ProjectPage({ project }: ServerSideProps) {
-  // console.log(project);
   const {
     title,
     tagline,
@@ -257,26 +225,10 @@ export default function ProjectPage({ project }: ServerSideProps) {
     imageUrl
   } = project;
 
-  // Generate and download QR Code for the current URL
-  // const downloadQRCode = async () => {
-  //   if (typeof window !== "undefined") {
-  //     try {
-  //       const currentUrl = window.location.href;
-  //       const qrDataUrl = await QRCode.toDataURL(currentUrl);
-  //       const link = document.createElement("a");
-  //       link.href = qrDataUrl;
-  //       link.download = `${title}-qr-code.png`;
-  //       link.click();
-  //     } catch (error) {
-  //       console.error("Error generating QR Code", error);
-  //     }
-  //   }
-  // };
-
   const crumbs: BreadcrumbItem[] = [
     { label: "Home", href: "/" },
     { label: "Projects", href: "/search" },
-    { label: project.title } // no href → current page
+    { label: project.title }
   ];
 
   return (
@@ -330,7 +282,6 @@ export default function ProjectPage({ project }: ServerSideProps) {
               </p>
             )}
 
-            {/* Render main project image if available */}
             {imageUrl && (
               <img
                 src={formatImageUrl(imageUrl)}
@@ -353,7 +304,6 @@ export default function ProjectPage({ project }: ServerSideProps) {
               </div>
             )}
 
-            {/* Share, Copy Link, and QR Code Buttons */}
             <aside>
               <menu className="w-full flex justify-start gap-2">
                 <button
@@ -381,19 +331,12 @@ export default function ProjectPage({ project }: ServerSideProps) {
                   className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
                   📋 Copy Link
                 </button>
-
-                {/* <button
-                onClick={downloadQRCode}
-                className="mt-4 px-4 py-2 font-sans border rounded hover:bg-gray-100 transition">
-                📥 QR Code
-              </button> */}
               </menu>
             </aside>
           </section>
 
           {/* Right Column */}
           <section className="w-full flex flex-col gap-10 border p-8">
-            {/* Combined descriptions */}
             <div>
               <Heading label="Project Description" />
 
@@ -407,7 +350,6 @@ export default function ProjectPage({ project }: ServerSideProps) {
               )}
             </div>
             <hr />
-            {/* Possibly show video from GraphQL */}
             {video_url && (
               <>
                 <div>
@@ -426,7 +368,6 @@ export default function ProjectPage({ project }: ServerSideProps) {
                 <hr />
               </>
             )}
-
             <div className="flex gap-4 flex-col">
               <Heading label="Team Members" />
               {(teamMembers || []).map((member, index) => {

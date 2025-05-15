@@ -1,4 +1,3 @@
-// pages/[slug].tsx
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { getAuth, clerkClient } from "@clerk/nextjs/server";
@@ -13,7 +12,6 @@ import Link from "next/link";
 import { useAuth, useUser } from "@clerk/nextjs";
 import slugify from "slugify";
 
-// ----- GRAPHQL INTERFACES -----
 interface GraphQLProject {
   id: string;
   title?: string;
@@ -25,7 +23,6 @@ interface GraphQLProject {
   image_url?: string;
 }
 
-// ----- PAGE DATA INTERFACE -----
 interface ProjectData {
   id: string;
   title: string;
@@ -37,7 +34,6 @@ interface ProjectData {
   image_url?: string;
 }
 
-// ----- SSR PROPS & PARAMS -----
 interface ServerSideProps {
   project: ProjectData;
   userEmail: string | null;
@@ -47,9 +43,6 @@ interface Params extends ParsedUrlQuery {
   slug: string;
 }
 
-// ----- GET SERVER SIDE PROPS -----
-// This function checks for authentication and also retrieves the user's email from Clerk.
-// If the user is not authenticated, it redirects to the sign-in page.
 export const getServerSideProps: GetServerSideProps<
   ServerSideProps,
   Params
@@ -58,12 +51,12 @@ export const getServerSideProps: GetServerSideProps<
   if (!userId) {
     return {
       redirect: {
-        destination: "/sign-in", // Adjust to your sign-in route.
+        destination: "/sign-in",
         permanent: false
       }
     };
   }
-  // Fetch full user details from Clerk
+
   let userEmail: string | null = null;
   try {
     const client = await clerkClient();
@@ -113,7 +106,6 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-// ----- PAGE COMPONENT -----
 export default function ProjectPage({ project, userEmail }: ServerSideProps) {
   const {
     id,
@@ -130,14 +122,13 @@ export default function ProjectPage({ project, userEmail }: ServerSideProps) {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Client-side Clerk authentication (should be present because of server-side check)
   const { isSignedIn } = useAuth();
   const { user } = useUser();
   console.log("user signed in", isSignedIn);
-  // Determine current user email from either client-side or server-side value.
+
   const currentEmail =
     user?.primaryEmailAddress?.emailAddress || userEmail || "";
-  // Only allow if currentEmail is present and included in the team_members_emails.
+
   const isAuthorized =
     currentEmail && team_members_emails?.includes(currentEmail);
 
@@ -146,7 +137,7 @@ export default function ProjectPage({ project, userEmail }: ServerSideProps) {
       setLoading(true);
       await deleteProject(Number(id));
       setLoading(false);
-      router.push("/user/my-projects"); // Redirect after deletion
+      router.push("/user/my-projects");
     } catch (err) {
       console.error("Failed to delete project:", err);
       alert("Failed to delete project. Please try again.");
@@ -154,7 +145,6 @@ export default function ProjectPage({ project, userEmail }: ServerSideProps) {
     }
   };
 
-  // If the user is not authorized, render an overlay that blocks interaction.
   if (!isAuthorized) {
     return (
       <main className="py-24 flex flex-col items-center justify-center">
@@ -280,9 +270,6 @@ export default function ProjectPage({ project, userEmail }: ServerSideProps) {
           </div>
         </div>
       )}
-
-      {/* Optional: If not signed in, an overlay could be shown.
-          However, server-side redirection should prevent non-authenticated users. */}
     </main>
   );
 }

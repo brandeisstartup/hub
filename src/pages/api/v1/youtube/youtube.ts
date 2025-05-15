@@ -11,7 +11,6 @@ type YouTubeVideo = {
   publishedAt: string;
 };
 
-// Define YouTube API response types
 interface YouTubeApiResponse {
   items: {
     id: { videoId?: string };
@@ -58,7 +57,7 @@ export default async function handler(
       }
 
       const mappedVideos: YouTubeVideo[] = data.items
-        .filter((item) => item.id.videoId) // ✅ Filter valid videos
+        .filter((item) => item.id.videoId)
         .map((item) => ({
           videoId: item.id.videoId as string,
           title: item.snippet.title,
