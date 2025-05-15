@@ -56,6 +56,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ClerkProvider
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}
+      frontendApi={process.env.NEXT_PUBLIC_CLERK_FRONTEND_API!}
       appearance={{
         layout: {
           logoImageUrl: "/missing.webp",
