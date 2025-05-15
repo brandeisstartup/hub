@@ -26,12 +26,6 @@ interface SearchLayoutProps {
   }>;
   parseYear: (raw: string) => string;
 }
-
-const crumbs: BreadcrumbItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Projects" }
-];
-
 function SkeletonLoader() {
   return (
     <ul className="grid grid-cols-1  gap-4">
