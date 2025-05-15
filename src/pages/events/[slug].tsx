@@ -24,8 +24,6 @@ import CustomHead from "@/ui/components/seo/head";
 import PrizesList from "@/ui/components/brandeisBranding/data-display/prizes/pirzesList";
 import Raffle from "@/ui/components/brandeisBranding/data-display/prizes/raffle";
 
-// import { pitchSummitData } from "@/data/competition";
-
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
 }
@@ -34,27 +32,23 @@ interface Props {
   competition: LocalCompetitionEntry;
 }
 
-// ✅ Type the params correctly
 interface Params extends ParsedUrlQuery {
   slug: string;
 }
 
-// ✅ Fetch all competition slugs for static generation
 export const getStaticPaths: GetStaticPaths = async () => {
   const response = await client.getEntries<CompetitionSkeleton>({
-    // ✅ Use CompetitionSkeleton
     content_type: "competitions",
     select: ["fields.title"]
   });
 
   const paths = response.items.map((item: { fields: { title: string } }) => ({
-    params: { slug: item.fields.title.replace(/\s+/g, "-").toLowerCase() } // Convert title to slug
+    params: { slug: item.fields.title.replace(/\s+/g, "-").toLowerCase() }
   }));
 
   return { paths, fallback: "blocking" };
 };
 
-// ✅ Fetch competition data based on slug
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params
 }) => {
@@ -62,9 +56,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     return { notFound: true };
   }
 
-  // Fetch all competitions and find the one that matches the slug
   const response = await client.getEntries<CompetitionSkeleton>({
-    // ✅ Use CompetitionSkeleton
     content_type: "competitions"
   });
 
@@ -79,11 +71,10 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
   return {
     props: { competition },
-    revalidate: 60 // ISR: Regenerate the page every 60 seconds
+    revalidate: 60
   };
 };
 
-// ✅ Page Component
 export default function CompetitionPage({ competition }: Props) {
   if (!competition || !competition.fields) {
     return <div>Competition data is not available.</div>;
@@ -94,7 +85,6 @@ export default function CompetitionPage({ competition }: Props) {
       <CustomHead
         title={competition.fields.title}
         description={competition.fields.description}
-        // replace with your real site URL, or derive from NEXT_PUBLIC_SITE_URL
         url="https://www.brandeisstartup.com"
         image={competition.fields.heroImage.fields.file.url}
         imageAlt={competition.fields.description}

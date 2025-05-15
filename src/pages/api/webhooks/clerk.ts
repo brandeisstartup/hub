@@ -1,15 +1,12 @@
-// src/pages/api/webhooks/clerk.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import { buffer } from "micro";
 
-// Disable body parsing so we can access the raw payload
 export const config = {
   api: {
     bodyParser: false
   }
 };
 
-// Set your GraphQL API endpoint (adjust if needed)
 const GRAPHQL_ENDPOINT =
   process.env.GRAPHQL_ENDPOINT ||
   "https://startuphub-jade.vercel.app/api/graphql";
@@ -24,13 +21,11 @@ interface ClerkUserData {
   last_name?: string;
   image_url?: string;
   profile_image_url?: string;
-  // Note: For deletion events, these fields might be absent
 }
 
 interface ClerkWebhookEvent {
   type: "user.created" | "user.deleted" | string;
   data: ClerkUserData & { id: string; deleted?: boolean };
-  // other fields can be added as needed
 }
 
 const clerkWebhookHandler = async (
@@ -39,11 +34,9 @@ const clerkWebhookHandler = async (
 ) => {
   console.log("Webhook endpoint hit");
 
-  // Get the raw body
   const buf = await buffer(req);
   console.log("Raw Clerk webhook payload:", buf.toString());
 
-  // Parse the JSON payload
   let event: ClerkWebhookEvent;
   try {
     event = JSON.parse(buf.toString()) as ClerkWebhookEvent;
@@ -53,7 +46,6 @@ const clerkWebhookHandler = async (
     return res.status(400).json({ error: "Invalid payload" });
   }
 
-  // Helper to extract primary email if available
   const getPrimaryEmail = (data: ClerkUserData): string | null =>
     data.email_addresses && data.email_addresses.length > 0
       ? data.email_addresses[0].email_address
@@ -62,7 +54,7 @@ const clerkWebhookHandler = async (
   if (event.type === "user.created") {
     const data = event.data;
     const primaryEmail = getPrimaryEmail(data);
-    const clerkId = data.id; // Grab the Clerk user id
+    const clerkId = data.id;
     const imageUrl = data.profile_image_url || data.image_url || null;
 
     if (!primaryEmail) {

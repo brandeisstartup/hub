@@ -103,7 +103,6 @@ function BigForm() {
             </p>
           </div>
 
-          {/* Title Input */}
           <TextInput<FormValues>
             label="Title"
             name="title"
@@ -111,12 +110,10 @@ function BigForm() {
             register={register}
             error={errors.title}
             required
-            /* one-shot pattern: only letters, numbers & spaces, 1–40 chars */
             pattern={/^[A-Za-z0-9 ]{3,25}$/}
             patternMessage="Title must be 3–25 characters, and only letters, numbers & spaces (no : - % # @ etc)."
           />
 
-          {/* Blurb Input */}
           <TextInput<FormValues>
             label="Blurb"
             name="blurb"
@@ -126,7 +123,6 @@ function BigForm() {
             error={errors.blurb}
           />
 
-          {/* Description Input */}
           <LongTextInput<FormValues>
             label="Description"
             name="description"
@@ -137,7 +133,6 @@ function BigForm() {
             rows={5}
           />
 
-          {/* YouTube Video ID Input */}
           <TextInput<FormValues>
             label="YouTube Video ID"
             name="videoUrl"
@@ -152,7 +147,6 @@ function BigForm() {
             patternMessage="Please enter exactly the 11‐character Youtube ID (NOT the full URL). Make sure preview works"
           />
 
-          {/* Video Preview */}
           {youtubeId && (
             <div className="mt-4">
               <p className="text-sm text-gray-600">Video Preview:</p>
@@ -167,7 +161,6 @@ function BigForm() {
             </div>
           )}
 
-          {/* Competition Combobox */}
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Competition
@@ -251,7 +244,6 @@ function BigForm() {
             </Combobox>
           </div>
 
-          {/* Image Uploader */}
           <div className="mt-4">
             <ImageUploader
               label="Upload an Image (Optional)"
@@ -259,7 +251,6 @@ function BigForm() {
             />
           </div>
 
-          {/* Submit Button */}
           {loading ? (
             <button
               type="submit"
@@ -301,7 +292,6 @@ function BigForm() {
         </form>
       </FormProvider>
 
-      {/* Overlay if user is not signed in */}
       {!isSignedIn && !user && (
         <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center z-4">
           <div className="max-w-sm p-6 bg-white bg-opacity-70 rounded-lg shadow-lg flex flex-col gap-4 justify-center items-center">

@@ -82,14 +82,7 @@ export default function Home({ homepageContent }: HomePageProps) {
         homepageContent.showAllEventsListBlock &&
         upcomingEvents.length > 0 && (
           <>
-            <IbsGrid
-              label="Upcoming"
-              href="#programs"
-              data={upcomingEvents}
-              // showButton={true}
-              // buttonLabel={"Learn More"}
-              // buttonLink="/about"
-            />
+            <IbsGrid label="Upcoming" href="#programs" data={upcomingEvents} />
           </>
         )}
       <SimpleImageGrid label={"All Events"} projects={competitions} />
@@ -98,7 +91,6 @@ export default function Home({ homepageContent }: HomePageProps) {
   );
 }
 
-// ✅ Fetch homepage content server-side
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
     const response = await client.getEntries({

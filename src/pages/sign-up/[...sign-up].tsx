@@ -4,17 +4,12 @@ import { SignUp } from "@clerk/nextjs";
 const Page = () => {
   return (
     <div className="min-h-screen flex">
-      {/* Left half: Background image (hidden on small screens) */}
       <div
         className="hidden md:flex w-1/2 bg-cover bg-center"
-        style={{ backgroundImage: "url('/lemberg.webp')" }}>
-        {/* Optional: You can add overlay text or additional styling here */}
-      </div>
+        style={{ backgroundImage: "url('/lemberg.webp')" }}></div>
 
-      {/* Right half: Sign-in form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center bg-white p-8 font-sans">
         <div className="w-full max-w-md">
-          {/* Top section with title and hint text */}
           <div className="mb-8 text-center">
             <h1 className="text-2xl font-bold text-gray-800">
               Welcome to the Brandeis Startup Hub
@@ -25,11 +20,9 @@ const Page = () => {
             </p>
           </div>
 
-          {/* Clerk's SignUp component */}
           <SignUp
             appearance={{
               layout: {
-                // Using the logo inside the sign-in component
                 logoImageUrl: "logo.webp",
                 logoPlacement: "inside"
               },
