@@ -1,18 +1,29 @@
+// pages/articles/index.tsx
 import { GetServerSideProps } from "next";
 import client from "@/lib/contentful";
-import { Entry } from "contentful";
+import { Entry, EntrySkeletonType } from "contentful";
+import { Document } from "@contentful/rich-text-types";
 import CustomHead from "@/ui/components/seo/head";
 
-type Article = {
+// Define types
+export interface ArticleFields {
   title: string;
   type: string;
   thumbnail?: { fields: { file: { url: string } } };
-  authors?: Entry<any>[];
-  content: any; // Rich text or markdown
-};
+  authors?: AuthorFields[]; // You can define a proper AuthorSkeleton if needed
+  content: Document;
+}
+export interface AuthorFields {
+  name: string;
+  image?: { fields: { file: { url: string } } };
+  bio?: string;
+}
+
+export type ArticleSkeleton = EntrySkeletonType<ArticleFields, "articles">;
+export type ArticleEntry = Entry<ArticleSkeleton>;
 
 type ArticlesPageProps = {
-  articles: Article[];
+  articles: ArticleFields[];
 };
 
 export default function ArticlesPage({ articles }: ArticlesPageProps) {
@@ -40,15 +51,19 @@ export default function ArticlesPage({ articles }: ArticlesPageProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps<
+  ArticlesPageProps
+> = async () => {
   try {
-    const res = await client.getEntries({
-      content_type: "articles" // your content type slug
+    const res = await client.getEntries<ArticleSkeleton>({
+      content_type: "articles"
     });
+
+    const articles = res.items.map((item) => item.fields);
 
     return {
       props: {
-        articles: res.items.map((item) => item.fields)
+        articles
       }
     };
   } catch (error) {
