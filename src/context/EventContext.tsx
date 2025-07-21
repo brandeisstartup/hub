@@ -42,8 +42,6 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
         const response = await client.getEntries<CompetitionSkeleton>({
           content_type: "competitions"
         });
-
-        console.log("🚀 Raw Contentful Competitions:", response.items);
         const formattedCompetitions = response.items.map(
           (entry) => entry.fields
         );
