@@ -70,7 +70,7 @@ function ProjectsList() {
           )}
         </ul>
       ) : (
-        <p>No projects found for {email}.</p>
+        <p className="font-sans text-lg">No projects found for {email}.</p>
       )}
     </div>
   );
@@ -131,11 +131,11 @@ export default function ProjectPage() {
                 {userName}
               </h2>
             </div>
-            <dd className="flex flex-row gap-1 font-sans flex-wrap mt-2 text-lg">
-              <span className="font-medium">Email: </span>
+            <dd className="flex flex-row gap-1 font-sans flex-wrap mt-2 ">
+              <span className="font-medium text-lg font-sans">Email: </span>
               <span>{user.email}</span>
             </dd>
-            <div className="mt-4 text-gray-700 text-lg">
+            <div className="mt-4 text-gray-700 font-sans text-lg">
               <p>
                 This is your profile information. You can update your details
                 later in your account settings.

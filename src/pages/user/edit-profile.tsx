@@ -59,7 +59,7 @@ export default function EditUserPage() {
               <span className="font-medium text-lg">Email: </span>
               <span>{user.email}</span>
             </dd>
-            <div className="mt-4  text-gray-700 text-lg">
+            <div className="mt-4  text-gray-700 text-lg font-sans">
               <p>
                 This is your profile information. You can update your details
                 below.
