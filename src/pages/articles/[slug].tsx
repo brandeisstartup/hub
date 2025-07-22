@@ -1,5 +1,4 @@
-// pages/articles/[slug].tsx
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import client from "@/lib/contentful";
@@ -13,25 +12,9 @@ import Breadcrumb, {
 import slugify from "slugify";
 import Head from "next/head";
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const response = await client.getEntries<ArticleSkeleton>({
-    content_type: "articles",
-    select: ["fields.title"]
-  });
-
-  const paths = response.items.map((item) => {
-    // cast to string so TS knows .trim() exists
-    const title = item.fields.title as string;
-    const slug = title.trim().toLowerCase().replace(/\s+/g, "-");
-
-    return { params: { slug } };
-  });
-
-  return { paths, fallback: "blocking" };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params?.slug) return { notFound: true };
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  if (!params?.slug || typeof params.slug !== "string")
+    return { notFound: true };
 
   const response = await client.getEntries<ArticleSkeleton>({
     content_type: "articles",
@@ -44,17 +27,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     ]
   });
 
-  // use a type‑guard so TS knows `entry` is an ArticleEntry
   const entry = response.items.find(
-    (item: { fields: { title: string } }) =>
-      item.fields.title.replace(/\s+/g, "-").toLowerCase() === params.slug
+    (item) =>
+      (item.fields.title as string)
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-") === params.slug
   );
 
   if (!entry) return { notFound: true };
 
   return {
-    props: { article: entry.fields },
-    revalidate: 60
+    props: { article: entry.fields }
   };
 };
 
@@ -74,70 +58,72 @@ const renderOptions: Options = {
         {children}
       </h4>
     ),
-
     [BLOCKS.PARAGRAPH]: (node, children) => (
-      <p className="text-lg leading-8 mb-4 ">{children}</p>
+      <p className="text-lg leading-8 mb-4">{children}</p>
     ),
     [BLOCKS.EMBEDDED_ASSET]: (node) => {
       const { file, title } = node.data.target.fields;
       return (
         <Image
           src={`https:${file.url}`}
-          alt={title || "Article image"}
+          alt={title || "Embedded Image"}
           width={file.details.image.width}
           height={file.details.image.height}
           className="my-6"
         />
       );
     }
-    // Add more overrides as needed...
   }
 };
 
-export default function ArticlePage({
-  article
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+interface ArticlePageProps {
+  article: ArticleSkeleton["fields"];
+}
+
+export default function ArticlePage({ article }: ArticlePageProps) {
   const crumbs: BreadcrumbItem[] = [
     { label: "Home", href: "/" },
     { label: "Articles", href: "/articles" },
     { label: article.title }
   ];
-  console.log(article);
+
+  const slug = slugify(article.title, { lower: true, strict: true });
+  const imageUrl = `https:${article.thumbnail.fields.file.url}`;
+
   return (
     <>
       <Head>
         <title>{article.title}</title>
+        <meta name="description" content={article.title} />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.title} />
-        <meta
-          property="og:image"
-          content={`https:${article.thumbnail.fields.file.url}`}
-        />
+        <meta property="og:image" content={imageUrl} />
         <meta
           property="og:url"
-          content={`https://www.brandeisstartup.com/articles/${slugify(
-            article.title,
-            { lower: true, strict: true }
-          )}`}
+          content={`https://www.brandeisstartup.com/articles/${slug}`}
         />
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Brandeis Startup Hub" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={article.title} />
+        <meta name="twitter:description" content={article.title} />
+        <meta name="twitter:image" content={imageUrl} />
       </Head>
-      <main className="flex flex-col items-center  py-12 px-4 font-sans">
-        <div className=" w-full ">
-          <div className="max-w-8xl mx-auto py-6 font-sans mt-5 mb-5">
-            {" "}
-            <Breadcrumb items={crumbs} />
-          </div>
+
+      <main className="flex flex-col items-center py-12 px-4 font-sans">
+        <div className="w-full max-w-8xl mx-auto py-6">
+          <Breadcrumb items={crumbs} />
         </div>
-        <div className="flex flex-col items-start w-full  max-w-8xl">
-          <h1 className="text-left text-6xl font-medium mb-6 ">
+
+        <div className="flex flex-col items-start w-full max-w-8xl">
+          <h1 className="text-left text-6xl font-medium mb-6">
             {article.title}
           </h1>
         </div>
 
-        <div className="flex flex-wrap gap-4 mb-6 items-start w-full  max-w-8xl">
+        <div className="flex flex-wrap gap-4 mb-6 items-start w-full max-w-8xl">
           By:
-          {article.authors?.map((author: ContentfulUser, index: number) => (
+          {article.authors?.map((author: ContentfulUser, index) => (
             <div key={index} className="flex items-center space-x-3">
               {author.fields.image?.fields.file.url && (
                 <Image
@@ -154,12 +140,15 @@ export default function ArticlePage({
             </div>
           ))}
         </div>
+
         <Image
           className="w-full max-w-8xl rounded-lg"
-          src={`https:${article.thumbnail.fields.file.url}`}
-          alt={""}
-          width={300}
-          height={300}></Image>
+          src={imageUrl}
+          alt="Article Thumbnail"
+          width={1200}
+          height={600}
+        />
+
         <main className="mx-auto max-w-8xl py-12 px-4 font-sans">
           <article className="prose prose-xl">
             {documentToReactComponents(article.content, renderOptions)}
