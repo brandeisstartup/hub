@@ -29,8 +29,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   const entry = response.items.find(
     (item) =>
-      item.fields.title.trim().toLowerCase().replace(/\s+/g, "-") ===
-      params.slug
+      (item.fields.title as string)
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-") === params.slug
   );
 
   if (!entry) return { notFound: true };
