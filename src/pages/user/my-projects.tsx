@@ -131,11 +131,11 @@ export default function ProjectPage() {
                 {userName}
               </h2>
             </div>
-            <dd className="flex flex-row gap-1 font-sans flex-wrap mt-2">
+            <dd className="flex flex-row gap-1 font-sans flex-wrap mt-2 text-lg">
               <span className="font-medium">Email: </span>
               <span>{user.email}</span>
             </dd>
-            <div className="mt-4 text-sm text-gray-700">
+            <div className="mt-4 text-gray-700 text-lg">
               <p>
                 This is your profile information. You can update your details
                 later in your account settings.
