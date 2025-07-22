@@ -24,7 +24,7 @@ const PersonSpotlight = ({
   linkText
 }: Props) => {
   return (
-    <section className="bg-white ">
+    <section className="bg-white font-sans">
       <div className="mx-auto max-w-8xl px-4">
         <div className="mx-auto max-w-2xl lg:mx-0">
           <Heading label={label} />
@@ -39,8 +39,10 @@ const PersonSpotlight = ({
             className="h-1/2"
           />
           <div className="col-span-1 md:col-span-2  h-full flex flex-col items-start justify-start px-4 gap-4">
-            <p className="text-left ">{personSpotlightText}</p>
-            <div className="underline text-orange-500">
+            <p className="text-left text-lg leading-9 ">
+              {personSpotlightText}
+            </p>
+            <div className="underline text-orange-500 text-lg">
               <a target="_blank" href={`${personSpotlightLInk}`}>
                 {linkText}
               </a>

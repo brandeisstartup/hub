@@ -10,6 +10,9 @@ type YouTubeVideo = {
   videoId: string;
   title: string;
   thumbnailUrl: string;
+  description?: string;
+  publishedAt?: string;
+  channelTitle?: string;
 };
 
 // Update the Props type to include an array of videos and the extend flag
@@ -32,7 +35,7 @@ const YouTubeGrid = ({ videos, label, extend = false }: Props) => {
 
   return (
     <div className="flex justify-center">
-      <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
+      <div className="wrapper flex w-full justify-center flex-col pb-32 px-4 max-w-8xl">
         <Heading label={label} />
         <div className="grid_container grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full mt-8">
           {videos
@@ -53,8 +56,28 @@ const YouTubeGrid = ({ videos, label, extend = false }: Props) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-2xl font-bold font-sans text-BrandeisBrand mt-2 hover:underline">
-                    {video.title}
+                    {video.title
+                      .replace(/&amp;/g, "&")
+                      .replace(/&lt;/g, "<")
+                      .replace(/&gt;/g, ">")
+                      .replace(/&quot;/g, '"')
+                      .replace(/&#39;/g, "'")}
                   </a>
+
+                  {/* Optional: Published Date */}
+                  {video.publishedAt && (
+                    <p className="text-lg text-BrandeisBodyText font-sans">
+                      Published{" "}
+                      {new Date(video.publishedAt).toLocaleDateString()}
+                    </p>
+                  )}
+
+                  {/* Optional: Description */}
+                  {video.description && (
+                    <p className="text-base text-gray-700 mt-2 line-clamp-3">
+                      {video.description}
+                    </p>
+                  )}
                 </div>
               </section>
             ))}

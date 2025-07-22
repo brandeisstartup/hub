@@ -11,7 +11,7 @@ type Props = {
 
 const ContactInfo = ({ label, sectionBlurb, contacts }: Props) => {
   return (
-    <section className="bg-white py-24 sm:py-32">
+    <section className="bg-white  text-lg  font-sans py-24 sm:py-32">
       <div className="mx-auto max-w-8xl px-6 lg:px-4">
         <div className="mx-auto max-w-2xl space-y-16 divide-y divide-gray-100 lg:mx-0 lg:max-w-none">
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-3">
@@ -26,12 +26,12 @@ const ContactInfo = ({ label, sectionBlurb, contacts }: Props) => {
               {contacts.map((contact, index) => (
                 <div
                   key={`${contact.fields.firstName}-${index}`}
-                  className="rounded-2xl  bg-gray-50 p-10">
-                  <h3 className="text-base font-sans font-semibold leading-7 text-gray-900">
+                  className="rounded-2xl  bg-gray-50 p-10 text-lg ">
+                  <h3 className=" font-sans font-semibold leading-7 text-gray-900">
                     {contact.fields.firstName} {contact.fields.lastName}
                   </h3>
                   {contact.fields.email && (
-                    <dl className="mt-3 space-y-1 text-sm leading-6 text-gray-600">
+                    <dl className="mt-3 space-y-1 leading-6 text-gray-600">
                       <div>
                         <dt className="sr-only">Email</dt>
                         <dd>
