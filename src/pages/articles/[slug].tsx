@@ -10,8 +10,8 @@ import { ArticleSkeleton, ContentfulUser } from "@/types/article-types";
 import Breadcrumb, {
   BreadcrumbItem
 } from "@/ui/components/brandeisBranding/breadcrumbs";
-import CustomHead from "@/ui/components/seo/head";
 import slugify from "slugify";
+import Head from "next/head";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const response = await client.getEntries<ArticleSkeleton>({
@@ -105,33 +105,37 @@ export default function ArticlePage({
   console.log(article);
   return (
     <>
-      <CustomHead
-        title={article.title}
-        description={article.title}
-        url={`https://www.brandeisstartup.com/articles/${slugify(
-          article.title,
-          {
-            lower: true,
-            strict: true
-          }
-        )}`}
-        image={`https:${article.thumbnail.fields.file.url}`}
-        siteName="Brandeis Startup"
-      />
+      <Head>
+        <title>{article.title}</title>
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={article.title} />
+        <meta
+          property="og:image"
+          content={`https:${article.thumbnail.fields.file.url}`}
+        />
+        <meta
+          property="og:url"
+          content={`https://www.brandeisstartup.com/articles/${slugify(
+            article.title,
+            { lower: true, strict: true }
+          )}`}
+        />
+        <meta property="og:type" content="article" />
+      </Head>
       <main className="flex flex-col items-center  py-12 px-4 font-sans">
         <div className=" w-full ">
-          <div className="max-w-6xl mx-auto py-6 font-sans mt-5 mb-5">
+          <div className="max-w-8xl mx-auto py-6 font-sans mt-5 mb-5">
             {" "}
             <Breadcrumb items={crumbs} />
           </div>
         </div>
-        <div className="flex flex-col items-start w-full  max-w-6xl">
+        <div className="flex flex-col items-start w-full  max-w-8xl">
           <h1 className="text-left text-6xl font-medium mb-6 ">
             {article.title}
           </h1>
         </div>
 
-        <div className="flex flex-wrap gap-4 mb-6 items-start w-full  max-w-6xl">
+        <div className="flex flex-wrap gap-4 mb-6 items-start w-full  max-w-8xl">
           By:
           {article.authors?.map((author: ContentfulUser, index: number) => (
             <div key={index} className="flex items-center space-x-3">
@@ -151,7 +155,7 @@ export default function ArticlePage({
           ))}
         </div>
         <Image
-          className="w-full max-w-6xl rounded-lg"
+          className="w-full max-w-8xl rounded-lg"
           src={`https:${article.thumbnail.fields.file.url}`}
           alt={""}
           width={300}
