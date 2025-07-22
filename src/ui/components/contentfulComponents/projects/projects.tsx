@@ -30,7 +30,7 @@ const Projects = ({ projects, label, extend = false }: Props) => {
   );
 
   return (
-    <section className="flex justify-center">
+    <section className="flex justify-center font-sans">
       <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
         <Heading label={label} />
         <div className="grid_container grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full mt-8">
@@ -59,10 +59,10 @@ const Projects = ({ projects, label, extend = false }: Props) => {
                         lower: true
                       }
                     )}`}
-                    className="text-xl font-bold font-serif text-BrandeisBrand mt-2 hover:underline">
+                    className="text-2xl font-bold  text-BrandeisBrand mt-2 hover:underline">
                     {project?.fields?.title || "Untitled Project"}
                   </a>
-                  <p className="text-body4 text-BrandeisBodyText">
+                  <p className="text-lg  text-BrandeisBodyText">
                     {project?.fields?.tagline || ""}
                   </p>
                 </div>

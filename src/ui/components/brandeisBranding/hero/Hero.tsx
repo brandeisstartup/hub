@@ -23,7 +23,7 @@ const Hero = ({
   <>
     <section
       className="relative flex items-center justify-center text-white text-center 
-                 h-[40vh] md:h-screen w-full bg-cover bg-center"
+                 h-[40vh] md:h-screen w-full bg-cover bg-center font-sans"
       style={{ backgroundImage: `url(${heroImage})` }}>
       {/* 🔹 Dark Overlay for Readability (Lower z-index) */}
       <div className="absolute inset-0 bg-black bg-opacity-20 z-0"></div>
@@ -35,7 +35,7 @@ const Hero = ({
             {header}
           </h1>
           {description && (
-            <p className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-serif mt-4 text-lg text-bold w-full max-w-3xl md:text-2xl">
+            <p className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)]  mt-4 text-lg text-bold w-full max-w-3xl md:text-2xl">
               {description}
             </p>
           )}
@@ -55,7 +55,7 @@ const Hero = ({
     <div className="flex flex-col gap-2 md:hidden mt-10 text-black px-4 max-w-3xl font-sans">
       <h1 className="text-4xl md:text-6xl">{header}</h1>
       {description && (
-        <p className=" font-serif mt-4 text-lg md:text-2xl">{description}</p>
+        <p className="  mt-4 text-lg md:text-2xl">{description}</p>
       )}
       <div className="flex flex-col gap-2">
         {primaryLabel && primaryLink && (

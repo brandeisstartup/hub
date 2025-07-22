@@ -60,7 +60,7 @@ export default function Home({ homepageContent }: HomePageProps) {
             }
           />
 
-          <p className="mb-4 font-sans">
+          <p className="mb-4 font-sans leading-9 text-lg max-w-7xl">
             Here, students can collaborate on innovative projects, building
             skills that will serve them in their careers and beyond. This hub is
             not only a place for fostering entrepreneurship and teamwork, but

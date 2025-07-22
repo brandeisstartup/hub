@@ -25,7 +25,7 @@ const Faq = ({ label, faqs }: Props) => {
                   <>
                     <dt>
                       <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
-                        <span className="font-sans font-semibold leading-7">
+                        <span className="font-sans font-semibold leading-7 text-lg">
                           {faq.fields.question}
                         </span>
                         <span className="ml-6 flex h-8 items-center">
@@ -48,12 +48,12 @@ const Faq = ({ label, faqs }: Props) => {
                         faq.fields.answer.map((item, index) => (
                           <p
                             key={`${item ?? "empty"}-${index}`}
-                            className="text-base leading-7 text-gray-600 mb-2">
+                            className="text-lg font-sans leading-7 text-gray-600 mb-2">
                             {index + 1}. {item}
                           </p>
                         ))
                       ) : (
-                        <p className="text-base leading-7 text-gray-600">
+                        <p className="text-lg font-sans leading-7 text-gray-600">
                           {faq.fields.answer}
                         </p>
                       )}

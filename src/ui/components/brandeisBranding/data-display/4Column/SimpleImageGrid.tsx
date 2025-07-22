@@ -41,7 +41,7 @@ const SimpleImageGrid = ({ projects, label, extend = false }: Props) => {
                     className="text-2xl font-bold font-sans text-BrandeisBrand mt-2 hover:underline">
                     {project.title}
                   </Link>
-                  <p className="text-md text-BrandeisBodyText">
+                  <p className="text-lg text-BrandeisBodyText font-sans">
                     {project.shortDescription}
                   </p>
                 </div>
