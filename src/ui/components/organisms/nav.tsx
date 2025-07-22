@@ -101,6 +101,10 @@ export default function NavBarSearch() {
       {
         name: "Events",
         href: "/#events"
+      },
+      {
+        name: "Articles",
+        href: "/articles"
       }
     ],
     [upcomingLinks]
@@ -143,7 +147,7 @@ export default function NavBarSearch() {
                         </div>
                       ) : (
                         dynamicNavigation.map((item, index) =>
-                          item.name === "Events" ? (
+                          item.name === "Events" || item.name === "Articles" ? (
                             <div key={index} className="w-full max-w-md">
                               <div className="relative">
                                 <Link
@@ -220,7 +224,7 @@ export default function NavBarSearch() {
                 ) : (
                   dynamicNavigation.map((item) => (
                     <div key={item.name}>
-                      {item.name === "Events" ? (
+                      {item.name === "Events" || item.name === "Articles" ? (
                         <Disclosure.Button
                           as={Link}
                           href={item.href}
