@@ -10,6 +10,8 @@ import { ArticleSkeleton, ContentfulUser } from "@/types/article-types";
 import Breadcrumb, {
   BreadcrumbItem
 } from "@/ui/components/brandeisBranding/breadcrumbs";
+import CustomHead from "@/ui/components/seo/head";
+import slugify from "slugify";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const response = await client.getEntries<ArticleSkeleton>({
@@ -102,49 +104,64 @@ export default function ArticlePage({
   ];
   console.log(article);
   return (
-    <main className="flex flex-col items-center  py-12 px-4 font-sans">
-      <div className=" w-full ">
-        <div className="max-w-6xl mx-auto py-6 font-sans mt-5 mb-5">
-          {" "}
-          <Breadcrumb items={crumbs} />
-        </div>
-      </div>
-      <div className="flex flex-col items-start w-full  max-w-6xl">
-        <h1 className="text-left text-6xl font-medium mb-6 ">
-          {article.title}
-        </h1>
-      </div>
-
-      <div className="flex flex-wrap gap-4 mb-6 items-start w-full  max-w-6xl">
-        By:
-        {article.authors?.map((author: ContentfulUser, index: number) => (
-          <div key={index} className="flex items-center space-x-3">
-            {author.fields.image?.fields.file.url && (
-              <Image
-                src={`https:${author.fields.image.fields.file.url}`}
-                alt={`${author.fields.firstName} ${author.fields.lastName}`}
-                width={48}
-                height={48}
-                className="rounded-full object-cover"
-              />
-            )}
-            <span className="text-lg font-medium">
-              {author.fields.firstName} {author.fields.lastName}
-            </span>
+    <>
+      <CustomHead
+        title={article.title}
+        description={article.title}
+        url={`https://www.brandeisstartup.com/articles/${slugify(
+          article.title,
+          {
+            lower: true,
+            strict: true
+          }
+        )}`}
+        image={`https:${article.thumbnail.fields.file.url}`}
+        siteName="Brandeis Startup"
+      />
+      <main className="flex flex-col items-center  py-12 px-4 font-sans">
+        <div className=" w-full ">
+          <div className="max-w-6xl mx-auto py-6 font-sans mt-5 mb-5">
+            {" "}
+            <Breadcrumb items={crumbs} />
           </div>
-        ))}
-      </div>
-      <Image
-        className="w-full max-w-6xl rounded-lg"
-        src={`https:${article.thumbnail.fields.file.url}`}
-        alt={""}
-        width={300}
-        height={300}></Image>
-      <main className="mx-auto max-w-8xl py-12 px-4 font-sans">
-        <article className="prose prose-xl">
-          {documentToReactComponents(article.content, renderOptions)}
-        </article>
+        </div>
+        <div className="flex flex-col items-start w-full  max-w-6xl">
+          <h1 className="text-left text-6xl font-medium mb-6 ">
+            {article.title}
+          </h1>
+        </div>
+
+        <div className="flex flex-wrap gap-4 mb-6 items-start w-full  max-w-6xl">
+          By:
+          {article.authors?.map((author: ContentfulUser, index: number) => (
+            <div key={index} className="flex items-center space-x-3">
+              {author.fields.image?.fields.file.url && (
+                <Image
+                  src={`https:${author.fields.image.fields.file.url}`}
+                  alt={`${author.fields.firstName} ${author.fields.lastName}`}
+                  width={48}
+                  height={48}
+                  className="rounded-full object-cover"
+                />
+              )}
+              <span className="text-lg font-medium">
+                {author.fields.firstName} {author.fields.lastName}
+              </span>
+            </div>
+          ))}
+        </div>
+        <Image
+          className="w-full max-w-6xl rounded-lg"
+          src={`https:${article.thumbnail.fields.file.url}`}
+          alt={""}
+          width={300}
+          height={300}></Image>
+        <main className="mx-auto max-w-8xl py-12 px-4 font-sans">
+          <article className="prose prose-xl">
+            {documentToReactComponents(article.content, renderOptions)}
+          </article>
+        </main>
       </main>
-    </main>
+    </>
   );
 }
