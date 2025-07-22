@@ -1,4 +1,6 @@
-import { GetServerSideProps } from "next";
+// pages/articles/[slug].tsx
+
+import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import client from "@/lib/contentful";
@@ -12,9 +14,28 @@ import Breadcrumb, {
 import slugify from "slugify";
 import Head from "next/head";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  if (!params?.slug || typeof params.slug !== "string")
+export const getStaticPaths: GetStaticPaths = async () => {
+  const response = await client.getEntries<ArticleSkeleton>({
+    content_type: "articles",
+    select: ["fields.title"]
+  });
+
+  const paths = response.items.map((item) => ({
+    params: {
+      slug: slugify(item.fields.title, { lower: true, strict: true })
+    }
+  }));
+
+  return {
+    paths,
+    fallback: "blocking"
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  if (!params?.slug || typeof params.slug !== "string") {
     return { notFound: true };
+  }
 
   const response = await client.getEntries<ArticleSkeleton>({
     content_type: "articles",
@@ -29,10 +50,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   const entry = response.items.find(
     (item) =>
-      (item.fields.title as string)
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, "-") === params.slug
+      slugify(item.fields.title, { lower: true, strict: true }) === params.slug
   );
 
   if (!entry) return { notFound: true };
