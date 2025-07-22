@@ -96,7 +96,7 @@ export default function ArticlesPage({ articles }: ArticlesPageProps) {
                         {author.fields.image?.fields.file.url && (
                           <Image
                             src={`https:${author.fields.image.fields.file.url}`}
-                            alt={author.name}
+                            alt={author.fields.firstName}
                             width={32}
                             height={32}
                             className="rounded-full object-cover"
