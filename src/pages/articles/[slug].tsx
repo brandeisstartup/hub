@@ -107,6 +107,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
 
   const slug = slugify(article.title, { lower: true, strict: true });
   const imageUrl = `https:${article.thumbnail.fields.file.url}`;
+  console.log(article.authors[0]);
 
   return (
     <>
@@ -170,6 +171,29 @@ export default function ArticlePage({ article }: ArticlePageProps) {
         <main className="mx-auto max-w-8xl py-12 px-4 font-sans">
           <article className="prose prose-xl">
             {documentToReactComponents(article.content, renderOptions)}
+            <div className="flex flex-wrap flex-col gap-4 mb-6 items-start bg-gray-50 p-4 rounded-md">
+              {article.authors?.map((author: ContentfulUser, index) => (
+                <>
+                  <div
+                    key={index}
+                    className="flex items-center justify-center space-x-3 w-full">
+                    {author.fields.image?.fields.file.url && (
+                      <Image
+                        src={`https:${author.fields.image.fields.file.url}`}
+                        alt={`${author.fields.firstName} ${author.fields.lastName}`}
+                        width={208}
+                        height={208}
+                        className="rounded-full object-cover border border-white drop-shadow-sm"
+                      />
+                    )}
+                  </div>
+                  <span className="text-lg font-medium p-6">
+                    <strong>About the author:</strong> <br></br>
+                    {author.fields.about}
+                  </span>
+                </>
+              ))}
+            </div>
           </article>
         </main>
       </main>
