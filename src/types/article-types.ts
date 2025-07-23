@@ -6,7 +6,7 @@ export interface ContentfulUser {
     id: string;
     firstName?: string;
     lastName?: string;
-    bio?: string;
+    about?: string;
     graduationYear?: number;
     major?: string;
     image?: {
