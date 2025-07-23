@@ -9,7 +9,8 @@
   text-decoration: none;
 }
 .logo {
-  font-size: 2.5rem;
+  font-size: 2.3rem;
+  font-family: "Merriweather";
 }
 .bar {
   height: 30px;
