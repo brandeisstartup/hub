@@ -78,6 +78,10 @@ export default function NavBarSearch() {
   const dynamicNavigation = useMemo(
     () => [
       {
+        name: "News",
+        href: "/news"
+      },
+      {
         name: "Projects",
         href: "/",
         links: [
@@ -102,9 +106,10 @@ export default function NavBarSearch() {
         name: "Events",
         href: "/#events"
       },
+
       {
-        name: "Articles",
-        href: "/articles"
+        name: "Help",
+        href: "/help"
       }
     ],
     [upcomingLinks]
@@ -147,7 +152,9 @@ export default function NavBarSearch() {
                         </div>
                       ) : (
                         dynamicNavigation.map((item, index) =>
-                          item.name === "Events" || item.name === "Articles" ? (
+                          item.name === "Events" ||
+                          item.name === "News" ||
+                          item.name === "Help" ? (
                             <div key={index} className="w-full max-w-md">
                               <div className="relative">
                                 <Link
@@ -224,7 +231,9 @@ export default function NavBarSearch() {
                 ) : (
                   dynamicNavigation.map((item) => (
                     <div key={item.name}>
-                      {item.name === "Events" || item.name === "Articles" ? (
+                      {item.name === "Events" ||
+                      item.name === "News" ||
+                      item.name === "Help" ? (
                         <Disclosure.Button
                           as={Link}
                           href={item.href}

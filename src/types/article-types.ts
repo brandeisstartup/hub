@@ -48,3 +48,32 @@ export interface ArticleFields {
 // full skeleton for both paths & props
 export type ArticleSkeleton = EntrySkeletonType<ArticleFields, "articles">;
 export type ArticleEntry = Entry<ArticleSkeleton>;
+
+// Define types
+export interface ArticleFields {
+  title: string;
+  type: string;
+  thumbnail: ImageFile;
+  authors: ContentfulUser[]; // You can define a proper AuthorSkeleton if needed
+  content: Document;
+}
+export interface AuthorContentFields {
+  firstName: string;
+  lastName: string;
+  bio?: string;
+  image?: {
+    fields: {
+      file: {
+        url: string;
+      };
+    };
+  };
+}
+
+export interface AuthorFields {
+  fields: AuthorContentFields;
+}
+
+type ArticlesPageProps = {
+  articles: ArticleFields[];
+};

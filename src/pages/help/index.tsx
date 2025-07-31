@@ -1,8 +1,6 @@
-// pages/articles/index.tsx
 import { GetServerSideProps } from "next";
 import client from "@/lib/contentful";
-import { Entry, EntrySkeletonType } from "contentful";
-import { Document } from "@contentful/rich-text-types";
+import { ArticleFields, ArticleSkeleton } from "@/types/article-types";
 import CustomHead from "@/ui/components/seo/head";
 import Breadcrumb, {
   BreadcrumbItem
@@ -10,34 +8,6 @@ import Breadcrumb, {
 import Image from "next/image";
 import slugify from "slugify";
 import Link from "next/link";
-
-// Define types
-export interface ArticleFields {
-  title: string;
-  type: string;
-  thumbnail?: { fields: { file: { url: string } } };
-  authors?: AuthorFields[]; // You can define a proper AuthorSkeleton if needed
-  content: Document;
-}
-export interface AuthorContentFields {
-  firstName: string;
-  lastName: string;
-  bio?: string;
-  image?: {
-    fields: {
-      file: {
-        url: string;
-      };
-    };
-  };
-}
-
-export interface AuthorFields {
-  fields: AuthorContentFields;
-}
-
-export type ArticleSkeleton = EntrySkeletonType<ArticleFields, "articles">;
-export type ArticleEntry = Entry<ArticleSkeleton>;
 
 type ArticlesPageProps = {
   articles: ArticleFields[];
@@ -47,7 +17,7 @@ const ArticleCard = ({ article }: { article: ArticleFields }) => {
   return (
     <Link
       className="bg-white shadow rounded-sm overflow-hidden flex flex-col"
-      href={`/articles/${slugify(article.title, {
+      href={`/help/${slugify(article.title, {
         lower: true,
         strict: true
       })}`}>
@@ -72,7 +42,9 @@ const ArticleCard = ({ article }: { article: ArticleFields }) => {
                 {author.fields.image?.fields.file.url && (
                   <Image
                     src={`https:${author.fields.image.fields.file.url}`}
-                    alt={author.fields.firstName}
+                    alt={`${author.fields.firstName ?? ""} ${
+                      author.fields.lastName ?? ""
+                    }`}
                     width={32}
                     height={32}
                     className="rounded-full object-cover"
@@ -93,11 +65,8 @@ const ArticleCard = ({ article }: { article: ArticleFields }) => {
 export default function ArticlesPage({ articles }: ArticlesPageProps) {
   const crumbs: BreadcrumbItem[] = [
     { label: "Home", href: "/" },
-    { label: "Articles", href: "/articles" }
+    { label: "Help Articles", href: "/help" }
   ];
-
-  const blogArticles = articles.filter((a) => a.type === "Blog");
-  const helpArticles = articles.filter((a) => a.type === "Help");
 
   return (
     <>
@@ -116,27 +85,13 @@ export default function ArticlesPage({ articles }: ArticlesPageProps) {
       </div>
 
       <section className="wrapper max-w-8xl mx-auto px-7 py-12 flex flex-col items-start w-full font-sans">
-        <h1 className="text-4xl mb-10 font-sans">Latest Articles</h1>
+        <h1 className="text-4xl mb-10 font-sans">Help Articles</h1>
 
-        {/* 📝 Blog Section */}
-        {blogArticles.length > 0 && (
+        {articles.length > 0 && (
           <div className="w-full mb-16">
-            <h2 className="text-2xl font-medium mb-6">Blog</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {blogArticles.map((article, idx) => (
+              {articles.map((article, idx) => (
                 <ArticleCard article={article} key={`blog-${idx}`} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* 🛠 Help Section */}
-        {helpArticles.length > 0 && (
-          <div className="w-full">
-            <h2 className="text-2xl font-medium mb-6">Help Articles</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {helpArticles.map((article, idx) => (
-                <ArticleCard article={article} key={`help-${idx}`} />
               ))}
             </div>
           </div>
@@ -153,16 +108,13 @@ export const getServerSideProps: GetServerSideProps<
     const res = await client.getEntries<ArticleSkeleton>({
       content_type: "articles"
     });
+    const articles = res.items
+      .map((item) => item.fields)
+      .filter((a) => a.type === "Help");
 
-    const articles = res.items.map((item) => item.fields);
-
-    return {
-      props: {
-        articles
-      }
-    };
+    return { props: { articles } };
   } catch (error) {
-    console.error("❌ Failed to load articles:", error);
+    console.error("❌ Failed to load help articles:", error);
     return { props: { articles: [] } };
   }
 };

@@ -101,7 +101,7 @@ interface ArticlePageProps {
 export default function ArticlePage({ article }: ArticlePageProps) {
   const crumbs: BreadcrumbItem[] = [
     { label: "Home", href: "/" },
-    { label: "Articles", href: "/articles" },
+    { label: "News", href: "/news" },
     { label: article.title }
   ];
 
