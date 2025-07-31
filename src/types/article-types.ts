@@ -54,7 +54,7 @@ export interface ArticleFields {
   title: string;
   type: string;
   thumbnail: ImageFile;
-  authors: ContentfulUser[]; // You can define a proper AuthorSkeleton if needed
+  authors: ContentfulUser[];
   content: Document;
 }
 export interface AuthorContentFields {
@@ -73,7 +73,3 @@ export interface AuthorContentFields {
 export interface AuthorFields {
   fields: AuthorContentFields;
 }
-
-type ArticlesPageProps = {
-  articles: ArticleFields[];
-};
