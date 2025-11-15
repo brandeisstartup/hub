@@ -117,7 +117,7 @@ export default function NavBarSearch() {
 
   return (
     <header>
-      <nav className="sticky top-0 z-50">
+      <nav className="fixed left-0 right-0 top-0 z-50">
         {!loading && thisWeekEvent && (
           <TopBanner
             message="Happening This Week!"
@@ -153,8 +153,8 @@ export default function NavBarSearch() {
                       ) : (
                         dynamicNavigation.map((item, index) =>
                           item.name === "Events" ||
-                          item.name === "News" ||
-                          item.name === "Help" ? (
+                            item.name === "News" ||
+                            item.name === "Help" ? (
                             <div key={index} className="w-full max-w-md">
                               <div className="relative">
                                 <Link
@@ -232,8 +232,8 @@ export default function NavBarSearch() {
                   dynamicNavigation.map((item) => (
                     <div key={item.name}>
                       {item.name === "Events" ||
-                      item.name === "News" ||
-                      item.name === "Help" ? (
+                        item.name === "News" ||
+                        item.name === "Help" ? (
                         <Disclosure.Button
                           as={Link}
                           href={item.href}
