@@ -23,7 +23,7 @@ const Hero = ({
   <>
     <section
       className="relative flex items-center justify-center text-white text-center 
-                 h-[35vh] md:h-[100vh] w-full bg-cover bg-center font-sans"
+                 h-[50vh] md:h-[90vh] w-full bg-cover bg-center font-sans"
       style={{ backgroundImage: `url(${heroImage})` }}>
       {/* 🔹 Dark Overlay for Readability (Lower z-index) */}
       <div className="absolute inset-0 bg-black bg-opacity-20 z-0"></div>
