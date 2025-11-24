@@ -19,7 +19,7 @@ interface FormValues extends Record<string, unknown> {
   title: string;
   blurb: string; // short_description
   description: string; // long_description
-  videoUrl: string; // Now just the YouTube video ID
+  videoUrl?: string; // Now just the YouTube video ID
   competition: string;
 }
 
@@ -62,6 +62,14 @@ function BigForm() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (!isSignedIn) return;
+
+    // Only accept an 11-character YouTube ID (optional). Reject full URLs.
+    const idPattern = /^[A-Za-z0-9_-]{11}$/;
+    if (data.videoUrl && !idPattern.test(String(data.videoUrl).trim())) {
+      toast.error("Please enter exactly the 11-character YouTube ID (NOT a full URL).");
+      return;
+    }
+
     const variables = {
       title: data.title,
       creator_email: `${user?.email}`,
@@ -69,7 +77,7 @@ function BigForm() {
       long_description: data.description,
       competition: data.competition || "",
       team_members_emails: [`${user?.email}`],
-      video_url: data.videoUrl || null,
+      video_url: data.videoUrl ? String(data.videoUrl).trim() : null,
       image_url: uploadedImageUrl || null
     };
 
@@ -134,13 +142,12 @@ function BigForm() {
           />
 
           <TextInput<FormValues>
-            label="YouTube Video ID"
+            label="YouTube Video ID (optional)"
             name="videoUrl"
-            placeholder="Enter YouTube Video ID (e.g., dQw4w9WgXcQ)"
+            placeholder="Enter YouTube ID (e.g., dQw4w9WgXcQ)"
             register={register}
             type="text"
             error={errors.videoUrl}
-            required
             pattern={
               /^(?!(?:https?:\/\/|www\.|.*youtube\.com|.*youtu\.be))[A-Za-z0-9_-]{11}$/
             }
@@ -200,23 +207,20 @@ function BigForm() {
                       key={option}
                       value={option}
                       className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-3 pr-9 ${
-                          active ? "bg-blue-600 text-white" : "text-gray-900"
+                        `relative cursor-default select-none py-2 pl-3 pr-9 ${active ? "bg-blue-600 text-white" : "text-gray-900"
                         }`
                       }>
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`block truncate ${
-                              selected ? "font-semibold" : "font-normal"
-                            }`}>
+                            className={`block truncate ${selected ? "font-semibold" : "font-normal"
+                              }`}>
                             {option}
                           </span>
                           {selected && (
                             <span
-                              className={`absolute inset-y-0 right-0 flex items-center pr-4 ${
-                                active ? "text-white" : "text-blue-600"
-                              }`}>
+                              className={`absolute inset-y-0 right-0 flex items-center pr-4 ${active ? "text-white" : "text-blue-600"
+                                }`}>
                               <svg
                                 className="h-5 w-5"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -280,11 +284,10 @@ function BigForm() {
           ) : (
             <button
               type="submit"
-              className={`px-6 py-4 w-full rounded-3xl focus:ring-BrandeisBrand flex flex-row justify-center gap-1 ${
-                isSignedIn
-                  ? "bg-BrandeisBrand text-white hover:bg-blue-700"
-                  : "bg-gray-400 text-white cursor-not-allowed"
-              }`}
+              className={`px-6 py-4 w-full rounded-3xl focus:ring-BrandeisBrand flex flex-row justify-center gap-1 ${isSignedIn
+                ? "bg-BrandeisBrand text-white hover:bg-blue-700"
+                : "bg-gray-400 text-white cursor-not-allowed"
+                }`}
               disabled={!isSignedIn}>
               Submit Project
             </button>
