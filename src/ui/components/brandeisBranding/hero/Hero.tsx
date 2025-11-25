@@ -28,8 +28,8 @@ const Hero = ({
       <div className="absolute inset-0 bg-black bg-opacity-20 z-0"></div>
 
       {/* 🔹 Desktop/Tablet Hero Content positioned at bottom; hidden on small screens */}
-      <div className="hidden md:absolute md:left-0 md:right-0 md:bottom-0 z-10 px-4 pb-8 md:pb-16 md:flex md:flex-col md:items-start md:text-left text-white max-w-8xl mx-auto">
-        <div className="w-full max-w-5xl">
+      <div className="hidden md:absolute md:bottom-0 md:left-0 z-10 pl-4 md:pl-12 pb-8 md:pb-16 md:flex md:flex-col md:items-start md:text-left text-white">
+        <div>
           <h1 className="text-4xl md:text-7xl [text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-sans">
             {header}
           </h1>
