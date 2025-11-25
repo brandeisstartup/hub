@@ -22,25 +22,25 @@ const Hero = ({
 }: HeroProps) => (
   <>
     <section
-      className="relative flex items-center justify-center text-white text-center 
-                 h-[50vh] md:h-[90vh] w-full bg-cover bg-center font-sans"
+      className="relative text-white h-[50vh] md:h-[90vh] w-full bg-cover bg-center font-sans"
       style={{ backgroundImage: `url(${heroImage})` }}>
       {/* 🔹 Dark Overlay for Readability (Lower z-index) */}
       <div className="absolute inset-0 bg-black bg-opacity-20 z-0"></div>
 
-      {/* 🔹 Hero Content (Higher z-index to stay above the overlay) */}
-      <div className="hidden w-full gap-2 md:flex mt-10 flex-col text-white px-4 max-w-8xl font-sans relative z-10">
-        <div className="text-start flex flex-col w-full max-w-5xl ">
-          <h1 className=" text-medium [text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-sans text-7xl">
+      {/* 🔹 Desktop/Tablet Hero Content positioned at bottom; hidden on small screens */}
+      <div className="hidden md:absolute md:left-0 md:right-0 md:bottom-0 z-10 px-4 pb-8 md:pb-16 md:flex md:flex-col md:items-start md:text-left text-white max-w-8xl mx-auto">
+        <div className="w-full max-w-5xl">
+          <h1 className="text-4xl md:text-7xl [text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-sans">
             {header}
           </h1>
           {description && (
-            <p className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)]  mt-4 text-lg text-bold w-full max-w-3xl md:text-2xl">
+            <p className="[text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] mt-4 text-lg md:text-2xl max-w-3xl">
               {description}
             </p>
           )}
         </div>
-        <div className="flex flex-row gap-2">
+
+        <div className="mt-4 flex flex-row gap-2">
           {primaryLabel && primaryLink && (
             <Button label={primaryLabel} href={primaryLink} color="green" />
           )}
@@ -51,8 +51,8 @@ const Hero = ({
       </div>
     </section>
 
-    {/* 🔹 Mobile Hero Content (Ensure it's visible as well) */}
-    <div className="flex flex-col gap-2 md:hidden mt-10 text-black px-4 max-w-3xl font-sans">
+    {/* 🔹 Mobile Hero Content (visible on small screens; sits below the hero image) */}
+    <div className="flex flex-col gap-2 md:hidden mt-10 text-black px-4 max-w-3xl font-sans items-start text-left">
       <h1 className="text-4xl md:text-6xl">{header}</h1>
       {description && (
         <p className="  mt-4 text-lg md:text-2xl">{description}</p>
