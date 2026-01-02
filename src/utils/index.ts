@@ -1,10 +1,12 @@
-export const formatDate = (dateString: string) =>
-  new Intl.DateTimeFormat("en-US", {
+export const formatDate = (dateString: string) => {
+  return new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
-    year: "numeric"
+    year: "numeric",
+    timeZone: "UTC"
   }).format(new Date(dateString));
+};
 
 export function formatImageUrl(url: string): string {
   if (url.startsWith("//")) {
