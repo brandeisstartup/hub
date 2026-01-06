@@ -3,9 +3,9 @@ import React from "react";
 const TermsPrivacy = () => {
   return (
     <div className="flex justify-center items-center flex-col p-10">
-      <div className="max-w-5xl flex flex-col gap-4 font-sans py-5">
+      <div className="max-w-5xl flex flex-col gap-4 font-sans py-5 mt-10">
         <div className="max-w-7xl ">
-          <h1>Brandeis Startup Hub</h1>
+          <h1 className="text-3xl md:text-5xl font-bold mb-2">Brandeis Startup Hub</h1>
           <p>(Part of Brandeis University)</p>
           <p>
             <strong>Contact:</strong> Philippe Wells
@@ -18,13 +18,13 @@ const TermsPrivacy = () => {
           </p>
         </div>
 
-        <h2 className="font-semibold text-2xl">Privacy Policy</h2>
+        <h2 className="font-bold text-3xl md:text-4xl mt-8 mb-4">Privacy Policy</h2>
         <p>
           <strong>Effective Date:</strong> April 5, 2025
         </p>
 
         <div>
-          <h3 className="font-semibold text-2xl">1. Introduction</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">1. Introduction</h3>
           <p>
             This Privacy Policy explains how Brandeis Startup Hub (“we,” “us,”
             or “our”) collects, uses, and protects your personal information
@@ -34,7 +34,7 @@ const TermsPrivacy = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">2. Information We Collect</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">2. Information We Collect</h3>
           <ul className="list-disc pl-6">
             <li>
               <em>Account Information:</em> When you register, we collect your
@@ -55,7 +55,7 @@ const TermsPrivacy = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">
             3. How We Use Your Information
           </h3>
           <ul className="list-disc pl-6">
@@ -83,7 +83,7 @@ const TermsPrivacy = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">
             4. Data Sharing and Disclosure
           </h3>
           <ul className="list-disc pl-6">
@@ -105,7 +105,7 @@ const TermsPrivacy = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">5. Data Security</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">5. Data Security</h3>
           <p>
             We implement reasonable security measures to protect your data from
             unauthorized access and disclosure. However, no method of online
@@ -114,7 +114,7 @@ const TermsPrivacy = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">
             6. Data Retention and User Rights
           </h3>
           <ul className="list-disc pl-6">
@@ -132,7 +132,7 @@ const TermsPrivacy = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">
             7. Google Analytics and Cookies
           </h3>
           <p>
@@ -144,7 +144,7 @@ const TermsPrivacy = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">
             8. Changes to This Privacy Policy
           </h3>
           <p>
@@ -156,7 +156,7 @@ const TermsPrivacy = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">9. Contact Us</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">9. Contact Us</h3>
           <p>
             If you have any questions or concerns about this Privacy Policy or
             our practices, please contact us at:

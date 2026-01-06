@@ -3,9 +3,9 @@ import React from "react";
 const terms = () => {
   return (
     <div className="flex justify-center items-center flex-col p-10">
-      <div className="max-w-5xl flex flex-col gap-4 font-sans py-5">
+      <div className="max-w-5xl flex flex-col gap-4 font-sans py-5 mt-10">
         <div className="max-w-7xl ">
-          <h1>Brandeis Startup Hub</h1>
+          <h1 className="text-3xl md:text-5xl font-bold mb-2">Brandeis Startup Hub</h1>
           <p>(Part of Brandeis University)</p>
           <p>
             <strong>Contact:</strong> Philippe Wells
@@ -18,14 +18,14 @@ const terms = () => {
           </p>
         </div>
 
-        <h2 className="font-semibold text-2xl">Terms of Service</h2>
+        <h2 className="font-bold text-3xl md:text-4xl mt-8 mb-4">Terms of Service</h2>
         <p>
           <strong>Effective Date:</strong> April 5, 2025
         </p>
 
         <div>
           {" "}
-          <h3 className="font-semibold text-2xl">1. Introduction</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">1. Introduction</h3>
           <p>
             Welcome to Brandeis Startup Hub (“we,” “us,” or “our”). These Terms
             of Service (“Terms”) govern your use of our website that displays
@@ -37,7 +37,7 @@ const terms = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">2. Eligibility</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">2. Eligibility</h3>
           <p>
             The Service is available to students and other authorized users who
             meet our eligibility requirements. By using our Service, you
@@ -47,7 +47,7 @@ const terms = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">
             3. Account Registration and User Information
           </h3>
           <ul>
@@ -70,7 +70,7 @@ const terms = () => {
           </ul>
         </div>
         <div>
-          <h3 className="font-semibold text-2xl">4. User-Submitted Content</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">4. User-Submitted Content</h3>
           <ul>
             <li>
               <strong>Project Submission:</strong> You may submit projects for
@@ -98,7 +98,7 @@ const terms = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">5. Intellectual Property</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">5. Intellectual Property</h3>
           <p>
             All content provided by us (except user-submitted content) is our
             property or that of our licensors and is protected by intellectual
@@ -108,7 +108,7 @@ const terms = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">6. Use of the Service</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">6. Use of the Service</h3>
           <ul>
             <li>
               <strong>Permitted Use:</strong> You may use our Service only for
@@ -122,7 +122,7 @@ const terms = () => {
           </ul>
         </div>
         <div>
-          <h3 className="font-semibold text-2xl">
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">
             7. Disclaimers and Limitations of Liability
           </h3>
           <ul>
@@ -142,7 +142,7 @@ const terms = () => {
         </div>
         <div>
           {" "}
-          <h3 className="font-semibold text-2xl">8. Modifications</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">8. Modifications</h3>
           <p>
             We may modify these Terms from time to time. We will update this
             page with a new effective date. Your continued use of the Service
@@ -151,7 +151,7 @@ const terms = () => {
         </div>
 
         <div>
-          <h3 className="font-semibold text-2xl">
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">
             9. Governing Law and Dispute Resolution
           </h3>
           <p>
@@ -161,7 +161,7 @@ const terms = () => {
           </p>
         </div>
         <div>
-          <h3 className="font-semibold text-2xl">10. Contact Information</h3>
+          <h3 className="font-semibold text-xl md:text-2xl mt-6 mb-2">10. Contact Information</h3>
           <p>
             If you have any questions about these Terms, please contact us at:
           </p>
