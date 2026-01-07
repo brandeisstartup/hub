@@ -119,6 +119,7 @@ export default function CompetitionPage({ competition }: Props) {
             primaryLink={competition.fields.ctaButtonLink}
             secondaryLabel={competition.fields.heroSecondaryButtonLabel}
             secondaryLink={competition.fields.heroSecondaryButtonLink}
+            isLive={competition.fields.showLiveInfo && isEventLive()}
           />
         ) : (
           <section className="py-24 sm:pt-32">
@@ -129,7 +130,14 @@ export default function CompetitionPage({ competition }: Props) {
                   {competition.fields.description}
                 </p>
               </div>
-              {!(competition.fields.showLiveInfo && isEventLive()) && (
+              {competition.fields.showLiveInfo && isEventLive() ? (
+                <div className="max-w-[18rem]">
+                  <Button
+                    label="See Live Info"
+                    color="green"
+                    href="#live"></Button>
+                </div>
+              ) : (
                 <div className="max-w-[18rem]">
                   <Button
                     label={competition.fields.ctaButtonLabel}
