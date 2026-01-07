@@ -79,7 +79,9 @@ export default function CompetitionPage({ competition }: Props) {
   if (!competition || !competition.fields) {
     return <div>Competition data is not available.</div>;
   }
-    
+  
+  const eventSlug = competition.fields.title.replace(/\s+/g, "-").toLowerCase();
+  
   const isEventLive = () => {
     const today = new Date();
     const startDate = new Date(competition.fields.startDate);
