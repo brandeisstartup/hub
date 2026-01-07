@@ -9,6 +9,7 @@ type HeroProps = {
   primaryLink: string;
   secondaryLabel?: string;
   secondaryLink?: string;
+  isLive?: boolean;
 };
 
 const Hero = ({
@@ -18,7 +19,8 @@ const Hero = ({
   primaryLabel,
   primaryLink,
   secondaryLabel,
-  secondaryLink
+  secondaryLink,
+  isLive = false
 }: HeroProps) => (
   <>
     <section
@@ -40,14 +42,20 @@ const Hero = ({
           )}
         </div>
 
-        <div className="mt-4 flex flex-row gap-2">
-          {primaryLabel && primaryLink && (
-            <Button label={primaryLabel} href={primaryLink} color="green" />
-          )}
-          {secondaryLabel && secondaryLink && (
-            <Button label={secondaryLabel} href={secondaryLink} color="blue" />
-          )}
-        </div>
+        {isLive ? (
+          <div className="mt-4">
+            <Button label="See Live Info" href="#live" color="green" />
+          </div>
+        ) : (
+          <div className="mt-4 flex flex-row gap-2">
+            {primaryLabel && primaryLink && (
+              <Button label={primaryLabel} href={primaryLink} color="green" />
+            )}
+            {secondaryLabel && secondaryLink && (
+              <Button label={secondaryLabel} href={secondaryLink} color="blue" />
+            )}
+          </div>
+        )}
       </div>
     </section>
 
@@ -57,14 +65,20 @@ const Hero = ({
       {description && (
         <p className="  mt-4 text-lg md:text-2xl">{description}</p>
       )}
-      <div className="flex flex-col gap-2">
-        {primaryLabel && primaryLink && (
-          <Button label={primaryLabel} href={primaryLink} color="green" />
-        )}
-        {secondaryLabel && secondaryLink && (
-          <Button label={secondaryLabel} href={secondaryLink} color="blue" />
-        )}
-      </div>
+      {isLive ? (
+        <div className="mt-4">
+          <Button label="See Live Info" href="#live" color="green" />
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {primaryLabel && primaryLink && (
+            <Button label={primaryLabel} href={primaryLink} color="green" />
+          )}
+          {secondaryLabel && secondaryLink && (
+            <Button label={secondaryLabel} href={secondaryLink} color="blue" />
+          )}
+        </div>
+      )}
     </div>
   </>
 );

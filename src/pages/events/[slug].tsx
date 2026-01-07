@@ -23,6 +23,8 @@ import Button from "@/ui/components/brandeisBranding/buttons/button";
 import CustomHead from "@/ui/components/seo/head";
 import PrizesList from "@/ui/components/brandeisBranding/data-display/prizes/pirzesList";
 import Raffle from "@/ui/components/brandeisBranding/data-display/prizes/raffle";
+import CalendarEventsList from "@/ui/components/googleCalendarComponents/calendar";
+import PitchSummitLiveInfo from "@/ui/components/contentfulComponents/pitchSummit/PitchSummitLiveInfo";
 
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
@@ -79,6 +81,19 @@ export default function CompetitionPage({ competition }: Props) {
   if (!competition || !competition.fields) {
     return <div>Competition data is not available.</div>;
   }
+  
+  const eventSlug = competition.fields.title.replace(/\s+/g, "-").toLowerCase();
+  
+  const isEventLive = () => {
+    // Force Pitch Summit to be considered live for testing regardless of dates.
+    if (eventSlug === "pitch-summit") {
+      return true;
+    }
+    const today = new Date();
+    const startDate = new Date(competition.fields.startDate);
+    const endDate = new Date(competition.fields.endDate);
+    return today >= startDate && today <= endDate;
+  };
 
   return (
     <>
@@ -102,10 +117,19 @@ export default function CompetitionPage({ competition }: Props) {
             heroImage={competition.fields.heroImage.fields.file.url}
             description={competition.fields.description}
             header={competition.fields.title}
-            primaryLabel={competition.fields.ctaButtonLabel}
-            primaryLink={competition.fields.ctaButtonLink}
+            primaryLabel={
+              competition.fields.showLiveInfo && isEventLive()
+                ? "See Live Info"
+                : competition.fields.ctaButtonLabel
+            }
+            primaryLink={
+              competition.fields.showLiveInfo && isEventLive()
+                ? `/day-of/${eventSlug}`
+                : competition.fields.ctaButtonLink
+            }
             secondaryLabel={competition.fields.heroSecondaryButtonLabel}
             secondaryLink={competition.fields.heroSecondaryButtonLink}
+            isLive={false}
           />
         ) : (
           <section className="py-24 sm:pt-32">
@@ -116,12 +140,21 @@ export default function CompetitionPage({ competition }: Props) {
                   {competition.fields.description}
                 </p>
               </div>
-              <div className="max-w-[18rem]">
-                <Button
-                  label={competition.fields.ctaButtonLabel}
-                  color="blue"
-                  href={competition.fields.ctaButtonLink}></Button>
-              </div>
+              {competition.fields.showLiveInfo && isEventLive() ? (
+                <div className="max-w-[18rem]">
+                  <Button
+                    label="See Live Info"
+                    color="green"
+                    href={`/day-of/${eventSlug}`}></Button>
+                </div>
+              ) : (
+                <div className="max-w-[18rem]">
+                  <Button
+                    label={competition.fields.ctaButtonLabel}
+                    color="blue"
+                    href={competition.fields.ctaButtonLink}></Button>
+                </div>
+              )}
             </div>
           </section>
         )}

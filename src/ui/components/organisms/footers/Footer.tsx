@@ -43,10 +43,10 @@ export default function Footer() {
               02453
             </li>
             <li className=" text-xs leading-5 text-white">
-              pwells@brandeis.edu
+              <a href="mailto:pwells@brandeis.edu">pwells@brandeis.edu</a>
             </li>
             <li className=" text-xs leading-5 text-white">
-              brandeisstartup@gmail.com
+              <a href="mailto:brandeisstartup@gmail.com">brandeisstartup@gmail.com</a>
             </li>
           </ul>
         </div>
@@ -63,9 +63,9 @@ export default function Footer() {
                 Youtube Channel
               </a>
             </li>
-            <li className=" text-xs leading-5 text-white">
+            {/* <li className=" text-xs leading-5 text-white">
               <Link href={"/"}>Startup Hub Google Calendar Link</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

@@ -52,7 +52,7 @@ export default function NavBarSearch() {
   }, [mergedUser]);
 
   const thisWeekEvent = useMemo(
-    () => findUpcomingEvent(upcomingEvents, 7),
+    () => findUpcomingEvent(upcomingEvents, 70),
     [upcomingEvents]
   );
 
