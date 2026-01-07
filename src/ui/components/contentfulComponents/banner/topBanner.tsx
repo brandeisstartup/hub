@@ -89,7 +89,7 @@ const TopBanner = ({
               <Link
                 href={
                   event.showLiveInfo && isLiveEvent
-                    ? `/events/${slugify(event.title, { lower: true })}#live`
+                    ? `/day-of/${slugify(event.title, { lower: true })}`
                     : `/events/${slugify(event.title, { lower: true })}`
                 }
                 className="border text-white px-3 py-1 rounded-md font-bold hover:bg-gray-200 hover:text-blue-700 transition">

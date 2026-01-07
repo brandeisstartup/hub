@@ -81,10 +81,12 @@ export default function CompetitionPage({ competition }: Props) {
   if (!competition || !competition.fields) {
     return <div>Competition data is not available.</div>;
   }
+  
+  const eventSlug = competition.fields.title.replace(/\s+/g, "-").toLowerCase();
+  
   const isEventLive = () => {
-    const slug = competition.fields.title.replace(/\s+/g, "-").toLowerCase();
     // Force Pitch Summit to be considered live for testing regardless of dates.
-    if (slug === "pitch-summit") {
+    if (eventSlug === "pitch-summit") {
       return true;
     }
     const today = new Date();
@@ -115,11 +117,19 @@ export default function CompetitionPage({ competition }: Props) {
             heroImage={competition.fields.heroImage.fields.file.url}
             description={competition.fields.description}
             header={competition.fields.title}
-            primaryLabel={competition.fields.ctaButtonLabel}
-            primaryLink={competition.fields.ctaButtonLink}
+            primaryLabel={
+              competition.fields.showLiveInfo && isEventLive()
+                ? "See Live Info"
+                : competition.fields.ctaButtonLabel
+            }
+            primaryLink={
+              competition.fields.showLiveInfo && isEventLive()
+                ? `/day-of/${eventSlug}`
+                : competition.fields.ctaButtonLink
+            }
             secondaryLabel={competition.fields.heroSecondaryButtonLabel}
             secondaryLink={competition.fields.heroSecondaryButtonLink}
-            isLive={competition.fields.showLiveInfo && isEventLive()}
+            isLive={false}
           />
         ) : (
           <section className="py-24 sm:pt-32">
@@ -135,7 +145,7 @@ export default function CompetitionPage({ competition }: Props) {
                   <Button
                     label="See Live Info"
                     color="green"
-                    href="#live"></Button>
+                    href={`/day-of/${eventSlug}`}></Button>
                 </div>
               ) : (
                 <div className="max-w-[18rem]">
@@ -146,20 +156,6 @@ export default function CompetitionPage({ competition }: Props) {
                 </div>
               )}
             </div>
-          </section>
-        )}
-
-        {competition.fields.showLiveInfo && isEventLive() && (
-          <section id="live">
-            <CalendarEventsList
-              startDate={competition.fields.startDate}
-              endDate={competition.fields.endDate}
-            />
-            {competition.fields.pitchSummitLiveInfoSheetUrl && (
-              <PitchSummitLiveInfo
-                sheetUrl={competition.fields.pitchSummitLiveInfoSheetUrl}
-              />
-            )}
           </section>
         )}
 

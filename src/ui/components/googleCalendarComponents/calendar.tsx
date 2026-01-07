@@ -130,6 +130,9 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
     <section className="w-full mt-20 mb-20 px-4 font-sans">
       <div className="mx-auto max-w-8xl w-full">
         <Heading label="Live Schedule" />
+        <p className="text-gray-500 mb-6 text-xs font-sans">
+          Last updated: {currentDateTime.toLocaleTimeString()}
+        </p>
 
         {sortedDates.length === 0 ? (
           <p className="text-sm text-gray-500 mt-4 font-sans">
