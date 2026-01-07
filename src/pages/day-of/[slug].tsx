@@ -60,11 +60,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
   // Check if event should have a live info page
   const isEventLive = () => {
-    const slug = competition.fields.title.replace(/\s+/g, "-").toLowerCase();
-    // Force Pitch Summit to be considered live for testing regardless of dates.
-    if (slug === "pitch-summit") {
-      return true;
-    }
     const today = new Date();
     const startDate = new Date(competition.fields.startDate);
     const endDate = new Date(competition.fields.endDate);
