@@ -23,8 +23,6 @@ import Button from "@/ui/components/brandeisBranding/buttons/button";
 import CustomHead from "@/ui/components/seo/head";
 import PrizesList from "@/ui/components/brandeisBranding/data-display/prizes/pirzesList";
 import Raffle from "@/ui/components/brandeisBranding/data-display/prizes/raffle";
-import CalendarEventsList from "@/ui/components/googleCalendarComponents/calendar";
-import PitchSummitLiveInfo from "@/ui/components/contentfulComponents/pitchSummit/PitchSummitLiveInfo";
 
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
