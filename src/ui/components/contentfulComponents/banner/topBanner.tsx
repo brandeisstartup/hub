@@ -21,10 +21,6 @@ interface TopBannerProps {
 const isEventLive = (event?: shortEvent | null): boolean => {
   if (!event) return false;
 
-  const slug = slugify(event.title, { lower: true });
-  // Force Pitch Summit to be considered live for testing regardless of dates.
-  if (slug === "pitch-summit") return true;
-
   const today = new Date();
   const startDate = new Date(event.startDate);
   const endDate = new Date(event.endDate);

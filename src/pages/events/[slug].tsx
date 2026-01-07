@@ -83,10 +83,6 @@ export default function CompetitionPage({ competition }: Props) {
   const eventSlug = competition.fields.title.replace(/\s+/g, "-").toLowerCase();
   
   const isEventLive = () => {
-    // Force Pitch Summit to be considered live for testing regardless of dates.
-    if (eventSlug === "pitch-summit") {
-      return true;
-    }
     const today = new Date();
     const startDate = new Date(competition.fields.startDate);
     const endDate = new Date(competition.fields.endDate);
