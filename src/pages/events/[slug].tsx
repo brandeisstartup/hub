@@ -150,19 +150,16 @@ export default function CompetitionPage({ competition }: Props) {
         )}
 
         {competition.fields.showLiveInfo && isEventLive() && (
-          <section id="live" className="py-12 sm:py-16">
-            <div className="mx-auto max-w-8xl px-4">
-              <Heading label={`${competition.fields.title} Live Info`} />
-              <CalendarEventsList
-                startDate={competition.fields.startDate}
-                endDate={competition.fields.endDate}
+          <section id="live">
+            <CalendarEventsList
+              startDate={competition.fields.startDate}
+              endDate={competition.fields.endDate}
+            />
+            {competition.fields.pitchSummitLiveInfoSheetUrl && (
+              <PitchSummitLiveInfo
+                sheetUrl={competition.fields.pitchSummitLiveInfoSheetUrl}
               />
-              {competition.fields.pitchSummitLiveInfoSheetUrl && (
-                <PitchSummitLiveInfo
-                  sheetUrl={competition.fields.pitchSummitLiveInfoSheetUrl}
-                />
-              )}
-            </div>
+            )}
           </section>
         )}
 

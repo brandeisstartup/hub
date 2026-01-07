@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 
 interface CalendarEvent {
@@ -21,10 +20,16 @@ interface CalendarData {
 }
 
 interface CalendarEventsListProps {
-  startDate: string; // The start date in 'YYYY-MM-DD' format
-  endDate: string; // The end date in 'YYYY-MM-DD' format
-  calendarId?: string; // Optional override for calendar ID
+  startDate: string;
+  endDate: string;
+  calendarId?: string;
 }
+
+const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
+    {children}
+  </div>
+);
 
 const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
   startDate,
@@ -35,41 +40,34 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
   const [calendarData, setCalendarData] = useState<CalendarData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Timer: Update `currentDateTime` every 60 seconds
+  // Update current time every minute
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentDateTime(new Date());
-    }, 60000); // Check every 60 seconds
+    }, 60000);
 
-    return () => clearInterval(timer); // Cleanup when component unmounts
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
     const fetchCalendarData = async () => {
-      // Backend will use default calendar ID from env
-      const params = new URLSearchParams({
-        startDate,
-        endDate
-      });
+      const params = new URLSearchParams({ startDate, endDate });
 
-      // Only include calendarId if explicitly provided (for future multi-calendar support)
       if (calendarId) {
-        params.set('calendarId', calendarId);
+        params.set("calendarId", calendarId);
       }
 
-      const url = `/api/v1/calendar/events?${params.toString()}`;
-
       try {
-        const response = await fetch(url);
+        const response = await fetch(
+          `/api/v1/calendar/events?${params.toString()}`
+        );
         if (!response.ok) {
-          const errorData = await response.json();
-          console.error("Calendar API error:", errorData);
-          throw new Error(errorData.error || "Network response was not ok");
+          throw new Error("Failed to fetch calendar events");
         }
         const data = await response.json();
         setCalendarData({ items: data.events || [] });
       } catch (error) {
-        console.error("Fetch error:", error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -78,15 +76,10 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
     fetchCalendarData();
   }, [calendarId, startDate, endDate]);
 
-  if (loading) {
-    return;
+  if (loading || !calendarData) {
+    return null;
   }
 
-  if (!calendarData) {
-    return;
-  }
-
-  // Filter and process events...
   const start = new Date(startDate);
   const end = new Date(endDate);
   end.setDate(end.getDate() + 1);
@@ -97,19 +90,22 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
   });
 
   const eventsByDate = filteredEvents.reduce(
-    (acc: Record<string, CalendarEvent[]>, event: CalendarEvent) => {
-      const startDate = event.start.dateTime || event.start.date;
-      const date = new Date(startDate!).toDateString();
+    (acc: Record<string, CalendarEvent[]>, event) => {
+      const dateKey = new Date(
+        event.start.dateTime || event.start.date!
+      ).toDateString();
 
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(event);
+      acc[dateKey] = acc[dateKey] || [];
+      acc[dateKey].push(event);
 
-      acc[date].sort((a, b) => {
-        const startA = new Date(a.start.dateTime || a.start.date!).getTime();
-        const startB = new Date(b.start.dateTime || b.start.date!).getTime();
-        return startA - startB;
+      acc[dateKey].sort((a, b) => {
+        const aTime = new Date(
+          a.start.dateTime || a.start.date!
+        ).getTime();
+        const bTime = new Date(
+          b.start.dateTime || b.start.date!
+        ).getTime();
+        return aTime - bTime;
       });
 
       return acc;
@@ -121,69 +117,92 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
     (a, b) => new Date(a).getTime() - new Date(b).getTime()
   );
 
-  // Function to check if the event is the current event
   const isCurrentEvent = (event: CalendarEvent): boolean => {
-    const eventStart = new Date(event.start.dateTime || event.start.date!);
-    const eventEnd = event.end.dateTime
+    const start = new Date(event.start.dateTime || event.start.date!);
+    const end = event.end.dateTime
       ? new Date(event.end.dateTime)
-      : new Date(eventStart.getTime() + 3600000); // Default to 1 hour if end time is not provided
+      : new Date(start.getTime() + 60 * 60 * 1000);
 
-    return eventStart <= currentDateTime && currentDateTime <= eventEnd;
+    return start <= currentDateTime && currentDateTime <= end;
   };
 
   return (
-    <section className="w-full flex flex-col  mt-20 mb-20">
-      <Heading label={"Live Schedule"} />
-      <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 ">
+    <section className="w-full mt-20 mb-20 px-4 font-sans">
+      <div className="mx-auto max-w-8xl w-full">
+        <Heading label="Live Schedule" />
+
         {sortedDates.length === 0 ? (
-          <p>No events found for the selected date range.</p>
+          <p className="text-sm text-gray-500 mt-4 font-sans">
+            No events found for the selected date range.
+          </p>
         ) : (
-          sortedDates.map((date) => (
-            <div
-              className=" font-sans flex flex-col align-middle items-start"
-              key={date}>
-              <time className="text-2xl mt-4 mb-2">
-                {new Date(date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric"
-                })}
-              </time>
-              <ul className="max-w-md">
-                {eventsByDate[date].map((event, index) => (
-                  <li
-                    key={index}
-                    className={`text-sm mb-1 flex flex-row px-1 pb-1 transition-all duration-300 ${
-                      isCurrentEvent(event)
-                        ? "text-blue-500 bg-white border border-blue-500 rounded-sm shadow-lg"
-                        : "other-class"
-                    }`}>
-                    <time className="w-[120px] text-xxs flex flex-row">
-                      {new Date(
-                        event.start.dateTime || event.start.date!
-                      ).toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true
-                      })}{" "}
-                      -{" "}
-                      {new Date(
-                        event.end.dateTime || event.end.date!
-                      ).toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true
-                      })}
-                    </time>
-                    <span className="w-full max-w-[420px]">
-                      <strong>{event.summary}</strong>
-                      <br /> {event.description}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {sortedDates.map((date) => (
+              <Card key={date}>
+                <div className="p-4 space-y-4">
+                  <time className="block text-lg font-semibold text-gray-900 font-sans">
+                    {new Date(date).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric"
+                    })}
+                  </time>
+
+                  <ul className="space-y-2">
+                    {eventsByDate[date].map((event, index) => {
+                      const isLive = isCurrentEvent(event);
+
+                      return (
+                        <li
+                          key={index}
+                          className={`rounded-md border p-3 text-sm transition font-sans ${
+                            isLive
+                              ? "border-blue-500 bg-blue-50"
+                              : "border-gray-200"
+                          }`}
+                        >
+                          <div className="flex justify-between items-start gap-3">
+                            <time className="shrink-0 text-xs font-medium text-gray-600 font-sans">
+                              {new Date(
+                                event.start.dateTime || event.start.date!
+                              ).toLocaleTimeString("en-US", {
+                                hour: "2-digit",
+                                minute: "2-digit"
+                              })}
+                              {" – "}
+                              {new Date(
+                                event.end.dateTime || event.end.date!
+                              ).toLocaleTimeString("en-US", {
+                                hour: "2-digit",
+                                minute: "2-digit"
+                              })}
+                            </time>
+
+                            <div className="flex-1">
+                              <p className="font-semibold text-gray-900 font-sans">
+                                {event.summary}
+                              </p>
+                              {event.description && (
+                                <p className="text-xs text-gray-600 mt-1 font-sans">
+                                  {event.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          {isLive && (
+                            <p className="mt-2 text-xs font-semibold text-blue-600 font-sans">
+                              ● Happening now
+                            </p>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </Card>
+            ))}
+          </div>
         )}
       </div>
     </section>
