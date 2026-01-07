@@ -23,6 +23,8 @@ import Button from "@/ui/components/brandeisBranding/buttons/button";
 import CustomHead from "@/ui/components/seo/head";
 import PrizesList from "@/ui/components/brandeisBranding/data-display/prizes/pirzesList";
 import Raffle from "@/ui/components/brandeisBranding/data-display/prizes/raffle";
+import CalendarEventsList from "@/ui/components/googleCalendarComponents/calendar";
+import PitchSummitLiveInfo from "@/ui/components/contentfulComponents/pitchSummit/PitchSummitLiveInfo";
 
 interface LocalCompetitionEntry {
   fields: CompetitionFields;
@@ -79,6 +81,17 @@ export default function CompetitionPage({ competition }: Props) {
   if (!competition || !competition.fields) {
     return <div>Competition data is not available.</div>;
   }
+  const isEventLive = () => {
+    const slug = competition.fields.title.replace(/\s+/g, "-").toLowerCase();
+    // Force Pitch Summit to be considered live for testing regardless of dates.
+    if (slug === "pitch-summit") {
+      return true;
+    }
+    const today = new Date();
+    const startDate = new Date(competition.fields.startDate);
+    const endDate = new Date(competition.fields.endDate);
+    return today >= startDate && today <= endDate;
+  };
 
   return (
     <>
@@ -116,12 +129,31 @@ export default function CompetitionPage({ competition }: Props) {
                   {competition.fields.description}
                 </p>
               </div>
-              <div className="max-w-[18rem]">
-                <Button
-                  label={competition.fields.ctaButtonLabel}
-                  color="blue"
-                  href={competition.fields.ctaButtonLink}></Button>
-              </div>
+              {!(competition.fields.showLiveInfo && isEventLive()) && (
+                <div className="max-w-[18rem]">
+                  <Button
+                    label={competition.fields.ctaButtonLabel}
+                    color="blue"
+                    href={competition.fields.ctaButtonLink}></Button>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {competition.fields.showLiveInfo && isEventLive() && (
+          <section id="live" className="py-12 sm:py-16">
+            <div className="mx-auto max-w-8xl px-4">
+              <Heading label={`${competition.fields.title} Live Info`} />
+              <CalendarEventsList
+                startDate={competition.fields.startDate}
+                endDate={competition.fields.endDate}
+              />
+              {competition.fields.pitchSummitLiveInfoSheetUrl && (
+                <PitchSummitLiveInfo
+                  sheetUrl={competition.fields.pitchSummitLiveInfoSheetUrl}
+                />
+              )}
             </div>
           </section>
         )}

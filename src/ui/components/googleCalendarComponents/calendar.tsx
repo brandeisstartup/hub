@@ -23,11 +23,13 @@ interface CalendarData {
 interface CalendarEventsListProps {
   startDate: string; // The start date in 'YYYY-MM-DD' format
   endDate: string; // The end date in 'YYYY-MM-DD' format
+  calendarId?: string; // Optional override for calendar ID
 }
 
 const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
   startDate,
-  endDate
+  endDate,
+  calendarId
 }) => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [calendarData, setCalendarData] = useState<CalendarData | null>(null);
@@ -44,20 +46,28 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
 
   useEffect(() => {
     const fetchCalendarData = async () => {
-      const calendarId =
-        process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_ID || "primary";
-      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_API;
-      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
-        calendarId
-      )}/events?key=${apiKey}`;
+      // Backend will use default calendar ID from env
+      const params = new URLSearchParams({
+        startDate,
+        endDate
+      });
+
+      // Only include calendarId if explicitly provided (for future multi-calendar support)
+      if (calendarId) {
+        params.set('calendarId', calendarId);
+      }
+
+      const url = `/api/v1/calendar/events?${params.toString()}`;
 
       try {
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          const errorData = await response.json();
+          console.error("Calendar API error:", errorData);
+          throw new Error(errorData.error || "Network response was not ok");
         }
-        const data: CalendarData = await response.json();
-        setCalendarData(data);
+        const data = await response.json();
+        setCalendarData({ items: data.events || [] });
       } catch (error) {
         console.error("Fetch error:", error);
       } finally {
@@ -66,7 +76,7 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
     };
 
     fetchCalendarData();
-  }, []);
+  }, [calendarId, startDate, endDate]);
 
   if (loading) {
     return;
@@ -123,7 +133,7 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
 
   return (
     <section className="w-full flex flex-col  mt-20 mb-20">
-      <Heading label={"Schedule"} />
+      <Heading label={"Live Schedule"} />
       <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 ">
         {sortedDates.length === 0 ? (
           <p>No events found for the selected date range.</p>

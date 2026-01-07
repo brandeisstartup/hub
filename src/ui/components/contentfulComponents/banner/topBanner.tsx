@@ -6,6 +6,8 @@ type shortEvent = {
   title: string;
   startDate: string;
   endDate: string;
+  showLiveInfo?: boolean;
+  pitchSummitLiveInfoSheetUrl?: string;
 };
 
 interface TopBannerProps {
@@ -18,6 +20,10 @@ interface TopBannerProps {
 // Function to check if the event is live
 const isEventLive = (event?: shortEvent | null): boolean => {
   if (!event) return false;
+
+  const slug = slugify(event.title, { lower: true });
+  // Force Pitch Summit to be considered live for testing regardless of dates.
+  if (slug === "pitch-summit") return true;
 
   const today = new Date();
   const startDate = new Date(event.startDate);
@@ -35,9 +41,9 @@ const TopBanner = ({
   const [visible, setVisible] = useState(false);
   const [isLiveEvent] = useState(isEventLive(event));
 
-  // ✅ Delay showing the banner by 5 seconds
+  // Show banner after mount
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 5000);
+    const timer = setTimeout(() => setVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
@@ -71,35 +77,33 @@ const TopBanner = ({
           ? "h-auto opacity-100 translate-y-0"
           : "h-0 opacity-0 -translate-y-full"
       }`}>
-      <section className="text-white text-xs md:text-base p-2 flex items-center mx-auto px-4">
-        <div className="flex-col   gap-1 md:flex-row flex items-center md:gap-4 w-full justify-center">
-          <div className="flex flex-row gap-3">
-            {isLiveEvent ? <div>Happening Now!!</div> : <div>{message}</div>}
-            {event && <div className="font-bold">{event.title}</div>}
-          </div>
-          <div className="flex  items-center gap-4">
-            {event && (
-              <>
-                <Link
-                  href={`/events/${slugify(event.title, { lower: true })}`}
-                  className="border text-white px-3 rounded-md font-bold hover:bg-gray-200 hover:text-blue-700 transition">
-                  {linkLabel}
-                </Link>
-                {/* {isLiveEvent && (
-                  <Link
-                    href={`/day-of/${slugify(event.title, { lower: true })}`}
-                    className="border text-white px-3 rounded-md font-bold hover:bg-gray-200 hover:text-blue-700 transition">
-                    Go to Live Page
-                  </Link>
-                )} */}
-              </>
+      <section className="text-white text-xs md:text-base p-3">
+        <div className="mx-auto flex items-center justify-center gap-4 px-4 relative">
+          <div className="flex flex-row items-center gap-6">
+            {event && isLiveEvent ? (
+              <span className="font-semibold text-center">{event.title} — Happening now</span>
+            ) : (
+              <span className="text-center">{message}</span>
             )}
-            <button
-              onClick={dismissBanner}
-              className="border text-white px-3 rounded-md font-bold hover:bg-gray-200 hover:text-blue-700 transition">
-              Dismiss
-            </button>
+            {event && (
+              <Link
+                href={
+                  event.showLiveInfo && isLiveEvent
+                    ? `/events/${slugify(event.title, { lower: true })}#live`
+                    : `/events/${slugify(event.title, { lower: true })}`
+                }
+                className="border text-white px-3 py-1 rounded-md font-bold hover:bg-gray-200 hover:text-blue-700 transition">
+                {event.showLiveInfo && isLiveEvent ? "Go to Live Info" : linkLabel}
+              </Link>
+            )}
           </div>
+
+          <button
+            onClick={dismissBanner}
+            aria-label="Dismiss banner"
+            className="absolute right-4 text-white text-xl font-light hover:opacity-70 transition">
+            ×
+          </button>
         </div>
       </section>
     </div>

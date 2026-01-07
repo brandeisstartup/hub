@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
+const API_KEY = process.env.YOUTUBE_API_KEY;
 const CHANNEL_ID = process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_ID;
 const BASE_URL = "https://www.googleapis.com/youtube/v3/search";
 

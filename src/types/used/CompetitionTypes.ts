@@ -59,11 +59,10 @@ export interface CompetitionFields {
   peopleSectionLabel: string;
   people: Person[];
 
-  showEventResources: boolean;
-  eventResourcesLabel: string;
-  eventResources: EventResource[];
-
-  showBreakoutRooms: boolean;
+  // Live event configuration
+  showLiveInfo: boolean; // when true, event has a live page section
+  liveGoogleCalendarId?: string; // optional per-event calendar override
+  pitchSummitLiveInfoSheetUrl?: string; // optional Google Sheets link for Pitch Summit specifics
 }
 
 export interface FAQ {
