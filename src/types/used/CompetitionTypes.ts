@@ -61,6 +61,7 @@ export interface CompetitionFields {
 
   // Live event configuration
   showLiveInfo: boolean; // when true, event has a live page section
+  liveInfoAlwaysVisible?: boolean; // if true, live info is shown even outside event dates
   liveGoogleCalendarId?: string; // optional per-event calendar override
   pitchSummitLiveInfoSheetUrl?: string; // optional Google Sheets link for Pitch Summit specifics
 }

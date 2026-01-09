@@ -60,6 +60,10 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
 
   // Check if event should have a live info page
   const isEventLive = () => {
+    if (competition.fields.liveInfoAlwaysVisible) {
+      return true;
+    }
+
     const today = new Date();
     const startDate = new Date(competition.fields.startDate);
     const endDate = new Date(competition.fields.endDate);
@@ -103,8 +107,8 @@ export default function DayOfPage({ competition }: Props) {
           <Hero
             heroImage={competition.fields.heroImage.fields.file.url}
             description={competition.fields.description}
-            header={`${competition.fields.title} - Live Info`}
-            primaryLabel="Go to Event Info"
+            header={`Live Info - ${competition.fields.title}`}
+            primaryLabel="Back to Event Info"
             primaryLink={`/events/${eventSlug}`}
             secondaryLabel={competition.fields.heroSecondaryButtonLabel}
             secondaryLink={competition.fields.heroSecondaryButtonLink}
