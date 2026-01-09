@@ -51,9 +51,15 @@ export default async function handler(
   }
 
   try {
+    const params = new URLSearchParams({ key: API_KEY });
+    
+    if (process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_TIMEZONE) {
+      params.set("timeZone", process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_TIMEZONE);
+    }
+
     const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
       effectiveCalendarId
-    )}/events?key=${API_KEY}`;
+    )}/events?${params.toString()}`;
 
     const response = await fetch(url);
 

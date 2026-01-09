@@ -170,14 +170,16 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
                                 event.start.dateTime || event.start.date!
                               ).toLocaleTimeString("en-US", {
                                 hour: "2-digit",
-                                minute: "2-digit"
+                                minute: "2-digit",
+                                timeZone: process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_TIMEZONE
                               })}
                               {" – "}
                               {new Date(
                                 event.end.dateTime || event.end.date!
                               ).toLocaleTimeString("en-US", {
                                 hour: "2-digit",
-                                minute: "2-digit"
+                                minute: "2-digit",
+                                timeZone: process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_TIMEZONE
                               })}
                             </time>
 
