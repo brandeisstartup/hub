@@ -56,6 +56,10 @@ export default function NavBarSearch() {
     [upcomingEvents]
   );
 
+  const thisWeekBannerMessage = thisWeekEvent
+    ? `Happening This Week: ${thisWeekEvent.title}`
+    : "Happening This Week!";
+
   const upcomingLinks = useMemo(() => {
     if (upcomingEvents.length > 0) {
       return upcomingEvents.map((event) => ({
@@ -120,7 +124,7 @@ export default function NavBarSearch() {
       <nav className="fixed left-0 right-0 top-0 z-50">
         {!loading && thisWeekEvent && (
           <TopBanner
-            message="Happening This Week!"
+            message={thisWeekBannerMessage}
             linkLabel="Go to Event"
             event={thisWeekEvent}
           />
