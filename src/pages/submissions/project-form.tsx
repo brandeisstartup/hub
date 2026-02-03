@@ -95,7 +95,7 @@ function BigForm() {
   };
 
   return (
-    <section className="relative flex justify-center items-center py-12">
+    <section className="relative flex justify-center items-center py-12 pt-32">
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}

@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div
       className={`${hind.variable} font-sans grid min-h-screen grid-rows-[auto,1fr,auto] bg-white`}>
       <Nav />
-      <main className={`${merriweather.variable} font-serif z-2 flex flex-col`}>
+      <main className={`${merriweather.variable} font-serif z-2 flex flex-col pt-20`}>
         {children}
       </main>
       <Footer />

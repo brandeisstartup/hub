@@ -243,7 +243,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
         twitterCard="summary_large_image"
       />
       <div className=" w-full ">
-        <div className="max-w-8xl mx-auto p-6 font-sans mt-5">
+        <div className="max-w-8xl mx-auto p-6 font-sans">
           {" "}
           <Breadcrumb items={crumbs} />
         </div>

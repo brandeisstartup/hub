@@ -47,7 +47,7 @@ const highlightLinks = (text: string) => {
 
 const About = ({ title, heading, description }: AboutProps) => {
   return (
-    <section id={title.toLowerCase()} className=" sm:pt-32">
+    <section id={title.toLowerCase()} className="sm:pt-12">
       <div className="mx-auto max-w-8xl px-4 pt-8 md:pt-0">
         <div className="mx-auto max-w-8xl lg:mx-0">
           <Heading label={heading} />

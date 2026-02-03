@@ -2,9 +2,7 @@ import { GetServerSideProps } from "next";
 import client from "@/lib/contentful";
 import { ArticleFields, ArticleSkeleton } from "@/types/article-types";
 import CustomHead from "@/ui/components/seo/head";
-import Breadcrumb, {
-  BreadcrumbItem
-} from "@/ui/components/brandeisBranding/breadcrumbs";
+import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Image from "next/image";
 import slugify from "slugify";
 import Link from "next/link";
@@ -63,29 +61,18 @@ const ArticleCard = ({ article }: { article: ArticleFields }) => {
 };
 
 export default function ArticlesPage({ articles }: ArticlesPageProps) {
-  const crumbs: BreadcrumbItem[] = [
-    { label: "Home", href: "/" },
-    { label: "News", href: "/news" }
-  ];
-
   return (
     <>
       <CustomHead
-        title="News Articles"
+        title="Off-Campus Events"
         description="Explore our latest insights and stories"
-        url="https://www.brandeisstartup.com/articles"
-        image="https://www.brandeisstartup.com/articles"
+        url="https://www.brandeisstartup.com/news"
+        image="https://www.brandeisstartup.com/news"
         siteName="Brandeis Startup"
       />
 
-      <div className="w-full">
-        <div className="max-w-8xl mx-auto p-6 font-sans mt-5">
-          <Breadcrumb items={crumbs} />
-        </div>
-      </div>
-
-      <section className="wrapper max-w-8xl mx-auto px-7 py-12 flex flex-col items-start w-full font-sans">
-        <h1 className="text-4xl mb-10 font-sans">News</h1>
+      <section className="wrapper max-w-8xl mx-auto px-4 md:px-8 py-16 flex flex-col items-start w-full font-sans">
+        <Heading label="Off-Campus Events" />
 
         {articles.length > 0 && (
           <div className="w-full mb-16">

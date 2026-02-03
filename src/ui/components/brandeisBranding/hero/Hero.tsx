@@ -24,7 +24,7 @@ const Hero = ({
 }: HeroProps) => (
   <>
     <section
-      className="relative text-white h-[50vh] md:h-[90vh] w-full bg-cover bg-center font-sans"
+      className="relative text-white h-[40vh] md:h-[70vh] w-full bg-cover bg-center font-sans"
       style={{ backgroundImage: `url(${heroImage})` }}>
       {/* 🔹 Dark Overlay for Readability (Lower z-index) */}
       <div className="absolute inset-0 bg-black bg-opacity-20 z-0"></div>
@@ -60,7 +60,7 @@ const Hero = ({
     </section>
 
     {/* 🔹 Mobile Hero Content (visible on small screens; sits below the hero image) */}
-    <div className="flex flex-col gap-2 md:hidden mt-10 text-black px-4 max-w-3xl font-sans items-start text-left">
+    <div className="flex flex-col gap-2 md:hidden mt-10 mb-10 text-black px-4 max-w-3xl font-sans items-start text-left">
       <h1 className="text-4xl md:text-6xl">{header}</h1>
       {description && (
         <p className="  mt-4 text-lg md:text-2xl">{description}</p>

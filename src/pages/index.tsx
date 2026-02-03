@@ -53,7 +53,7 @@ export default function Home({ homepageContent }: HomePageProps) {
         secondaryLink={homepageContent.heroSecondaryButtonLink}
       />
       <div className="flex justify-center" id="about">
-        <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
+        <div className="wrapper flex w-full justify-center flex-col pt-10 pb-20 px-4 md:px-8 max-w-8xl">
           <Heading
             label={
               "What is the Brandeis Entrepreneurship and Collaboration Hub?"
@@ -85,7 +85,7 @@ export default function Home({ homepageContent }: HomePageProps) {
             <IbsGrid label="Upcoming" href="#programs" data={upcomingEvents} />
           </>
         )}
-      <SimpleImageGrid label={"All Events"} projects={competitions} />
+      <SimpleImageGrid label={"Our Events"} projects={competitions} />
       {homepageContent.showYoutubeVideos && <YouTubePage />}
     </>
   );

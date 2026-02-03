@@ -22,7 +22,7 @@ const SimpleImageGrid = ({ projects, label, extend = false }: Props) => {
 
   return (
     <div className="flex justify-center" id="events">
-      <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 max-w-8xl">
+      <div className="wrapper flex w-full justify-center flex-col pt-20 pb-20 px-4 md:px-8 max-w-8xl">
         <Heading label={label} />
         <div className="grid_container  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full mt-8">
           {projects

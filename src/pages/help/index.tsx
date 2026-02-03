@@ -5,6 +5,7 @@ import CustomHead from "@/ui/components/seo/head";
 import Breadcrumb, {
   BreadcrumbItem
 } from "@/ui/components/brandeisBranding/breadcrumbs";
+import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Image from "next/image";
 import slugify from "slugify";
 import Link from "next/link";
@@ -78,14 +79,8 @@ export default function ArticlesPage({ articles }: ArticlesPageProps) {
         siteName="Brandeis Startup"
       />
 
-      <div className="w-full">
-        <div className="max-w-8xl mx-auto p-6 font-sans mt-5">
-          <Breadcrumb items={crumbs} />
-        </div>
-      </div>
-
-      <section className="wrapper max-w-8xl mx-auto px-7 py-12 flex flex-col items-start w-full font-sans">
-        <h1 className="text-4xl mb-10 font-sans">Help Articles</h1>
+      <section className="wrapper max-w-8xl mx-auto px-4 md:px-8 py-16 flex flex-col items-start w-full font-sans">
+        <Heading label="Help Articles" />
 
         {articles.length > 0 && (
           <div className="w-full mb-16">

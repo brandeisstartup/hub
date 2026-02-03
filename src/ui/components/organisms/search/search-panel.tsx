@@ -1,14 +1,11 @@
 import React from "react";
 import { Disclosure } from "@headlessui/react";
-import Breadcrumb, {
-  BreadcrumbItem
-} from "@/ui/components/brandeisBranding/breadcrumbs";
+import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import ProjectCard from "@/ui/components/organisms/search/search-card";
 
 export type FilterGroup = "Competition" | "Year";
 
 interface SearchLayoutProps {
-  crumbs: BreadcrumbItem[];
   searchTerm: string;
   setSearchTerm: (s: string) => void;
   filterEntries: [FilterGroup, string[]][];
@@ -48,7 +45,6 @@ function SkeletonLoader() {
 }
 
 export default function SearchLayout({
-  crumbs,
   searchTerm,
   setSearchTerm,
   filterEntries,
@@ -60,14 +56,10 @@ export default function SearchLayout({
 }: SearchLayoutProps) {
   return (
     <>
-      <div className="w-full">
-        <div className="max-w-8xl mx-auto p-6 font-sans mt-5">
-          <Breadcrumb items={crumbs} />
-        </div>
-      </div>
+      <div className="max-w-8xl mx-auto px-4 md:px-8 py-16 font-sans">
+        <Heading label="Projects" />
 
-      <div className="max-w-8xl mx-auto p-6 font-sans">
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col md:flex-row gap-8 mt-8">
           {/* Filters Column */}
           <div className="w-full md:w-60">
             <input

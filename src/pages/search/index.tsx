@@ -11,7 +11,6 @@ import { GET_ALL_PROJECTS } from "@/lib/graphql/queries";
 import slugify from "slugify";
 import { useCompetitions } from "@/context/EventContext";
 import { CompetitionFields } from "@/types/used/CompetitionTypes";
-import { BreadcrumbItem } from "@/ui/components/brandeisBranding/breadcrumbs";
 import { formatImageUrl, parseYear } from "@/utils";
 import SearchLayout from "@/ui/components/organisms/search/search-panel";
 
@@ -126,7 +125,6 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
 
   return (
     <SearchLayout
-      crumbs={crumbs}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
       filterEntries={filterEntries}

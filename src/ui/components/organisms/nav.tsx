@@ -82,8 +82,13 @@ export default function NavBarSearch() {
   const dynamicNavigation = useMemo(
     () => [
       {
-        name: "News",
-        href: "/news"
+        name: "Our Events",
+        href: "/#events"
+      },
+      {
+        name: "Upcoming",
+        href: "#upcoming",
+        links: upcomingLinks
       },
       {
         name: "Projects",
@@ -102,15 +107,9 @@ export default function NavBarSearch() {
         ]
       },
       {
-        name: "Upcoming",
-        href: "#upcoming",
-        links: upcomingLinks
+        name: "Off-Campus Events",
+        href: "/news"
       },
-      {
-        name: "Events",
-        href: "/#events"
-      },
-
       {
         name: "Help",
         href: "/help"
@@ -156,9 +155,13 @@ export default function NavBarSearch() {
                         </div>
                       ) : (
                         dynamicNavigation.map((item, index) =>
-                          item.name === "Events" ||
-                            item.name === "News" ||
-                            item.name === "Help" ? (
+                          item.links ? (
+                            <DropDownButton
+                              key={item.name}
+                              title={item.name}
+                              links={item.links}
+                            />
+                          ) : (
                             <div key={index} className="w-full max-w-md">
                               <div className="relative">
                                 <Link
@@ -171,12 +174,6 @@ export default function NavBarSearch() {
                                 </Link>
                               </div>
                             </div>
-                          ) : (
-                            <DropDownButton
-                              key={item.name}
-                              title={item.name}
-                              links={item.links!}
-                            />
                           )
                         )
                       )}
@@ -233,44 +230,48 @@ export default function NavBarSearch() {
                     ))}
                   </div>
                 ) : (
-                  dynamicNavigation.map((item) => (
-                    <div key={item.name}>
-                      {item.name === "Events" ||
-                        item.name === "News" ||
-                        item.name === "Help" ? (
+                  <div className="space-y-2">
+                    {dynamicNavigation.map((item) => (
+                      <div key={item.name} className="py-1">
+                        {item.links ? (
+                          <>
+                            <p className="text-gray-50 text-sm font-medium px-2 py-1">{item.name}</p>
+                            {item.links.map((link) => (
+                              <Disclosure.Button
+                                as={Link}
+                                key={link.href}
+                                href={link.href}
+                                className="block py-1 px-4 text-gray-100 text-sm hover:text-white hover:underline">
+                                {link.name}
+                              </Disclosure.Button>
+                            ))}
+                          </>
+                        ) : (
+                          <Disclosure.Button
+                            as={Link}
+                            href={item.href}
+                            className="block py-1 px-2 text-gray-50 hover:text-white hover:underline text-sm font-medium">
+                            {item.name}
+                          </Disclosure.Button>
+                        )}
+                      </div>
+                    ))}
+                    <SignedOut>
+                      <div className="py-1 border-t border-gray-700 mt-2">
                         <Disclosure.Button
                           as={Link}
-                          href={item.href}
-                          className="block py-2 text-gray-50 hover:underline w-64">
-                          {item.name}
+                          href="/sign-in"
+                          className="block py-1 px-2 text-gray-50 hover:text-white hover:underline text-sm font-bold">
+                          Sign In
                         </Disclosure.Button>
-                      ) : (
-                        <>
-                          <p className="text-lg font-semibold">{item.name}</p>
-                          {item.links!.map((link) => (
-                            <Disclosure.Button
-                              as={Link}
-                              key={link.href}
-                              href={link.href}
-                              className="block py-2 text-gray-50 hover:underline w-64">
-                              {link.name}
-                            </Disclosure.Button>
-                          ))}
-                        </>
-                      )}
-                    </div>
-                  ))
+                      </div>
+                    </SignedOut>
+                  </div>
                 )}
 
                 {loading ? (
                   <div className="h-8 w-32 bg-BrandeisBrandShade opacity-50 animate-pulse rounded-md mt-4" />
-                ) : (
-                  <Link
-                    href="sign-in"
-                    className="text-white text-lg bg-BrandeisBrandShade text-center py-2 rounded-md mt-4">
-                    Sign In
-                  </Link>
-                )}
+                ) : null}
               </Disclosure.Panel>
             </>
           )}

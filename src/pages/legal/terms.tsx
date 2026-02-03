@@ -2,8 +2,8 @@ import React from "react";
 
 const terms = () => {
   return (
-    <div className="flex justify-center items-center flex-col p-10">
-      <div className="max-w-5xl flex flex-col gap-4 font-sans py-5 mt-10">
+    <div className="flex justify-center items-center flex-col p-4 md:p-10 pt-20">
+      <div className="max-w-5xl flex flex-col gap-4 font-sans py-5">
         <div className="max-w-7xl ">
           <h1 className="text-3xl md:text-5xl font-bold mb-2">Brandeis Startup Hub</h1>
           <p>(Part of Brandeis University)</p>

@@ -25,7 +25,7 @@ const IbsGrid = ({
 }: Props) => {
   return (
     <div id={href} className="bg-white flex justify-center font-sans">
-      <div className="wrapper flex flex-col w-full justify-center md:flex-row pt-18 pb-18 px-4 max-w-8xl">
+      <div className="wrapper flex flex-col w-full justify-center md:flex-row pt-18 pb-18 px-4 md:px-8 max-w-8xl">
         <div className="heading w-full flex justify-center md:w-[25%]">
           <Heading label={label} />
         </div>
