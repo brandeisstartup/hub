@@ -21,17 +21,17 @@ const Prizes = ({
 }: Props) => {
   return (
     <section className="bg-white" id="prizes">
-      <div className="mx-auto max-w-8xl px-6 py-24 sm:py-32 lg:px-4 lg:py-16">
+      <div className="mx-auto max-w-8xl py-24 sm:py-32 lg:py-16">
         <div className="mx-auto max-w-8xl">
           <Heading label={label} />
-          <div className="mt-16">
-            <dl className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-10 gap-y-6">
+          <div className="mt-12">
+            <dl className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-8">
               {prizes.map((prize, index) => (
-                <div key={index} className="flex max-w-xs flex-col gap-y-4">
-                  <dt className="text-2xl font-sans leading-7 text-gray-600">
+                <div key={index} className="flex flex-col gap-y-2">
+                  <dt className="text-lg md:text-xl font-sans text-gray-700">
                     {prize.fields.name}
                   </dt>
-                  <dd className="text-9xl sm:text-7xl md:text-8xl  font-sans tracking-tight text-gray-900">
+                  <dd className="text-4xl md:text-5xl lg:text-6xl font-sans font-semibold text-gray-900">
                     {prize.fields.value}
                   </dd>
                 </div>
@@ -39,21 +39,22 @@ const Prizes = ({
             </dl>
           </div>
           {raffleImage && raffleHeading != "" && raffleSubtext != "" && (
-            <div className="mt-16  font-sans">
-              <div className="w-full  flex flex-row border  p-4">
-                <div className="w-30 h-30 p-5">
+            <div className="mt-12 font-sans">
+              <div className="w-full flex items-center gap-4 border rounded-lg p-4">
+                <div className="p-2">
                   <Image
                     src={`https:${raffleImage}`}
-                    width={"200"}
-                    height={"200"}
-                    alt=""
+                    width={128}
+                    height={128}
+                    alt={raffleHeading}
+                    className="rounded-md object-contain"
                   />
                 </div>
-                <div className=" flex flex-col justify-center m-6">
-                  <h3 className="text-2xl sm:text-6xl font-sans ">
+                <div className="flex flex-col justify-center">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-sans ">
                     {raffleHeading}
                   </h3>
-                  <p className="text-red-500 font-sans text-xl sm:text-2xl">
+                  <p className="text-red-500 font-sans text-base md:text-lg">
                     {raffleSubtext}
                   </p>
                 </div>

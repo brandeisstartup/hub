@@ -38,7 +38,7 @@ export default function EditUserPage() {
         twitterCard="summary_large_image"
       />
       <main className="py-24 pt-32">
-        <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
+        <div className="mx-auto max-w-8xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
           {/* Left Column: User Profile Data */}
           <section className="w-full border p-8 h-fit lg:max-h-[90vh] overflow-auto lg:overflow-visible">
             <div className="flex items-center space-x-4">

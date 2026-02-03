@@ -2,9 +2,6 @@ import { GetServerSideProps } from "next";
 import client from "@/lib/contentful";
 import { ArticleFields, ArticleSkeleton } from "@/types/article-types";
 import CustomHead from "@/ui/components/seo/head";
-import Breadcrumb, {
-  BreadcrumbItem
-} from "@/ui/components/brandeisBranding/breadcrumbs";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Image from "next/image";
 import slugify from "slugify";
@@ -64,11 +61,6 @@ const ArticleCard = ({ article }: { article: ArticleFields }) => {
 };
 
 export default function ArticlesPage({ articles }: ArticlesPageProps) {
-  const crumbs: BreadcrumbItem[] = [
-    { label: "Home", href: "/" },
-    { label: "Help Articles", href: "/help" }
-  ];
-
   return (
     <>
       <CustomHead

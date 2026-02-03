@@ -6,14 +6,14 @@ type PrizesListProps = {
 };
 
 const PrizesList = ({ prizes }: PrizesListProps) => (
-  <div className="mt-16">
-    <dl className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-10 gap-y-6">
+  <div className="mt-12">
+    <dl className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-8">
       {prizes.map((prize, index) => (
-        <div key={index} className="flex max-w-xs flex-col gap-y-4">
-          <dt className="text-2xl font-sans leading-7 text-gray-600">
+        <div key={index} className="flex flex-col gap-y-2">
+          <dt className="text-lg md:text-xl font-sans text-gray-700">
             {prize.fields.name}
           </dt>
-          <dd className="text-9xl sm:text-7xl md:text-8xl font-sans tracking-tight text-gray-900">
+          <dd className="text-4xl md:text-5xl lg:text-6xl font-sans font-semibold text-gray-900">
             {prize.fields.value}
           </dd>
         </div>

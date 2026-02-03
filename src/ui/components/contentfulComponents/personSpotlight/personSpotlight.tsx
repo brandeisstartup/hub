@@ -25,7 +25,7 @@ const PersonSpotlight = ({
 }: Props) => {
   return (
     <section className="bg-white font-sans">
-      <div className="mx-auto max-w-8xl px-4">
+      <div className="mx-auto max-w-8xl">
         <div className="mx-auto max-w-2xl lg:mx-0">
           <Heading label={label} />
         </div>

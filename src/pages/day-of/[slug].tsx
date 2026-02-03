@@ -100,7 +100,7 @@ export default function DayOfPage({ competition }: Props) {
         siteName="Brandeis Startup Hub"
         twitterCard="summary_large_image"
       />
-      <main className="bg-white">
+      <div className="bg-white">
         {competition.fields.heroImage &&
         competition.fields.heroImage.fields.file.url != "" &&
         competition.fields.title ? (
@@ -115,36 +115,42 @@ export default function DayOfPage({ competition }: Props) {
             isLive={false}
           />
         ) : (
-          <section className="py-24 sm:pt-32">
-            <div className="mx-auto max-w-8xl px-4">
-              <div className="mx-auto max-w-8xl lg:mx-0">
-                <Heading label={`${competition.fields.title} - Live Info`} />
-                <p className="text-center md:text-left my-6 text-lg leading-8 text-gray-600">
-                  {competition.fields.description}
-                </p>
-              </div>
-              <div className="max-w-[18rem]">
-                <Button
-                  label="Go to Event Info"
-                  color="blue"
-                  href={`/events/${eventSlug}`}></Button>
+          <section className="pt-10 pb-20">
+            <div className="flex justify-center">
+              <div className="wrapper flex w-full justify-center flex-col px-4 md:px-8 max-w-8xl">
+                <div className="mx-auto max-w-8xl lg:mx-0">
+                  <Heading label={`${competition.fields.title} - Live Info`} />
+                  <p className="text-center md:text-left my-6 text-lg leading-8 text-gray-600">
+                    {competition.fields.description}
+                  </p>
+                </div>
+                <div className="max-w-[18rem]">
+                  <Button
+                    label="Go to Event Info"
+                    color="blue"
+                    href={`/events/${eventSlug}`}></Button>
+                </div>
               </div>
             </div>
           </section>
         )}
 
         <section id="live">
-          <CalendarEventsList
-            startDate={competition.fields.startDate}
-            endDate={competition.fields.endDate}
-          />
-          {competition.fields.pitchSummitLiveInfoSheetUrl && (
-            <PitchSummitLiveInfo
-              sheetUrl={competition.fields.pitchSummitLiveInfoSheetUrl}
-            />
-          )}
+          <div className="flex justify-center">
+            <div className="wrapper flex w-full justify-center flex-col pt-10 pb-20 px-4 md:px-8 max-w-8xl">
+              <CalendarEventsList
+                startDate={competition.fields.startDate}
+                endDate={competition.fields.endDate}
+              />
+              {competition.fields.pitchSummitLiveInfoSheetUrl && (
+                <PitchSummitLiveInfo
+                  sheetUrl={competition.fields.pitchSummitLiveInfoSheetUrl}
+                />
+              )}
+            </div>
+          </div>
         </section>
-      </main>
+      </div>
     </>
   );
 }

@@ -21,7 +21,7 @@ import Hero from "@/ui/components/brandeisBranding/hero/Hero";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
 import Button from "@/ui/components/brandeisBranding/buttons/button";
 import CustomHead from "@/ui/components/seo/head";
-import PrizesList from "@/ui/components/brandeisBranding/data-display/prizes/pirzesList";
+import PrizesList from "@/ui/components/brandeisBranding/data-display/prizes/prizesList";
 import Raffle from "@/ui/components/brandeisBranding/data-display/prizes/raffle";
 
 interface LocalCompetitionEntry {
@@ -101,7 +101,7 @@ export default function CompetitionPage({ competition }: Props) {
         siteName="Brandeis Startup Hub"
         twitterCard="summary_large_image"
       />
-      <main className="bg-white">
+      <div className="bg-white">
         {competition.fields.heroImage &&
         competition.fields.heroImage.fields.file.url != "" &&
         competition.fields.title &&
@@ -127,7 +127,7 @@ export default function CompetitionPage({ competition }: Props) {
           />
         ) : (
           <section className="py-24 sm:pt-32">
-            <div className="mx-auto max-w-8xl px-4">
+            <div className="mx-auto max-w-8xl px-4 md:px-8">
               <div className="mx-auto max-w-8xl lg:mx-0">
                 <Heading label={`${competition.fields.title}`} />
                 <p className="text-center md:text-left my-6 text-lg leading-8 text-gray-600">
@@ -153,113 +153,116 @@ export default function CompetitionPage({ competition }: Props) {
           </section>
         )}
 
-        {competition.fields.about && competition.fields.aboutLabel && (
-          <About
-            title="about"
-            heading={competition.fields.aboutLabel}
-            description={competition.fields.about}
-          />
-        )}
-        {competition.fields.introVideoYoutubeId && (
-          <IntroVideo YoutubeId={`${competition.fields.introVideoYoutubeId}`} />
-        )}
-        {competition.fields.requirements && (
-          <Requirements
-            heading={"Requirements"}
-            requirements={competition.fields.requirements}
-          />
-        )}
-        {competition.fields.scheduleEvents &&
-          competition.fields.scheduleLabel != "" && (
-            <Schedule
-              heading={`${competition.fields.scheduleLabel}`}
-              scheduleEvents={competition.fields.scheduleEvents}
+        {/* Content wrapper to match site-wide margins while keeping Hero full-bleed */}
+        <div className="mx-auto max-w-8xl px-4 md:px-8 pt-10">
+          {competition.fields.about && competition.fields.aboutLabel && (
+            <About
+              title="about"
+              heading={competition.fields.aboutLabel}
+              description={competition.fields.about}
             />
           )}
-        {competition.fields.winnersYoutubeGridLabel &&
-          competition.fields.winnersYoutubeGrid &&
-          competition.fields.winnersYoutubeGrid.length >= 1 && (
-            <ResponsiveGrid
-              headingLabel={`${competition.fields.winnersYoutubeGridLabel}`}>
-              {competition.fields.winnersYoutubeGrid.map((item, index) => (
-                <ResponsiveGridItem
-                  key={`${item.fields.youtubeId}-${index}`}
-                  youtubeUrl={item.fields.youtubeId}
-                  overlayText={item.fields.overlayText}
-                  topLabel={item.fields.topLabel}
-                />
-              ))}
-            </ResponsiveGrid>
+          {competition.fields.introVideoYoutubeId && (
+            <IntroVideo YoutubeId={`${competition.fields.introVideoYoutubeId}`} />
           )}
+          {competition.fields.requirements && (
+            <Requirements
+              heading={"Requirements"}
+              requirements={competition.fields.requirements}
+            />
+          )}
+          {competition.fields.scheduleEvents &&
+            competition.fields.scheduleLabel != "" && (
+              <Schedule
+                heading={`${competition.fields.scheduleLabel}`}
+                scheduleEvents={competition.fields.scheduleEvents}
+              />
+            )}
+          {competition.fields.winnersYoutubeGridLabel &&
+            competition.fields.winnersYoutubeGrid &&
+            competition.fields.winnersYoutubeGrid.length >= 1 && (
+              <ResponsiveGrid
+                headingLabel={`${competition.fields.winnersYoutubeGridLabel}`}>
+                {competition.fields.winnersYoutubeGrid.map((item, index) => (
+                  <ResponsiveGridItem
+                    key={`${item.fields.youtubeId}-${index}`}
+                    youtubeUrl={item.fields.youtubeId}
+                    overlayText={item.fields.overlayText}
+                    topLabel={item.fields.topLabel}
+                  />
+                ))}
+              </ResponsiveGrid>
+            )}
 
-        {competition.fields.prizesLabel && competition.fields.prizes && (
-          <section className="bg-white" id="prizes">
-            <div className="mx-auto max-w-8xl px-6 py-24 sm:py-32 lg:px-4 lg:py-16">
-              <div className="mx-auto max-w-8xl">
-                <Heading label={competition.fields.prizesLabel} />
+          {competition.fields.prizesLabel && competition.fields.prizes && (
+            <section className="bg-white" id="prizes">
+              <div className="mx-auto max-w-8xl py-24 sm:py-32 lg:py-16">
+                <div className="mx-auto max-w-8xl">
+                  <Heading label={competition.fields.prizesLabel} />
 
-                {/* prize grid */}
-                <PrizesList prizes={competition.fields.prizes} />
+                  {/* prize grid */}
+                  <PrizesList prizes={competition.fields.prizes} />
 
-                {/* raffle card */}
-                {competition.fields.raffleMainText &&
-                  competition.fields.raffleSubText &&
-                  competition.fields.raffleImage?.fields?.file?.url && (
-                    <Raffle
-                      raffleHeading={competition.fields.raffleMainText}
-                      raffleSubtext={competition.fields.raffleSubText}
-                      raffleImage={
-                        competition.fields.raffleImage.fields.file.url
-                      }
-                    />
-                  )}
+                  {/* raffle card */}
+                  {competition.fields.raffleMainText &&
+                    competition.fields.raffleSubText &&
+                    competition.fields.raffleImage?.fields?.file?.url && (
+                      <Raffle
+                        raffleHeading={competition.fields.raffleMainText}
+                        raffleSubtext={competition.fields.raffleSubText}
+                        raffleImage={
+                          competition.fields.raffleImage.fields.file.url
+                        }
+                      />
+                    )}
+                </div>
               </div>
-            </div>
-          </section>
-        )}
+            </section>
+          )}
 
-        {competition.fields.projects && (
-          <Projects
-            label={"Project Block"}
-            projects={competition.fields.projects}
-            extend={true}
-          />
-        )}
-        {competition.fields.personSpotlightFirstName &&
-          competition.fields.personSpotlightLastName &&
-          competition.fields.personSpotlightImage?.fields?.title &&
-          competition.fields.personSpotlightImage?.fields?.file?.url &&
-          competition.fields.personSpotlightText && (
-            <PersonSpotlight
-              label={competition.fields.personSpotlightLabel}
-              title={competition.fields.personSpotlightImage.fields.title}
-              imageUrl={competition.fields.personSpotlightImage.fields.file.url}
-              personSpotlightText={competition.fields.personSpotlightText}
-              personSpotlightLInk={competition.fields.personSpotlightLInk}
-              firstName={competition.fields.personSpotlightFirstName}
-              lastName={competition.fields.personSpotlightLastName}
-              linkText={competition.fields.personSpotlightLinkText}
+          {competition.fields.projects && (
+            <Projects
+              label={"Project Block"}
+              projects={competition.fields.projects}
+              extend={true}
+            />
+          )}
+          {competition.fields.personSpotlightFirstName &&
+            competition.fields.personSpotlightLastName &&
+            competition.fields.personSpotlightImage?.fields?.title &&
+            competition.fields.personSpotlightImage?.fields?.file?.url &&
+            competition.fields.personSpotlightText && (
+              <PersonSpotlight
+                label={competition.fields.personSpotlightLabel}
+                title={competition.fields.personSpotlightImage.fields.title}
+                imageUrl={competition.fields.personSpotlightImage.fields.file.url}
+                personSpotlightText={competition.fields.personSpotlightText}
+                personSpotlightLInk={competition.fields.personSpotlightLInk}
+                firstName={competition.fields.personSpotlightFirstName}
+                lastName={competition.fields.personSpotlightLastName}
+                linkText={competition.fields.personSpotlightLinkText}
+              />
+            )}
+
+          {competition.fields.people && competition.fields.people.length >= 1 && (
+            <People
+              label={competition.fields.peopleSectionLabel}
+              people={competition.fields.people}
             />
           )}
 
-        {competition.fields.people && competition.fields.people.length >= 1 && (
-          <People
-            label={competition.fields.peopleSectionLabel}
-            people={competition.fields.people}
-          />
-        )}
-
-        {competition.fields.faqs && (
-          <Faq label={"FAQ"} faqs={competition.fields.faqs} />
-        )}
-        {competition.fields.contactInformation && (
-          <ContactInfo
-            label="Get in touch"
-            sectionBlurb={"Contact the organizers for any questions"}
-            contacts={competition.fields.contactInformation}
-          />
-        )}
-      </main>
+          {competition.fields.faqs && (
+            <Faq label={"FAQ"} faqs={competition.fields.faqs} />
+          )}
+          {competition.fields.contactInformation && (
+            <ContactInfo
+              label="Get in touch"
+              sectionBlurb={"Contact the organizers for any questions"}
+              contacts={competition.fields.contactInformation}
+            />
+          )}
+        </div>
+      </div>
     </>
   );
 }

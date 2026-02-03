@@ -127,8 +127,8 @@ const CalendarEventsList: React.FC<CalendarEventsListProps> = ({
   };
 
   return (
-    <section className="w-full mt-20 mb-20 px-4 font-sans">
-      <div className="mx-auto max-w-8xl w-full">
+    <section className="w-full font-sans">
+      <div className="w-full">
         <Heading label="Live Schedule" />
         <p className="text-gray-500 mb-6 text-xs font-sans">
           Last updated: {currentDateTime.toLocaleTimeString()}

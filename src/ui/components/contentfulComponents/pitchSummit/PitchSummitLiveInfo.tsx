@@ -27,11 +27,11 @@ const PitchSummitLiveInfo: React.FC<PitchSummitLiveInfoProps> = ({ sheetUrl }) =
   const { groups = [], coordinators = [], judges = [] } = data || {};
 
   return (
-    <main className="bg-white px-4 font-sans">
+    <main className="bg-white font-sans">
       {/* Groups Section */}
       {groups.length > 0 && (
         <section id="groups" className="mb-20">
-          <div className="mx-auto max-w-8xl w-full">
+          <div className="w-full">
             <Heading label="Groups" />
             <p className="text-gray-500 mb-6 text-xs font-sans">
               Last updated: {new Date().toLocaleTimeString()}
@@ -133,7 +133,7 @@ const PitchSummitLiveInfo: React.FC<PitchSummitLiveInfoProps> = ({ sheetUrl }) =
       {/* Coordinators Section */}
       {coordinators.length > 0 && (
         <section id="coordinators" className="mb-20">
-          <div className="mx-auto max-w-8xl w-full">
+          <div className="w-full">
             <Heading label="Coordinator Schedules" />
 
             <ul className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
@@ -169,7 +169,7 @@ const PitchSummitLiveInfo: React.FC<PitchSummitLiveInfoProps> = ({ sheetUrl }) =
       {/* Judges Section */}
       {judges.length > 0 && (
         <section id="judges" className="mb-20">
-          <div className="mx-auto max-w-8xl w-full">
+          <div className="w-full">
             <Heading label="Judge Schedules" />
 
             <ul className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

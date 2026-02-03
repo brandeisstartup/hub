@@ -8,19 +8,20 @@ type RaffleProps = {
 };
 
 const Raffle = ({ raffleHeading, raffleSubtext, raffleImage }: RaffleProps) => (
-  <div className="mt-16 font-sans">
-    <div className="w-full flex flex-row border p-4">
-      <div className="w-30 h-30 p-5">
+  <div className="mt-12 font-sans">
+    <div className="w-full flex items-center gap-4 border rounded-lg p-4">
+      <div className="p-2">
         <Image
           src={`https:${raffleImage}`}
-          width={200}
-          height={200}
+          width={128}
+          height={128}
           alt={raffleHeading}
+          className="rounded-md object-contain"
         />
       </div>
-      <div className="flex flex-col justify-center m-6">
-        <h3 className="text-2xl sm:text-6xl font-sans">{raffleHeading}</h3>
-        <p className="text-red-500 font-sans text-xl sm:text-2xl">
+      <div className="flex flex-col justify-center">
+        <h3 className="text-xl md:text-2xl lg:text-3xl font-sans">{raffleHeading}</h3>
+        <p className="text-red-500 font-sans text-base md:text-lg">
           {raffleSubtext}
         </p>
       </div>

@@ -11,7 +11,7 @@ type Props = {
 const People = ({ label, people }: Props) => {
   return (
     <section className="bg-white py-24 px- sm:py-32">
-      <div className="mx-auto max-w-8xl px-4">
+      <div className="mx-auto max-w-8xl">
         <Heading label={label} />
         <ul
           role="list"

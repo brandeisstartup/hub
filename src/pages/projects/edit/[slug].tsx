@@ -167,7 +167,7 @@ export default function ProjectPage({ project, userEmail }: ServerSideProps) {
 
   return (
     <main className="py-24">
-      <div className="mx-auto max-w-8xl px-4 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
+      <div className="mx-auto max-w-8xl px-4 md:px-8 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
         {/* Left Column */}
         <section
           id="fixed"
