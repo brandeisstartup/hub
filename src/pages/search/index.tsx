@@ -58,11 +58,6 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     );
   }, [searchTerm, selectedFilters]);
 
-  const crumbs: BreadcrumbItem[] = [
-    { label: "Home", href: "/" },
-    { label: "Projects" }
-  ];
-
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
