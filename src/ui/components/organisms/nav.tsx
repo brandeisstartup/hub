@@ -91,7 +91,7 @@ export default function NavBarSearch() {
         links: upcomingLinks
       },
       {
-        name: "Projects",
+        name: "Student Startups",
         href: "/",
         links: [
           {
