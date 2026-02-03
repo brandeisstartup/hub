@@ -137,7 +137,7 @@ export default function DayOfPage({ competition }: Props) {
 
         <section id="live">
           <div className="flex justify-center">
-            <div className="wrapper flex w-full justify-center flex-col pt-10 pb-20 px-4 md:px-8 max-w-8xl">
+            <div className="wrapper flex w-full justify-center flex-col space-y-16 pt-10 pb-20 px-4 md:px-8 max-w-8xl">
               <CalendarEventsList
                 startDate={competition.fields.startDate}
                 endDate={competition.fields.endDate}
