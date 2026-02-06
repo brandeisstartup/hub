@@ -23,6 +23,16 @@ const ArticleCard = ({ article }: { article: ArticleFields }) => {
     }).format(date);
   };
 
+  const isNew = (dateString?: string | null, windowDays = 30) => {
+    if (!dateString) return false;
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return false;
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+    return diffDays >= 0 && diffDays <= windowDays;
+  };
+
   return (
     <Link
       className="bg-white shadow rounded-sm overflow-hidden flex flex-col"
@@ -42,7 +52,14 @@ const ArticleCard = ({ article }: { article: ArticleFields }) => {
       )}
 
       <div className="p-4 flex flex-col justify-between flex-1">
-        <h2 className="text-xl font-medium mb-2">{article.title}</h2>
+        <div className="flex items-center gap-2 mb-2">
+          <h2 className="text-xl font-medium">{article.title}</h2>
+          {isNew(article.publishedDate) && (
+            <span className="text-xs font-semibold uppercase tracking-wide bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+              New
+            </span>
+          )}
+        </div>
 
         {formatDate(article.publishedDate) && (
           <div className="text-sm text-gray-500 mb-4">
