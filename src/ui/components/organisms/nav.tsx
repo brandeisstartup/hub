@@ -1,11 +1,10 @@
 "use client";
 
 import { useCompetitions } from "@/context/EventContext";
-import { useMergedUser } from "@/context/UserContext";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import { SignInButton, SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 
 import Logo from "@/ui/components/molecules/logo/logo";
@@ -45,11 +44,6 @@ function SignOutButton() {
 
 export default function NavBarSearch() {
   const { upcomingEvents, loading } = useCompetitions();
-  const { user: mergedUser } = useMergedUser();
-
-  useEffect(() => {
-    console.log("Merged User Info:", mergedUser);
-  }, [mergedUser]);
 
   const thisWeekEvent = useMemo(
     () => findUpcomingEvent(upcomingEvents, 7),

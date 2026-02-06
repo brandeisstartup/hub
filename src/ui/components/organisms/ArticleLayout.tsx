@@ -48,6 +48,17 @@ export default function ArticleLayout({ article }: ArticleLayoutProps) {
   const slug = slugify(article.title, { lower: true, strict: true });
   const imageUrl = `https:${article.thumbnail.fields.file.url}`;
 
+  const formatDate = (dateString?: string | null) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return null; // Invalid date
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(date);
+  };
+
   return (
     <>
       <Head>
@@ -73,7 +84,7 @@ export default function ArticleLayout({ article }: ArticleLayoutProps) {
           <Heading label={article.title} />
         </div>
 
-        {article.authors && article.authors.length > 0 && (
+        {article.authors && article.authors.length > 0 ? (
           <div className="mb-12 w-full max-w-2xl">
             <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
               <span className="font-medium">By</span>
@@ -93,8 +104,22 @@ export default function ArticleLayout({ article }: ArticleLayoutProps) {
                   </span>
                 </div>
               ))}
+              {article.publishedDate && (
+                <>
+                  <span>•</span>
+                  <span>{formatDate(article.publishedDate)}</span>
+                </>
+              )}
             </div>
           </div>
+        ) : (
+          article.publishedDate && (
+            <div className="mb-12 w-full max-w-2xl">
+              <div className="text-sm text-gray-600">
+                {formatDate(article.publishedDate)}
+              </div>
+            </div>
+          )
         )}
 
         <div className="w-full max-w-2xl mb-10">

@@ -12,6 +12,17 @@ type ArticlesPageProps = {
 };
 
 const ArticleCard = ({ article }: { article: ArticleFields }) => {
+  const formatDate = (dateString?: string | null) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return null; // Invalid date
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    }).format(date);
+  };
+
   return (
     <Link
       className="bg-white shadow rounded-sm overflow-hidden flex flex-col"
@@ -32,6 +43,12 @@ const ArticleCard = ({ article }: { article: ArticleFields }) => {
 
       <div className="p-4 flex flex-col justify-between flex-1">
         <h2 className="text-xl font-medium mb-2">{article.title}</h2>
+
+        {formatDate(article.publishedDate) && (
+          <div className="text-sm text-gray-500 mb-4">
+            {formatDate(article.publishedDate)}
+          </div>
+        )}
 
         {article.authors && article.authors.length > 0 && (
           <div className="flex flex-wrap gap-3 mt-auto">
@@ -96,7 +113,10 @@ export const getServerSideProps: GetServerSideProps<
       content_type: "articles"
     });
     const articles = res.items
-      .map((item) => item.fields)
+      .map((item) => ({
+        ...item.fields,
+        publishedDate: item.sys.updatedAt || item.sys.createdAt || null
+      }))
       .filter((a) => a.type === "Help");
 
     return { props: { articles } };

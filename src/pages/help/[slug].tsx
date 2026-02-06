@@ -32,6 +32,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const response = await client.getEntries<ArticleSkeleton>({
     content_type: "articles",
     select: [
+      "sys.updatedAt",
+      "sys.createdAt",
       "fields.title",
       "fields.content",
       "fields.thumbnail",
@@ -48,7 +50,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!entry) return { notFound: true };
 
   return {
-    props: { article: entry.fields }
+    props: {
+      article: {
+        ...entry.fields,
+        publishedDate: entry.sys?.updatedAt || entry.sys?.createdAt || null
+      }
+    },
+    revalidate: 60
   };
 };
 

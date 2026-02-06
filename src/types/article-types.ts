@@ -43,6 +43,7 @@ export interface ArticleFields {
   thumbnail: ImageFile;
   authors: ContentfulUser[];
   type: string;
+  publishedDate?: string | null;
 }
 
 // full skeleton for both paths & props
@@ -56,6 +57,7 @@ export interface ArticleFields {
   thumbnail: ImageFile;
   authors: ContentfulUser[];
   content: Document;
+  publishedDate?: string | null;
 }
 export interface AuthorContentFields {
   firstName: string;
