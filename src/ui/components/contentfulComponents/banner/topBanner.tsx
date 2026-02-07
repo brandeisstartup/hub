@@ -22,8 +22,13 @@ const isEventLive = (event?: shortEvent | null): boolean => {
   if (!event) return false;
 
   const today = new Date();
-  const startDate = new Date(event.startDate);
-  const endDate = new Date(event.endDate);
+  
+  // Parse dates in the configured timezone
+  const startDateStr = event.startDate.split('T')[0];
+  const endDateStr = event.endDate.split('T')[0];
+  
+  const startDate = new Date(startDateStr + 'T00:00:00');
+  const endDate = new Date(endDateStr + 'T23:59:59.999');
 
   return today >= startDate && today <= endDate;
 };
@@ -68,12 +73,12 @@ const TopBanner = ({
 
   return (
     <div
-      className={`bg-BrandeisBrandShade overflow-hidden transition-all duration-700 ${
+      className={`bg-BrandeisBrandShade overflow-hidden transition-all duration-700 block ${
         visible
           ? "h-auto opacity-100 translate-y-0"
           : "h-0 opacity-0 -translate-y-full"
       }`}>
-      <section className="text-white text-xs md:text-base p-3">
+      <section className="text-white text-xs md:text-base p-3 m-0">
         <div className="mx-auto flex items-center justify-center gap-4 px-4 relative">
           <div className="flex flex-row items-center gap-6">
             {event && isLiveEvent ? (

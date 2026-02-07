@@ -18,14 +18,22 @@ const findUpcomingEvent = (
   daysAhead = 7
 ) => {
   const today = new Date();
+  
   return (
     events.find((event) => {
-      const startDate = new Date(event.startDate);
-      const endDate = new Date(event.endDate);
+      // Parse dates in the configured timezone
+      const startDateStr = event.startDate.split('T')[0];
+      const endDateStr = event.endDate.split('T')[0];
+      
+      // Create dates at midnight and end of day in the target timezone
+      const startDate = new Date(startDateStr + 'T00:00:00');
+      const endDate = new Date(endDateStr + 'T23:59:59.999');
+      
       const daysUntilStart =
         (startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
       const daysUntilEnd =
         (endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+      
       return daysUntilEnd >= 0 && daysUntilStart < daysAhead;
     }) || null
   );

@@ -84,8 +84,14 @@ export default function CompetitionPage({ competition }: Props) {
   
   const isEventLive = () => {
     const today = new Date();
-    const startDate = new Date(competition.fields.startDate);
-    const endDate = new Date(competition.fields.endDate);
+    
+    // Parse dates in the configured timezone
+    const startDateStr = competition.fields.startDate.split('T')[0];
+    const endDateStr = competition.fields.endDate.split('T')[0];
+    
+    const startDate = new Date(startDateStr + 'T00:00:00');
+    const endDate = new Date(endDateStr + 'T23:59:59.999');
+    
     return today >= startDate && today <= endDate;
   };
 

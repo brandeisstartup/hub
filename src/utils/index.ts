@@ -4,7 +4,7 @@ export const formatDate = (dateString: string) => {
     month: "long",
     day: "numeric",
     year: "numeric",
-    timeZone: "UTC"
+    timeZone: process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_TIMEZONE || "UTC"
   }).format(new Date(dateString));
 };
 
