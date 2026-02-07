@@ -1,11 +1,17 @@
 export const formatDate = (dateString: string) => {
+  // Parse the date string directly (e.g., "2026-02-07" or "2026-02-07T...")
+  const datePart = dateString.split('T')[0]; // Get just the date part
+  const [year, month, day] = datePart.split('-').map(Number);
+  
+  // Create date using local timezone interpretation
+  const date = new Date(year, month - 1, day);
+  
   return new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
-    year: "numeric",
-    timeZone: process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_TIMEZONE || "UTC"
-  }).format(new Date(dateString));
+    year: "numeric"
+  }).format(date);
 };
 
 export function formatImageUrl(url: string): string {

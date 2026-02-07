@@ -59,11 +59,13 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
         const filteredUpcoming = data.filter((comp) => {
           if (!comp.startDate) return false; // If no start date, ignore
 
-          const eventStart = new Date(comp.startDate);
-          eventStart.setHours(0, 0, 0, 0); // Ensure only date comparison
-
-          const eventEnd = comp.endDate ? new Date(comp.endDate) : null;
-          if (eventEnd) eventEnd.setHours(23, 59, 59, 999); // Ensure end date is included till the end of the day
+          // Parse dates as local dates, not UTC
+          const startDateStr = comp.startDate.split('T')[0];
+          const eventStart = new Date(startDateStr + 'T00:00:00');
+          
+          const eventEnd = comp.endDate 
+            ? new Date(comp.endDate.split('T')[0] + 'T23:59:59.999')
+            : null;
 
           return (
             (eventStart >= currentDate && eventStart <= threeMonthsLater) || // Future events within 3 months
