@@ -74,7 +74,7 @@ export default function NavBarSearch() {
     }
     return [
       {
-        name: "No upcoming events in the next three months. Please view Events for more",
+        name: "No upcoming events in the next three months.",
         description: "",
         href: "/#events"
       }

@@ -23,7 +23,7 @@ const ArticleCard = ({ article }: { article: ArticleFields }) => {
     }).format(date);
   };
 
-  const isNew = (dateString?: string | null, windowDays = 30) => {
+  const isNew = (dateString?: string | null, windowDays = 21) => {
     if (!dateString) return false;
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return false;
