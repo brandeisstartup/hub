@@ -24,18 +24,103 @@ const PitchSummitLiveInfo: React.FC<PitchSummitLiveInfoProps> = ({ sheetUrl }) =
     return null;
   }
 
-  const { groups = [], coordinators = [], judges = [] } = data || {};
+  const { groups = [], coordinators = [], judges = [], deisHacks = [] } = data || {};
 
   return (
     <main className="bg-white font-sans">
+      {/* DEISHacks Awardees Section */}
+      {deisHacks.length > 0 && (
+        <section id="deishacks-awardees" className="mb-20">
+          <div className="w-full">
+            <Heading label="DEISHacks Asper Choice Awardees" />
+        
+            <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+              {deisHacks.map((awardee, index) => {
+                const links = (awardee.links || []).filter(Boolean);
+
+                const getLinkLabel = (link: string, linkIndex: number) => {
+                  try {
+                    const url = new URL(link);
+                    return url.hostname.replace(/^www\./, "");
+                  } catch {
+                    return `Link ${linkIndex + 1}`;
+                  }
+                };
+
+                return (
+                  <li key={index}>
+                    <Card>
+                      <div className="flex">
+                        <div
+                          className="w-3 rounded-l-lg bg-indigo-600"
+                          aria-hidden
+                        />
+
+                        <div className="p-4 flex-1 space-y-4 font-sans">
+                          <div className="space-y-2">
+                            <h3 className="text-base font-semibold text-gray-900 font-sans">
+                              {awardee.project}
+                            </h3>
+
+                            {links.length > 0 && (
+                              <div className="flex flex-wrap gap-2">
+                                {links.map((link: string, linkIndex: number) => (
+                                  <a
+                                    key={link + linkIndex}
+                                    href={link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-medium text-blue-700 hover:bg-blue-100"
+                                  >
+                                    {getLinkLabel(link, linkIndex)}
+                                  </a>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {awardee.members.length > 0 && (
+                          <div className="border-t pt-3 font-sans">
+                            <p className="text-xs font-semibold text-gray-700 mb-1 font-sans">
+                              Team
+                            </p>
+                            <ul className="space-y-1">
+                              {awardee.members.map((member, memberIndex) => {
+                                const email = awardee.emails?.[memberIndex];
+
+                                return (
+                                  <li
+                                    key={`${member}-${memberIndex}`}
+                                    className="text-xs text-gray-700 font-sans"
+                                  >
+                                    <p className="font-medium font-sans">{member}</p>
+                                    {email && (
+                                      <p className="text-[11px] text-gray-500 break-all font-sans">
+                                        {email}
+                                      </p>
+                                    )}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* Groups Section */}
       {groups.length > 0 && (
         <section id="groups" className="mb-20">
           <div className="w-full">
             <Heading label="Groups" />
-            <p className="text-gray-500 mb-6 text-xs font-sans">
-              Last updated: {new Date().toLocaleTimeString()}
-            </p>
 
             <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
               {groups.map((group, index) => (

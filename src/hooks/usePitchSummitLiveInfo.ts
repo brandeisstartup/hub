@@ -29,10 +29,18 @@ export interface JudgeInfo {
   time: string;
 }
 
+export interface DEISHacksAwardee {
+  project: string;
+  links: string[];
+  members: string[];
+  emails: string[];
+}
+
 export interface PitchSummitLiveData {
   groups: GroupInfo[];
   coordinators: CoordinatorInfo[];
   judges: JudgeInfo[];
+  deisHacks: DEISHacksAwardee[];
 }
 
 /**
@@ -64,7 +72,7 @@ const getBackgroundColor = (groupName: string): string => {
 };
 
 /**
- * Parse CSV data from Google Sheets and extract groups, coordinators, and judges
+ * Parse CSV data from Google Sheets and extract groups, coordinators, judges, and DEIS Hacks awardees
  * Handles Google Sheets format with empty rows and section headers
  */
 const parsePitchSummitData = (csv: string): PitchSummitLiveData => {
@@ -72,6 +80,7 @@ const parsePitchSummitData = (csv: string): PitchSummitLiveData => {
   const groups: GroupInfo[] = [];
   const coordinators: CoordinatorInfo[] = [];
   const judges: JudgeInfo[] = [];
+  const deisHacks: DEISHacksAwardee[] = [];
 
   let i = 0;
 
@@ -87,12 +96,15 @@ const parsePitchSummitData = (csv: string): PitchSummitLiveData => {
     } else if (firstValue === "judges") {
       i = skipEmptyRowsAndHeader(lines, i);
       i = parseJudgesSection(lines, i, judges);
+    } else if (firstValue === "deishacks awardees") {
+      i = skipEmptyRowsAndHeader(lines, i);
+      i = parseDEISHacksSection(lines, i, deisHacks);
     } else {
       i++;
     }
   }
 
-  return { groups, coordinators, judges };
+  return { groups, coordinators, judges, deisHacks };
 };
 
 /**
@@ -239,6 +251,37 @@ const parseJudgesSection = (
       judge: values[0],
       judgeRoom: values[1] || "",
       time: values[2] || ""
+    });
+
+    i++;
+  }
+
+  return i;
+};
+
+/**
+ * Parse DEIS Hacks awardees section
+ */
+const parseDEISHacksSection = (
+  lines: string[],
+  startIndex: number,
+  deisHacks: DEISHacksAwardee[]
+): number => {
+  let i = startIndex;
+
+  while (i < lines.length) {
+    const values = parseCSVLine(lines[i]);
+
+    // Stop at empty row or new section
+    if (!values[0]) {
+      break;
+    }
+
+    deisHacks.push({
+      project: values[0],
+      links: values[1] ? values[1].split(";").map((l) => l.trim()).filter(Boolean) : [],
+      members: values[2] ? values[2].split(";").map((m) => m.trim()).filter(Boolean) : [],
+      emails: values[3] ? values[3].split(";").map((e) => e.trim()).filter(Boolean) : []
     });
 
     i++;
