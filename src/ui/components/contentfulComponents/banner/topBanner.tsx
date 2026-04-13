@@ -163,28 +163,40 @@ const TopBanner = ({
       }`}>
       <section className="text-white text-xs md:text-base p-3 m-0">
         <div className="mx-auto flex items-center justify-center gap-4 px-4 relative">
-          <div className="flex flex-row items-center gap-3 md:gap-6">
-            <div className="flex flex-col items-center text-center">
-              <span className="font-semibold text-xs md:text-base">
-                {currentEvent.title}
-                {currentEventIsLive ? " - Happening now" : ""}
-              </span>
-              <span className="text-[11px] md:text-sm opacity-90">
-                {currentEventDateLabel}
-              </span>
-            </div>
+          <div className="flex flex-row items-center gap-6">
+            <div className="flex items-center justify-center gap-3 md:gap-6">
+              <div className="flex flex-col items-center text-center">
+                <Link
+                  href={
+                    currentEvent.showLiveInfo && currentEventIsLive
+                      ? `/day-of/${slugify(currentEvent.title, { lower: true })}`
+                      : `/events/${slugify(currentEvent.title, { lower: true })}`
+                  }
+                  className="font-semibold text-xs underline underline-offset-2 hover:opacity-90 transition md:hidden">
+                  {currentEvent.title}
+                  {currentEventIsLive ? " - Happening now" : ""}
+                </Link>
+                <span className="hidden md:inline font-semibold md:text-base">
+                  {currentEvent.title}
+                  {currentEventIsLive ? " - Happening now" : ""}
+                </span>
+                <span className="text-[11px] md:text-sm opacity-90">
+                  {currentEventDateLabel}
+                </span>
+              </div>
 
-            <Link
-              href={
-                currentEvent.showLiveInfo && currentEventIsLive
-                  ? `/day-of/${slugify(currentEvent.title, { lower: true })}`
-                  : `/events/${slugify(currentEvent.title, { lower: true })}`
-              }
-              className="border text-white px-3 py-1 rounded-md font-bold hover:bg-gray-200 hover:text-blue-700 transition">
-              {currentEvent.showLiveInfo && currentEventIsLive
-                ? "Go to Live Info"
-                : linkLabel}
-            </Link>
+              <Link
+                href={
+                  currentEvent.showLiveInfo && currentEventIsLive
+                    ? `/day-of/${slugify(currentEvent.title, { lower: true })}`
+                    : `/events/${slugify(currentEvent.title, { lower: true })}`
+                }
+                className="hidden md:inline-flex md:no-underline md:border md:px-3 md:py-1 md:rounded-md md:text-white md:font-bold md:hover:bg-gray-200 md:hover:text-blue-700 transition">
+                {currentEvent.showLiveInfo && currentEventIsLive
+                  ? "Go to Live Info"
+                  : linkLabel}
+              </Link>
+            </div>
 
             {showEventControls && (
               <div className="flex items-center gap-2" aria-live="polite">
