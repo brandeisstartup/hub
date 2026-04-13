@@ -4,7 +4,7 @@ import slugify from "slugify";
 
 import { CompetitionFields } from "@/types/used/CompetitionTypes";
 import Heading from "../../headings/heading";
-import { formatDate } from "@/utils";
+import { formatEventDateDisplay } from "@/utils";
 
 type Props = {
   label: string;
@@ -35,10 +35,10 @@ const IbsGrid = ({
               <div className="flex flex-col h-full gap-3">
                 <aside>
                   <dl>
-                    <dt className="sr-only">Start Date</dt>
-                    <dd aria-label="Start Date">
+                    <dt className="sr-only">Event Date</dt>
+                    <dd aria-label="Event Date">
                       <span className="text-md font-bold text-white bg-IBSbrand px-2 py-1 font-sans">
-                        {formatDate(program.startDate)}
+                        {formatEventDateDisplay(program.startDate, program.endDate)}
                       </span>
                     </dd>
                   </dl>

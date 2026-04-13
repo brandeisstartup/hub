@@ -9,9 +9,10 @@ type Props = {
   color?: string;
   href?: string; // ✅ Accept `href` prop for navigation
   onClick?: () => void; // ✅ Allow custom onClick handler
+  openInNewTab?: boolean;
 };
 
-const Button = ({ label, color, href, onClick }: Props) => {
+const Button = ({ label, color, href, onClick, openInNewTab = false }: Props) => {
   // Determine the background class based on the color prop
   const bgClass = color === "blue" ? "bg-BrandeisBrand" : "bg-IBSbrand";
 
@@ -26,7 +27,11 @@ const Button = ({ label, color, href, onClick }: Props) => {
 
   return href ? (
     // ✅ Use `Link` for navigation if `href` is present
-    <Link href={href} className="w-full max-w-[18rem]">
+    <Link
+      href={href}
+      className="w-full max-w-[18rem]"
+      target={openInNewTab ? "_blank" : undefined}
+      rel={openInNewTab ? "noopener noreferrer" : undefined}>
       {buttonContent}
     </Link>
   ) : (

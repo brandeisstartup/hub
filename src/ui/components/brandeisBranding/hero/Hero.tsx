@@ -21,7 +21,8 @@ const Hero = ({
   secondaryLabel,
   secondaryLink,
   isLive = false
-}: HeroProps) => (
+}: HeroProps) => {
+  return (
   <>
     <section
       className="relative text-white h-[65vh] md:h-auto md:min-h-[70vh] w-full bg-cover bg-center font-sans flex flex-col"
@@ -30,7 +31,7 @@ const Hero = ({
       <div className="absolute inset-0 bg-black bg-opacity-20 z-0"></div>
 
       {/* 🔹 Desktop/Tablet Hero Content positioned at bottom; hidden on small screens */}
-      <div className="hidden md:relative z-10 w-full pl-4 md:pl-12 pt-40 pb-8 md:pb-16 md:flex md:flex-col md:items-start md:text-left text-white mt-auto">
+      <div className="hidden md:relative z-10 w-full pl-4 md:pl-12 pt-44 pb-8 md:pb-16 md:flex md:flex-col md:items-start md:text-left text-white mt-auto">
         <div>
           <h1 className="text-4xl md:text-7xl [text-shadow:_2px_2px_2px_rgb(0_0_0_/_90%)] font-sans">
             {header}
@@ -49,7 +50,12 @@ const Hero = ({
         ) : (
           <div className="mt-4 flex flex-row gap-2">
             {primaryLabel && primaryLink && (
-              <Button label={primaryLabel} href={primaryLink} color="green" />
+              <Button
+                label={primaryLabel}
+                href={primaryLink}
+                color="green"
+                openInNewTab
+              />
             )}
             {secondaryLabel && secondaryLink && (
               <Button label={secondaryLabel} href={secondaryLink} color="blue" />
@@ -72,7 +78,12 @@ const Hero = ({
       ) : (
         <div className="flex flex-col gap-2">
           {primaryLabel && primaryLink && (
-            <Button label={primaryLabel} href={primaryLink} color="green" />
+            <Button
+              label={primaryLabel}
+              href={primaryLink}
+              color="green"
+              openInNewTab
+            />
           )}
           {secondaryLabel && secondaryLink && (
             <Button label={secondaryLabel} href={secondaryLink} color="blue" />
@@ -81,6 +92,7 @@ const Hero = ({
       )}
     </div>
   </>
-);
+  );
+};
 
 export default Hero;

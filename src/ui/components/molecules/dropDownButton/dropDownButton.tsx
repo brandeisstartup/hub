@@ -6,8 +6,7 @@ type LinkItem = {
   name: string;
   href: string;
   description?: string;
-  startDate?: string;
-  endDate?: string;
+  dateLabel?: string;
 };
 
 type Props = {
@@ -50,9 +49,9 @@ export default function DropDownButton(props: Props) {
                         <p className="text-lg font-bold text-BrandeisBrand break-words">
                           {item.name}
                         </p>
-                        {item.startDate && item.endDate ? (
+                        {item.dateLabel ? (
                           <p className="text-md text-gray-500 break-words">
-                            {item.startDate} - {item.endDate}
+                            {item.dateLabel}
                           </p>
                         ) : (
                           <p className="text-md text-gray-500 break-words">

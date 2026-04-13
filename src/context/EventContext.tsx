@@ -10,10 +10,12 @@ import {
   CompetitionSkeleton,
   CompetitionFields
 } from "@/types/used/CompetitionTypes";
+import { parseLocalEndDate, parseLocalStartDate } from "@/utils";
 
 type CompetitionContextType = {
   competitions: CompetitionFields[]; // All competitions
-  upcomingEvents: CompetitionFields[]; // Only events in the next 3 months
+  upcomingEvents: CompetitionFields[]; // Future-only events in the next 3 months
+  thisWeekEvents: CompetitionFields[]; // Active now or starting in the next 7 days
   loading: boolean;
 };
 
@@ -22,9 +24,12 @@ const CompetitionContext = createContext<CompetitionContextType | undefined>(
 );
 
 const sortByStartDate = (data: CompetitionFields[]) => {
-  return data.sort(
-    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-  );
+  return [...data].sort((a, b) => {
+    const startDiff =
+      new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    if (startDiff !== 0) return startDiff;
+    return a.title.localeCompare(b.title);
+  });
 };
 
 const sortByTitle = (data: CompetitionFields[]) => {
@@ -34,6 +39,7 @@ const sortByTitle = (data: CompetitionFields[]) => {
 export function CompetitionProvider({ children }: { children: ReactNode }) {
   const [competitions, setCompetitions] = useState<CompetitionFields[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<CompetitionFields[]>([]);
+  const [thisWeekEvents, setThisWeekEvents] = useState<CompetitionFields[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -48,32 +54,47 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
         const data = sortByTitle(formattedCompetitions);
         setCompetitions(data);
 
-        // Compute upcoming events (start date in the next 3 months OR ongoing events)
+        // Compute upcoming events and this-week/active banner events.
         const currentDate = new Date();
-        currentDate.setHours(0, 0, 0, 0); // Reset to start of the day
+        const currentDateStart = new Date(currentDate);
+        currentDateStart.setHours(0, 0, 0, 0);
+
+        const currentDateEnd = new Date(currentDate);
+        currentDateEnd.setHours(23, 59, 59, 999);
 
         const threeMonthsLater = new Date();
         threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
-        threeMonthsLater.setHours(23, 59, 59, 999); // Set to end of the day
+        threeMonthsLater.setHours(23, 59, 59, 999);
 
-        const filteredUpcoming = data.filter((comp) => {
+        const sevenDaysLater = new Date(currentDateStart);
+        sevenDaysLater.setDate(sevenDaysLater.getDate() + 7);
+        sevenDaysLater.setHours(23, 59, 59, 999);
+
+        const normalizedEvents = data.filter((comp) => {
           if (!comp.startDate) return false; // If no start date, ignore
 
-          // Parse dates as local dates, not UTC
-          const startDateStr = comp.startDate.split('T')[0];
-          const eventStart = new Date(startDateStr + 'T00:00:00');
-          
-          const eventEnd = comp.endDate 
-            ? new Date(comp.endDate.split('T')[0] + 'T23:59:59.999')
-            : null;
-
-          return (
-            (eventStart >= currentDate && eventStart <= threeMonthsLater) || // Future events within 3 months
-            (eventEnd && eventEnd >= currentDate) // Ongoing events that have not ended
-          );
+          return Boolean(comp.endDate);
         });
-        const upComingData = sortByStartDate(filteredUpcoming);
-        setUpcomingEvents(upComingData);
+
+        const filteredUpcoming = normalizedEvents.filter((comp) => {
+          const eventStart = parseLocalStartDate(comp.startDate);
+
+          return eventStart > currentDateEnd && eventStart <= threeMonthsLater;
+        });
+
+        const filteredThisWeek = normalizedEvents.filter((comp) => {
+          const eventStart = parseLocalStartDate(comp.startDate);
+          const eventEnd = parseLocalEndDate(comp.endDate);
+          const isActive =
+            eventStart <= currentDateEnd && eventEnd >= currentDateStart;
+          const startsSoon =
+            eventStart >= currentDateStart && eventStart <= sevenDaysLater;
+
+          return isActive || startsSoon;
+        });
+
+        setUpcomingEvents(sortByStartDate(filteredUpcoming));
+        setThisWeekEvents(sortByStartDate(filteredThisWeek));
       } catch (error) {
         console.error("❌ Error fetching competitions:", error);
       } finally {
@@ -85,7 +106,7 @@ export function CompetitionProvider({ children }: { children: ReactNode }) {
 
   return (
     <CompetitionContext.Provider
-      value={{ competitions, upcomingEvents, loading }}>
+      value={{ competitions, upcomingEvents, thisWeekEvents, loading }}>
       {children}
     </CompetitionContext.Provider>
   );

@@ -11,33 +11,7 @@ import Logo from "@/ui/components/molecules/logo/logo";
 import DropDownButton from "@/ui/components/molecules/dropDownButton/dropDownButton";
 import TopBanner from "@/ui/components/contentfulComponents/banner/topBanner";
 import UserDropdown from "@/ui/components/organisms/user/UserDropdown";
-import { formatDate } from "@/utils";
-
-const findUpcomingEvent = (
-  events: { title: string; startDate: string; endDate: string }[],
-  daysAhead = 7
-) => {
-  const today = new Date();
-  
-  return (
-    events.find((event) => {
-      // Parse dates in the configured timezone
-      const startDateStr = event.startDate.split('T')[0];
-      const endDateStr = event.endDate.split('T')[0];
-      
-      // Create dates at midnight and end of day in the target timezone
-      const startDate = new Date(startDateStr + 'T00:00:00');
-      const endDate = new Date(endDateStr + 'T23:59:59.999');
-      
-      const daysUntilStart =
-        (startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
-      const daysUntilEnd =
-        (endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
-      
-      return daysUntilEnd >= 0 && daysUntilStart < daysAhead;
-    }) || null
-  );
-};
+import { formatEventDateDisplay } from "@/utils";
 
 function SignOutButton() {
   const { signOut } = useClerk();
@@ -51,16 +25,7 @@ function SignOutButton() {
 }
 
 export default function NavBarSearch() {
-  const { upcomingEvents, loading } = useCompetitions();
-
-  const thisWeekEvent = useMemo(
-    () => findUpcomingEvent(upcomingEvents, 7),
-    [upcomingEvents]
-  );
-
-  const thisWeekBannerMessage = thisWeekEvent
-    ? `Happening This Week: ${thisWeekEvent.title}`
-    : "Happening This Week!";
+  const { upcomingEvents, thisWeekEvents, loading } = useCompetitions();
 
   const upcomingLinks = useMemo(() => {
     if (upcomingEvents.length > 0) {
@@ -68,8 +33,7 @@ export default function NavBarSearch() {
         name: event.title,
         description: event.navigationDescription,
         href: `/events/${event.title.toLowerCase().replace(/\s+/g, "-")}`,
-        startDate: formatDate(event.startDate),
-        endDate: formatDate(event.endDate)
+        dateLabel: formatEventDateDisplay(event.startDate, event.endDate)
       }));
     }
     return [
@@ -123,12 +87,8 @@ export default function NavBarSearch() {
   return (
     <header>
       <nav className="fixed left-0 right-0 top-0 z-50">
-        {!loading && thisWeekEvent && (
-          <TopBanner
-            message={thisWeekBannerMessage}
-            linkLabel="Go to Event"
-            event={thisWeekEvent}
-          />
+        {!loading && thisWeekEvents.length > 0 && (
+          <TopBanner linkLabel="Go to Event" />
         )}
 
         <Disclosure as="main" className="bg-BrandeisBrand shadow">

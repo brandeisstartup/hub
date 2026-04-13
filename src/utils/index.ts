@@ -14,6 +14,37 @@ export const formatDate = (dateString: string) => {
   }).format(date);
 };
 
+export const parseLocalStartDate = (dateString: string): Date => {
+  const datePart = dateString.split("T")[0];
+  return new Date(`${datePart}T00:00:00`);
+};
+
+export const parseLocalEndDate = (dateString: string): Date => {
+  const datePart = dateString.split("T")[0];
+  return new Date(`${datePart}T23:59:59.999`);
+};
+
+export const formatEventDateDisplay = (
+  startDate: string,
+  endDate?: string
+): string => {
+  if (!endDate) {
+    return formatDate(startDate);
+  }
+
+  const start = parseLocalStartDate(startDate);
+  const end = parseLocalStartDate(endDate);
+  const inclusiveDays =
+    Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+
+  // Keep one- and two-day events concise with only the start date.
+  if (inclusiveDays <= 2) {
+    return formatDate(startDate);
+  }
+
+  return `${formatDate(startDate)} - ${formatDate(endDate)}`;
+};
+
 export function formatImageUrl(url: string): string {
   if (url.startsWith("//")) {
     return `https:${url}`;
