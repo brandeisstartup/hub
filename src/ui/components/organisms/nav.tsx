@@ -105,7 +105,7 @@ export default function NavBarSearch() {
 
                   {/* Desktop navigation */}
                   <div className="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end">
-                    <div className="hidden lg:ml-6 lg:flex py-3 px-2">
+                    <div className="hidden lg:ml-4 lg:flex lg:items-center lg:gap-1 xl:gap-2 py-3 px-1 min-w-0">
                       {loading ? (
                         <div className="flex space-x-4">
                           {dynamicNavigation.map((_, i) => (
@@ -124,13 +124,13 @@ export default function NavBarSearch() {
                               links={item.links}
                             />
                           ) : (
-                            <div key={index} className="w-full max-w-md">
+                            <div key={index} className="w-auto flex-none">
                               <div className="relative">
                                 <Link
                                   key={item.name}
                                   href={item.href}
-                                  className="text-white group inline-flex items-center rounded-md px-3 py-2 font-bold hover:text-white focus:outline-none overflow-hidden">
-                                  <span className="truncate max-w-full text-lg">
+                                  className="text-white group inline-flex items-center rounded-md px-2 xl:px-3 py-2 font-bold hover:text-white focus:outline-none overflow-hidden">
+                                  <span className="truncate max-w-full text-base xl:text-lg">
                                     {item.name}
                                   </span>
                                 </Link>
@@ -155,8 +155,8 @@ export default function NavBarSearch() {
                   {/* Auth */}
                   <SignedOut>
                     <SignInButton>
-                      <div className="flex justify-center items-center">
-                        <button className="h-12 hidden lg:flex lg:items-center text-white text-lg font-bold border border-white px-4 py-3 rounded-md hover:bg-white hover:text-black transition">
+                      <div className="flex justify-center items-center flex-shrink-0">
+                        <button className="h-12 hidden lg:flex lg:items-center text-white lg:text-base xl:text-lg font-bold border border-white px-3 xl:px-4 py-3 rounded-md hover:bg-white hover:text-black transition whitespace-nowrap shrink-0">
                           Sign In
                         </button>
                       </div>

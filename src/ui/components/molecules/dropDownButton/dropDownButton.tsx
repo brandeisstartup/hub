@@ -19,12 +19,12 @@ type Props = {
 export default function DropDownButton(props: Props) {
   const { title, links } = props;
   return (
-    <div className="w-full max-w-md">
+    <div className="w-auto flex-none">
       <Popover className="relative">
         {() => (
           <>
-            <Popover.Button className="text-white group inline-flex items-center rounded-md px-3 py-2 font-bold hover:text-white focus:outline-none overflow-hidden">
-              <span className="truncate max-w-full text-lg">{title}</span>
+            <Popover.Button className="text-white group inline-flex items-center rounded-md px-2 xl:px-3 py-2 font-bold hover:text-white focus:outline-none overflow-hidden">
+              <span className="truncate max-w-full text-base xl:text-lg">{title}</span>
               <ChevronDownIcon
                 className="ml-2 h-5 w-5 transition duration-150 ease-in-out group-hover:text-gray-100"
                 aria-hidden="true"
