@@ -160,7 +160,7 @@ export default function CompetitionPage({ competition }: Props) {
         )}
 
         {/* Content wrapper to match site-wide margins while keeping Hero full-bleed */}
-        <div className="mx-auto max-w-8xl px-4 md:px-8 pt-10">
+        <div className="mx-auto max-w-8xl px-4 md:px-8 mt-10">
           {competition.fields.about && competition.fields.aboutLabel && (
             <About
               title="about"
