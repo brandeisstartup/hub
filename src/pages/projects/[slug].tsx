@@ -69,6 +69,7 @@ interface GraphQLProject {
   short_description?: string;
   long_description?: string;
   competition?: string;
+  team_members_emails?: string[];
   teamMembers?: User[];
   video_url?: string;
   image_url?: string;
@@ -82,6 +83,7 @@ interface ProjectData {
   long_description?: string;
   competition?: string;
   members?: string[];
+  team_members_emails?: string[];
   teamMembers?: (User | ContentfulUser)[];
   video_url?: string;
   imageUrl?: string;
@@ -189,6 +191,8 @@ export const getServerSideProps: GetServerSideProps<
     long_description: graphQLProject?.long_description ?? "",
     competition: graphQLProject?.competition ?? "",
     members: contentfulFlattened?.members ?? [],
+    team_members_emails:
+      graphQLProject?.team_members_emails || contentfulFlattened?.members || [],
     teamMembers:
       contentfulFlattened?.teamMembers || graphQLProject?.teamMembers || [],
     video_url:
@@ -218,6 +222,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
     long_description,
     competition,
     teamMembers,
+    team_members_emails,
     video_url,
     imageUrl
   } = project;
@@ -260,9 +265,29 @@ export default function ProjectPage({ project }: ServerSideProps) {
                 return (
                   <dl key={index}>
                     {unified.firstName} {unified.lastName}
+                    {index < (teamMembers?.length || 0) - 1 ||
+                      (team_members_emails &&
+                        team_members_emails.length >
+                        (teamMembers?.length || 0))
+                      ? ", "
+                      : ""}
                   </dl>
                 );
               })}
+              {(team_members_emails || [])
+                .filter(
+                  (email) =>
+                    !teamMembers?.some(
+                      (m) =>
+                        (isContentfulUser(m) ? m.fields.id : m.email) === email
+                    )
+                )
+                .map((email, index, arr) => (
+                  <dl key={email}>
+                    {email}
+                    {index < arr.length - 1 ? ", " : ""}
+                  </dl>
+                ))}
             </dd>
 
             {!project.isFeatured && tagline && (
@@ -397,6 +422,34 @@ export default function ProjectPage({ project }: ServerSideProps) {
                   </dl>
                 );
               })}
+              {(team_members_emails || [])
+                .filter(
+                  (email) =>
+                    !teamMembers?.some(
+                      (m) =>
+                        (isContentfulUser(m) ? m.fields.id : m.email) === email
+                    )
+                )
+                .map((email) => (
+                  <dl key={email} className="flex mt-2">
+                    <div className="flex flex-row gap-2 font-sans">
+                      <div className="w-24 h-24 flex items-center justify-center bg-gray-200 text-gray-400">
+                        <svg
+                          className="w-12 h-12"
+                          fill="currentColor"
+                          viewBox="0 0 24 24">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                      </div>
+                      <div className="flex flex-col gap-1 justify-center">
+                        <div className="font-semibold">{email}</div>
+                        <div className="text-sm text-gray-500 italic">
+                          Pending registration
+                        </div>
+                      </div>
+                    </div>
+                  </dl>
+                ))}
             </div>
           </section>
         </div>

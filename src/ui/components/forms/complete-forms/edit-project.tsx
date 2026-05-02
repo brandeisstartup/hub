@@ -136,7 +136,7 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
       />
       <EditableFieldList
         label="Team Members"
-        fieldKey="team_members_email"
+        fieldKey="team_members_emails"
         values={project.team_members_emails}
         projectId={props.id}
         onChange={handleFieldListUpdate}

@@ -19,7 +19,6 @@ interface SearchLayoutProps {
     created_date?: string;
     short_description?: string;
     tagline?: string;
-    isContentful?: boolean;
   }>;
   parseYear: (raw: string) => string;
 }
@@ -128,7 +127,6 @@ export default function SearchLayout({
                           year={year}
                           summary={summary}
                           isLong={isLong}
-                          isContentful={project.isContentful}
                         />
                       );
                     })
