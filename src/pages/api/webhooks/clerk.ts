@@ -8,8 +8,9 @@ export const config = {
 };
 
 const GRAPHQL_ENDPOINT =
+  process.env.NEXT_PUBLIC_GRAPHQL_URL ||
   process.env.GRAPHQL_ENDPOINT ||
-  "https://startuphub-jade.vercel.app/api/graphql";
+  "http://localhost:3000/api/graphql";
 
 interface ClerkEmailAddress {
   email_address: string;

@@ -9,7 +9,6 @@ export interface ProjectCardProps {
   year: string;
   summary: string;
   isLong: boolean;
-  isContentful?: boolean;
 }
 
 export default function ProjectCard({
@@ -17,8 +16,7 @@ export default function ProjectCard({
   imageUrl,
   year,
   summary,
-  isLong,
-  isContentful
+  isLong
 }: ProjectCardProps) {
   const slug = slugifyTitle(title);
 
