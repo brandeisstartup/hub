@@ -13,6 +13,7 @@ export const GET_PROJECT_BY_SLUG = gql`
       team_members_emails
       teamMembers {
         clerkId
+        email
         firstName
         lastName
         imageUrl

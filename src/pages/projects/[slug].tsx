@@ -227,6 +227,41 @@ export default function ProjectPage({ project }: ServerSideProps) {
     imageUrl
   } = project;
 
+  // 1. Unify and de-duplicate registered profiles
+  const registeredProfiles = (teamMembers || []).reduce((acc, curr) => {
+    const email = (isContentfulUser(curr) ? curr.fields.id : curr.email)?.toLowerCase();
+    if (!email) return acc;
+
+    // Avoid duplicates in the profile list itself
+    if (!acc.some(m => (isContentfulUser(m) ? m.fields.id : m.email)?.toLowerCase() === email)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, [] as (User | ContentfulUser)[]);
+
+  // 2. Identify strings in teammate list that aren't represented by a profile
+  const pendingEntries = (team_members_emails || [])
+    .filter(entry => {
+      if (!entry) return false;
+      const normalizedEntry = entry.trim().toLowerCase();
+
+      // Is this entry (name or email) already represented by one of our full profiles?
+      const isAlreadyRepresented = registeredProfiles.some(m => {
+        const unified = unifyTeamMember(m);
+        const mEmail = (isContentfulUser(m) ? m.fields.id : m.email)?.toLowerCase();
+        const mFullName = `${unified.firstName} ${unified.lastName}`.trim().toLowerCase();
+        
+        // Match if the entry is the user's email OR their full name
+        return mEmail === normalizedEntry || mFullName === normalizedEntry;
+      });
+
+      return !isAlreadyRepresented;
+    })
+    // Also de-duplicate the pending list itself (case-insensitive)
+    .filter((entry, index, self) => 
+      self.findIndex(e => e.trim().toLowerCase() === entry.trim().toLowerCase()) === index
+    );
+
   const crumbs: BreadcrumbItem[] = [
     { label: "Home", href: "/" },
     { label: "Projects", href: "/search" },
@@ -260,34 +295,27 @@ export default function ProjectPage({ project }: ServerSideProps) {
 
             <dd className="flex flex-row gap-1 font-sans flex-wrap">
               By:
-              {(teamMembers || []).map((member, index) => {
+              {registeredProfiles.map((member, index) => {
                 const unified = unifyTeamMember(member);
+                const displayName = (unified.firstName || unified.lastName) 
+                  ? `${unified.firstName} ${unified.lastName}`.trim()
+                  : (isContentfulUser(member) ? member.fields.id : member.email);
+
                 return (
                   <dl key={index}>
-                    {unified.firstName} {unified.lastName}
-                    {index < (teamMembers?.length || 0) - 1 ||
-                      (team_members_emails &&
-                        team_members_emails.length >
-                        (teamMembers?.length || 0))
+                    {displayName}
+                    {index < registeredProfiles.length - 1 || pendingEntries.length > 0
                       ? ", "
                       : ""}
                   </dl>
                 );
               })}
-              {(team_members_emails || [])
-                .filter(
-                  (email) =>
-                    !teamMembers?.some(
-                      (m) =>
-                        (isContentfulUser(m) ? m.fields.id : m.email) === email
-                    )
-                )
-                .map((email, index, arr) => (
-                  <dl key={email}>
-                    {email}
-                    {index < arr.length - 1 ? ", " : ""}
-                  </dl>
-                ))}
+              {pendingEntries.map((entry, index) => (
+                <dl key={entry}>
+                  {entry}
+                  {index < pendingEntries.length - 1 ? ", " : ""}
+                </dl>
+              ))}
             </dd>
 
             {!project.isFeatured && tagline && (
@@ -392,8 +420,13 @@ export default function ProjectPage({ project }: ServerSideProps) {
             )}
             <div className="flex gap-4 flex-col">
               <Heading label="Team Members" />
-              {(teamMembers || []).map((member, index) => {
+              {registeredProfiles.map((member, index) => {
                 const unified = unifyTeamMember(member);
+                const email = isContentfulUser(member) ? member.fields.id : member.email;
+                const displayName = (unified.firstName || unified.lastName)
+                  ? `${unified.firstName} ${unified.lastName}`.trim()
+                  : email;
+
                 return (
                   <dl key={index} className="flex mt-2">
                     <div className="flex flex-row gap-2 font-sans">
@@ -402,14 +435,14 @@ export default function ProjectPage({ project }: ServerSideProps) {
                           src={formatImageUrl(
                             unified.imageUrl || "/default-image.png"
                           )}
-                          alt={`${unified.firstName} ${unified.lastName}`}
+                          alt={displayName}
                           width={96}
                           height={96}
                         />
                       </div>
                       <div className="flex flex-col gap-1">
                         <div className="font-semibold">
-                          {unified.firstName} {unified.lastName}
+                          {displayName}
                         </div>
                         <div>
                           {unified.major && unified.graduationYear
@@ -422,34 +455,26 @@ export default function ProjectPage({ project }: ServerSideProps) {
                   </dl>
                 );
               })}
-              {(team_members_emails || [])
-                .filter(
-                  (email) =>
-                    !teamMembers?.some(
-                      (m) =>
-                        (isContentfulUser(m) ? m.fields.id : m.email) === email
-                    )
-                )
-                .map((email) => (
-                  <dl key={email} className="flex mt-2">
-                    <div className="flex flex-row gap-2 font-sans">
-                      <div className="w-24 h-24 flex items-center justify-center bg-gray-200 text-gray-400">
-                        <svg
-                          className="w-12 h-12"
-                          fill="currentColor"
-                          viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                        </svg>
-                      </div>
-                      <div className="flex flex-col gap-1 justify-center">
-                        <div className="font-semibold">{email}</div>
-                        <div className="text-sm text-gray-500 italic">
-                          Pending registration
-                        </div>
+              {pendingEntries.map((entry) => (
+                <dl key={entry} className="flex mt-2">
+                  <div className="flex flex-row gap-2 font-sans">
+                    <div className="w-24 h-24 flex items-center justify-center bg-gray-200 text-gray-400">
+                      <svg
+                        className="w-12 h-12"
+                        fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                      </svg>
+                    </div>
+                    <div className="flex flex-col gap-1 justify-center">
+                      <div className="font-semibold">{entry}</div>
+                      <div className="text-sm text-gray-500 italic">
+                        Pending registration
                       </div>
                     </div>
-                  </dl>
-                ))}
+                  </div>
+                </dl>
+              ))}
             </div>
           </section>
         </div>
