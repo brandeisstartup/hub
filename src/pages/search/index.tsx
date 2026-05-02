@@ -8,10 +8,9 @@ import {
 } from "@/types/search-types";
 import contentfulClient from "@/lib/contentful";
 import { GET_ALL_PROJECTS } from "@/lib/graphql/queries";
-import slugify from "slugify";
 import { useCompetitions } from "@/context/EventContext";
 import { CompetitionFields } from "@/types/used/CompetitionTypes";
-import { formatImageUrl, parseYear } from "@/utils";
+import { formatImageUrl, parseYear, slugifyTitle } from "@/utils";
 import SearchLayout from "@/ui/components/organisms/search/search-panel";
 
 function useDebounce<T>(value: T, delay: number = 500): T {
@@ -167,10 +166,7 @@ export async function getServerSideProps() {
   const mergedMap: Record<string, ProjectData> = {};
 
   graphqlProjects.forEach((g) => {
-    const slug = slugify((g.title || "untitled").toLowerCase(), {
-      lower: true,
-      strict: true
-    });
+    const slug = slugifyTitle(g.title || "untitled");
     mergedMap[slug] = {
       id: g.id,
       title: g.title || "Untitled Project",
@@ -186,10 +182,7 @@ export async function getServerSideProps() {
   });
 
   contentfulProjects.forEach((c) => {
-    const slug = slugify(c.title.toLowerCase(), {
-      lower: true,
-      strict: true
-    });
+    const slug = slugifyTitle(c.title);
 
     if (mergedMap[slug]) {
       mergedMap[slug] = {

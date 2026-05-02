@@ -1,5 +1,6 @@
 // /lib/graphql/resolvers.ts
 import { PrismaClient } from "@prisma/client";
+import { slugifyTitle } from "@/utils";
 const prisma = new PrismaClient();
 
 interface CreateProjectArgs {
@@ -65,11 +66,16 @@ export const resolvers = {
       { id, slug }: { id?: number; slug?: string }
     ) => {
       // Fetch the project record either by id or by slug
-      const project = id
-        ? await prisma.projects.findUnique({ where: { id } })
-        : await prisma.projects.findFirst({
-            where: { title: slug!.replace(/-/g, " ") }
-          });
+      let project;
+      if (id) {
+        project = await prisma.projects.findUnique({ where: { id } });
+      } else if (slug) {
+        // Find by slug: fetch all and match in-memory to ensure consistency with slugifyTitle
+        const allProjects = await prisma.projects.findMany();
+        project = allProjects.find(
+          (p) => slugifyTitle(p.title) === slugifyTitle(slug)
+        );
+      }
 
       if (!project) return null;
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import slugify from "slugify";
+import { slugifyTitle } from "@/utils";
 import React from "react";
 
 export interface ProjectCardProps {
@@ -20,9 +20,7 @@ export default function ProjectCard({
   isLong,
   isContentful
 }: ProjectCardProps) {
-  const slug = isContentful
-    ? slugify(title, { lower: true, strict: true })
-    : slugify(title, { strict: true });
+  const slug = slugifyTitle(title);
 
   return (
     <li className="border hover:bg-gray-100 transition">

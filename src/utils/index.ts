@@ -52,6 +52,21 @@ export function formatImageUrl(url: string): string {
   return url;
 }
 
+import slugify from "slugify";
+
+/**
+ * Consistently generates a URL-safe slug from a project title.
+ * Used for routing and matching between search results and detail pages.
+ */
+export function slugifyTitle(title: string): string {
+  if (!title) return "untitled";
+  return slugify(title, {
+    lower: true,
+    strict: true,
+    trim: true
+  });
+}
+
 export function parseYear(raw: string): string {
   if (!raw) return "N/A";
   if (/^\d{4}$/.test(raw)) {

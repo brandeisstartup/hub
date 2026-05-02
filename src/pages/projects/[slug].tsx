@@ -14,7 +14,7 @@ import Breadcrumb, {
   BreadcrumbItem
 } from "@/ui/components/brandeisBranding/breadcrumbs";
 
-import { formatImageUrl } from "@/utils";
+import { formatImageUrl, slugifyTitle } from "@/utils";
 
 interface User {
   id: string;
@@ -143,10 +143,7 @@ export const getServerSideProps: GetServerSideProps<
       });
 
     const match = contentfulResponse.items.find((item) => {
-      return (
-        (item.fields.title as string).toLowerCase().replace(/\s+/g, "-") ===
-        slug
-      );
+      return slugifyTitle(item.fields.title as string) === slugifyTitle(slug);
     });
 
     if (match) {
