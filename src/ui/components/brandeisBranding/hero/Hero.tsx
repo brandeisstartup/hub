@@ -25,7 +25,7 @@ const Hero = ({
   return (
   <>
     <section
-      className="relative text-white h-[65vh] md:h-auto md:min-h-[70vh] w-full bg-cover bg-center font-sans flex flex-col"
+      className="relative mt-0 text-white h-[65vh] md:h-auto md:min-h-[70vh] w-full bg-cover bg-center font-sans flex flex-col"
       style={{ backgroundImage: `url(${heroImage})` }}>
       {/* 🔹 Dark Overlay for Readability (Lower z-index) */}
       <div className="absolute inset-0 bg-black bg-opacity-20 z-0"></div>

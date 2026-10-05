@@ -1,0 +1,77 @@
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+export type LandingBannerContent = {
+  overlayTitle?: string;
+  overlayLinkTitle?: string;
+  overlayLink?: string;
+  overlayEndDate?: string;
+};
+
+type LandingBannerProps = {
+  content: LandingBannerContent;
+};
+
+const LandingBanner = ({ content }: LandingBannerProps) => {
+  const [isDismissed, setIsDismissed] = useState(false);
+
+  useEffect(() => {
+    setIsDismissed(
+      window.localStorage.getItem("landingBannerDismissed") === "true"
+    );
+  }, []);
+
+  if (!content.overlayTitle) {
+    return null;
+  }
+
+  if (content.overlayEndDate) {
+    const endDate = /^\d{4}-\d{2}-\d{2}$/.test(content.overlayEndDate)
+      ? new Date(`${content.overlayEndDate}T23:59:59.999`)
+      : new Date(content.overlayEndDate);
+
+    if (Number.isNaN(endDate.getTime()) || Date.now() > endDate.getTime()) {
+      return null;
+    }
+  }
+
+  if (isDismissed) {
+    return null;
+  }
+
+  const dismissBanner = () => {
+    window.localStorage.setItem("landingBannerDismissed", "true");
+    setIsDismissed(true);
+  };
+  const overlayLinkTitle = content.overlayLinkTitle?.replace(/\s*→\s*$/, "");
+
+  return (
+    <section
+      className="absolute left-0 right-0 top-8 z-20 flex justify-center bg-gradient-to-r from-BrandeisBrand to-black px-4 py-6 font-sans text-white md:px-8"
+      aria-labelledby="landing-banner-title">
+      <button
+        type="button"
+        onClick={dismissBanner}
+        aria-label="Dismiss announcement"
+        className="absolute right-4 top-3 text-2xl leading-none text-white transition hover:opacity-70">
+        &times;
+      </button>
+      <div className="flex w-full max-w-6xl flex-col items-center justify-center gap-5 text-center md:flex-row md:justify-between md:gap-10 md:text-left">
+        <p
+          id="landing-banner-title"
+          className="max-w-4xl text-2xl font-bold leading-tight md:text-4xl">
+          {content.overlayTitle}
+        </p>
+        {overlayLinkTitle && content.overlayLink && (
+          <Link
+            href={content.overlayLink}
+            className="shrink-0 border-b-2 border-white px-2 pb-1 text-base font-medium transition hover:opacity-70 md:text-lg">
+            {overlayLinkTitle} <span aria-hidden="true">→</span>
+          </Link>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default LandingBanner;

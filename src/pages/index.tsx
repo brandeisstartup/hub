@@ -9,9 +9,12 @@ import Hero from "@/ui/components/brandeisBranding/hero/Hero";
 import { ImageFile } from "@/types/used/CompetitionTypes";
 import CustomHead from "@/ui/components/seo/head";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
+import LandingBanner, {
+  LandingBannerContent
+} from "@/ui/components/contentfulComponents/banner/landingBanner";
 
 type HomePageProps = {
-  homepageContent: {
+  homepageContent: LandingBannerContent & {
     name: string;
     header: string;
     description: string;
@@ -29,7 +32,7 @@ export default function Home({ homepageContent }: HomePageProps) {
   const { upcomingEvents, competitions, loading } = useCompetitions();
 
   return (
-    <>
+    <div className="pt-[4.3rem]">
       <CustomHead
         title={"Home"}
         description={homepageContent.description}
@@ -43,15 +46,20 @@ export default function Home({ homepageContent }: HomePageProps) {
         ogLogo={"https://www.brandeisstartup.com/logo.png"}
         locale="en_US"
       />
-      <Hero
-        heroImage={homepageContent.heroImage.fields.file.url}
-        header={homepageContent.header}
-        description={homepageContent.description}
-        primaryLabel={homepageContent.heroPrimaryButtonLabel}
-        primaryLink={homepageContent.heroPrimaryButtonLink}
-        secondaryLabel={homepageContent.heroSecondaryButtonLabel}
-        secondaryLink={homepageContent.heroSecondaryButtonLink}
-      />
+      <div className="relative">
+        <Hero
+          heroImage={homepageContent.heroImage.fields.file.url}
+          header={homepageContent.header}
+          description={homepageContent.description}
+          primaryLabel={homepageContent.heroPrimaryButtonLabel}
+          primaryLink={homepageContent.heroPrimaryButtonLink}
+          secondaryLabel={homepageContent.heroSecondaryButtonLabel}
+          secondaryLink={homepageContent.heroSecondaryButtonLink}
+        />
+        <div id="events" className="scroll-mt-[4.3rem]">
+          <LandingBanner content={homepageContent} />
+        </div>
+      </div>
       <div className="flex justify-center" id="about">
         <div className="wrapper flex w-full justify-center flex-col pt-10 pb-20 px-4 md:px-8 max-w-8xl">
           <Heading
@@ -87,7 +95,7 @@ export default function Home({ homepageContent }: HomePageProps) {
         )}
       <SimpleImageGrid label={"Our Events"} projects={competitions} />
       {homepageContent.showYoutubeVideos && <YouTubePage />}
-    </>
+    </div>
   );
 }
 
@@ -104,7 +112,19 @@ export const getServerSideProps: GetServerSideProps = async () => {
       };
     }
 
-    const homepageContent = response.items[0].fields;
+    const homepageContent = {
+      ...response.items[0].fields,
+      ...(process.env.NODE_ENV === "development" &&
+      !response.items[0].fields.overlayTitle
+        ? {
+            overlayTitle:
+              "Call for Brandeis Pitch Submissions: Sunday, Oct 18",
+            overlayLinkTitle: "Learn More",
+            overlayLink: "/help",
+            overlayEndDate: "2026-10-19"
+          }
+        : {})
+    };
 
     return {
       props: {
