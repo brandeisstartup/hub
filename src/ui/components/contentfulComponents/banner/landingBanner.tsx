@@ -47,7 +47,7 @@ const LandingBanner = ({ content }: LandingBannerProps) => {
 
   return (
     <section
-      className="absolute left-0 right-0 top-20 z-20 flex justify-center bg-gradient-to-r from-BrandeisBrand to-black px-4 py-12 font-sans text-white md:px-8"
+      className="absolute left-0 right-0 top-20 z-20 flex justify-center bg-gradient-to-r from-BrandeisBrand to-black px-4 py-12 font-sans text-white shadow-[0_18px_32px_rgba(0,0,0,0.7)] md:px-8"
       aria-labelledby="landing-banner-title">
       <button
         type="button"
