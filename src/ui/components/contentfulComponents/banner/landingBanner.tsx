@@ -16,10 +16,14 @@ const LandingBanner = ({ content }: LandingBannerProps) => {
   const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
-    setIsDismissed(
-      window.localStorage.getItem("landingBannerDismissed") === "true"
-    );
-  }, []);
+    if (!isDismissed) return;
+
+    const timer = window.setTimeout(() => {
+      setIsDismissed(false);
+    }, 3 * 60 * 1000);
+
+    return () => window.clearTimeout(timer);
+  }, [isDismissed]);
 
   if (!content.overlayTitle) {
     return null;
@@ -40,14 +44,13 @@ const LandingBanner = ({ content }: LandingBannerProps) => {
   }
 
   const dismissBanner = () => {
-    window.localStorage.setItem("landingBannerDismissed", "true");
     setIsDismissed(true);
   };
   const overlayLinkTitle = content.overlayLinkTitle?.replace(/\s*→\s*$/, "");
 
   return (
     <section
-      className="absolute left-0 right-0 top-20 z-20 flex justify-center bg-gradient-to-r from-BrandeisBrand to-black px-4 py-12 font-sans text-white shadow-[0_18px_32px_rgba(0,0,0,0.7)] md:px-8"
+      className="absolute left-0 right-0 top-20 z-20 flex justify-center bg-gradient-to-r from-[#1557e8] to-black px-4 py-12 font-sans text-white shadow-[0_18px_32px_rgba(0,0,0,0.7)] md:px-8"
       aria-labelledby="landing-banner-title">
       <button
         type="button"
