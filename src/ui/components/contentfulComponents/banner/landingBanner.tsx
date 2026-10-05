@@ -47,7 +47,7 @@ const LandingBanner = ({ content }: LandingBannerProps) => {
 
   return (
     <section
-      className="absolute left-0 right-0 top-8 z-20 flex justify-center bg-gradient-to-r from-BrandeisBrand to-black px-4 py-6 font-sans text-white md:px-8"
+      className="absolute left-0 right-0 top-20 z-20 flex justify-center bg-gradient-to-r from-BrandeisBrand to-black px-4 py-12 font-sans text-white md:px-8"
       aria-labelledby="landing-banner-title">
       <button
         type="button"
@@ -56,16 +56,16 @@ const LandingBanner = ({ content }: LandingBannerProps) => {
         className="absolute right-4 top-3 text-2xl leading-none text-white transition hover:opacity-70">
         &times;
       </button>
-      <div className="flex w-full max-w-6xl flex-col items-center justify-center gap-5 text-center md:flex-row md:justify-between md:gap-10 md:text-left">
+      <div className="flex w-full max-w-6xl flex-col items-start justify-center gap-6 px-2 text-left sm:px-4 md:flex-row md:items-center md:justify-between md:gap-10 md:px-6">
         <p
           id="landing-banner-title"
-          className="max-w-4xl text-2xl font-bold leading-tight md:text-4xl">
+          className="min-w-0 max-w-4xl break-words text-3xl font-bold leading-tight md:text-5xl">
           {content.overlayTitle}
         </p>
         {overlayLinkTitle && content.overlayLink && (
           <Link
             href={content.overlayLink}
-            className="shrink-0 border-b-2 border-white px-2 pb-1 text-base font-medium transition hover:opacity-70 md:text-lg">
+            className="shrink-0 self-end border-b-2 border-white px-2 pb-1 text-xl font-medium transition hover:opacity-70 md:ml-auto md:self-auto md:text-2xl">
             {overlayLinkTitle} <span aria-hidden="true">→</span>
           </Link>
         )}
