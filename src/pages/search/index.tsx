@@ -70,9 +70,19 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
   );
   const competitionOptions = compLoading
     ? []
-    : competitions
-        .filter((c: CompetitionFields) => c.showInSearch)
-        .map((c: CompetitionFields) => c.title.trim());
+    : Array.from(
+        new Set([
+          ...competitions
+            .filter((c: CompetitionFields) => c.showInSearch)
+            .map((c: CompetitionFields) => c.title.trim())
+            .filter(
+              (title) =>
+                !/^(pitch for pizza|startup mixer(?:\s|$))/i.test(title)
+            ),
+          "Brandeis Pitch",
+          "Builders and Backers Incubator"
+        ])
+      ).sort((a, b) => a.localeCompare(b));
 
   const FILTERS = {
     Competition: competitionOptions,
