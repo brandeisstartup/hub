@@ -22,6 +22,14 @@ interface FormValues extends Record<string, unknown> {
   competition: string;
 }
 
+const ALLOWED_COMPETITIONS = [
+  "Ain Family Start-Up Award",
+  "Brandeis Pitch",
+  "Brandeis Social Impact Startup Challenge",
+  "Builders and Backers Incubator",
+  "Tech-Bash"
+];
+
 function BigForm() {
   const { userId } = useAuth();
   const { user } = useMergedUser();
@@ -43,7 +51,12 @@ function BigForm() {
   // Competitions from context
   const { competitions, loading: compLoading } = useCompetitions();
   const competitionOptions = useMemo(
-    () => competitions.map((comp) => comp.title),
+    () => {
+      const availableTitles = new Set(
+        competitions.map((competition) => competition.title.trim())
+      );
+      return ALLOWED_COMPETITIONS.filter((title) => availableTitles.has(title));
+    },
     [competitions]
   );
   const [selectedCompetitions, setSelectedCompetitions] = useState<string[]>([]);
