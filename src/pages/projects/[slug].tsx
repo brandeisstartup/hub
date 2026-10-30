@@ -328,7 +328,7 @@ export default function ProjectPage({ project }: ServerSideProps) {
             {competition && (
               <p className="font-sans leading-8 text-sm">
                 <span className="font-semibold">Competition:</span>{" "}
-                {competition}
+                {competition.split(",").map((item) => item.trim()).filter(Boolean).join(", ")}
               </p>
             )}
 

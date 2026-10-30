@@ -112,10 +112,11 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     let ok = title.includes(cleanSearch);
 
     if (ok && selectedFilters.Competition.length) {
-      const comp = project.competition?.trim() ?? "";
-
       const active = selectedFilters.Competition.map((v) => v.trim());
-      ok = active.includes(comp);
+      const projectCompetitions = (project.competition ?? "")
+        .split(",")
+        .map((competition) => competition.trim());
+      ok = active.some((competition) => projectCompetitions.includes(competition));
     }
 
     if (ok && selectedFilters.Year.length) {
