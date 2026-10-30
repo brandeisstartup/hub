@@ -30,6 +30,9 @@ const ALLOWED_COMPETITIONS = [
   "Tech-Bash"
 ];
 
+const normalizeCompetitionTitle = (title: string) =>
+  title.toLowerCase().replace(/[^a-z0-9]/g, "");
+
 function BigForm() {
   const { userId } = useAuth();
   const { user } = useMergedUser();
@@ -48,21 +51,25 @@ function BigForm() {
   const { postProject } = usePostProject();
   const [loading, setLoading] = useState(false);
 
-  // Competitions from context
-  const { competitions, loading: compLoading } = useCompetitions();
-  const competitionOptions = useMemo(
-    () => {
-      const availableTitles = new Set(
-        competitions.map((competition) => competition.title.trim())
-      );
-      return ALLOWED_COMPETITIONS.filter((title) => availableTitles.has(title));
-    },
+  const { competitions } = useCompetitions();
+  const contentfulTitles = useMemo(
+    () =>
+      new Map(
+        competitions.map((competition) => [
+          normalizeCompetitionTitle(competition.title.trim()),
+          competition.title.trim()
+        ])
+      ),
     [competitions]
   );
+  const competitionOptions = useMemo(() => ALLOWED_COMPETITIONS, []);
   const [selectedCompetitions, setSelectedCompetitions] = useState<string[]>([]);
   useEffect(() => {
-    setValue("competition", selectedCompetitions.join(", "));
-  }, [selectedCompetitions, setValue]);
+    const contentfulValues = selectedCompetitions.map(
+      (title) => contentfulTitles.get(normalizeCompetitionTitle(title)) ?? title
+    );
+    setValue("competition", contentfulValues.join(", "));
+  }, [selectedCompetitions, contentfulTitles, setValue]);
 
   // Watch the videoUrl field (which now holds just the YouTube video ID)
   const youtubeId = watch("videoUrl");
@@ -182,9 +189,7 @@ function BigForm() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Competition
             </label>
-            {compLoading ? (
-              <p className="text-sm text-gray-500">Loading competitions...</p>
-            ) : competitionOptions.length > 0 ? (
+            {competitionOptions.length > 0 ? (
               <div className="max-h-60 space-y-2 overflow-auto rounded-md border border-gray-300 p-3">
                 {competitionOptions.map((option) => (
                   <label key={option} className="flex items-center gap-2">
