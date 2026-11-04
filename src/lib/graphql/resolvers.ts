@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 interface CreateProjectArgs {
   title: string;
+  created_date?: string;
   creator_email: string;
   short_description?: string;
   long_description?: string;
@@ -129,7 +130,12 @@ export const resolvers = {
 
   Mutation: {
     createProject: async (_: unknown, args: CreateProjectArgs) => {
-      return prisma.projects.create({ data: args });
+      return prisma.projects.create({
+        data: {
+          ...args,
+          created_date: args.created_date ? new Date(args.created_date) : undefined
+        }
+      });
     },
     createUser: async (_: unknown, args: CreateUserArgs) => {
       return prisma.users.create({
