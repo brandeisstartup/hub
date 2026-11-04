@@ -13,6 +13,23 @@ import { CompetitionFields } from "@/types/used/CompetitionTypes";
 import { formatImageUrl, parseYear, slugifyTitle } from "@/utils";
 import SearchLayout from "@/ui/components/organisms/search/search-panel";
 
+const REQUIRED_COMPETITIONS = [
+  "Ain Family Start-Up Award",
+  "Brandeis Pitch",
+  "Brandeis Social Impact Startup Challenge",
+  "Builders and Backers Incubator",
+  "Tech-Bash"
+];
+
+const normalizeCompetition = (competition: string) =>
+  competition.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const splitCompetitions = (value: string | null | undefined) =>
+  (value ?? "")
+    .split(/[,;\n]+/)
+    .map((competition) => normalizeCompetition(competition))
+    .filter(Boolean);
+
 function useDebounce<T>(value: T, delay: number = 500): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
   useEffect(() => {
@@ -79,8 +96,7 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
               (title) =>
                 !/^(pitch for pizza|startup mixer(?:\s|$))/i.test(title)
             ),
-          "Brandeis Pitch",
-          "Builders and Backers Incubator"
+          ...REQUIRED_COMPETITIONS
         ])
       ).sort((a, b) => a.localeCompare(b));
 
@@ -112,15 +128,17 @@ export default function SearchPage({ initialProjects }: SearchPageProps) {
     let ok = title.includes(cleanSearch);
 
     if (ok && selectedFilters.Competition.length) {
-      const active = selectedFilters.Competition.map((v) => v.trim());
-      const projectCompetitions = (project.competition ?? "")
-        .split(",")
-        .map((competition) => competition.trim());
-      ok = active.some((competition) => projectCompetitions.includes(competition));
+      const active = selectedFilters.Competition.map(normalizeCompetition);
+      const projectCompetitions = splitCompetitions(project.competition);
+      ok = active.every((competition) =>
+        projectCompetitions.includes(competition)
+      );
     }
 
     if (ok && selectedFilters.Year.length) {
-      const raw = project.createdAt || project.created_date || "";
+      // Database submissions use created_date as their submission timestamp.
+      // Contentful-only projects still fall back to their configured year.
+      const raw = project.created_date || project.createdAt || "";
       const year = parseYear(raw);
       ok = selectedFilters.Year.includes(year);
     }
@@ -201,7 +219,7 @@ export async function getServerSideProps() {
         short_description: c.tagline ?? mergedMap[slug].tagline,
         about: c.about ?? mergedMap[slug].about,
         competition: c.competition ?? mergedMap[slug].competition,
-        createdAt: c.createdAt,
+        createdAt: mergedMap[slug].created_date || c.createdAt,
         video_url: c.videoUrl ?? mergedMap[slug].video_url,
         imageUrl: c.image?.fields?.file?.url
           ? formatImageUrl(c.image.fields.file.url)

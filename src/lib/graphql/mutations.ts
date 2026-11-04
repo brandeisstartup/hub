@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const CREATE_PROJECT_MUTATION = `
   mutation CreateProject(
     $title: String!, 
+    $created_date: String,
     $creator_email: String!,
     $short_description: String,
     $long_description: String,
@@ -13,6 +14,7 @@ export const CREATE_PROJECT_MUTATION = `
   ) {
     createProject(
       title: $title,
+      created_date: $created_date,
       creator_email: $creator_email,
       short_description: $short_description,
       long_description: $long_description,

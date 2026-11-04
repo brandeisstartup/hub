@@ -41,6 +41,7 @@ export const typeDefs = gql`
   type Mutation {
     createProject(
       title: String!
+      created_date: String
       creator_email: String!
       short_description: String
       long_description: String

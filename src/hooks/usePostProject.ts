@@ -3,6 +3,7 @@ import { CREATE_PROJECT_MUTATION } from "@/lib/graphql/mutations";
 
 interface PostProjectVariables {
   title: string;
+  created_date: string;
   creator_email: string;
   short_description: string;
   long_description: string;

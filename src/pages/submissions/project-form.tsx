@@ -89,6 +89,8 @@ function BigForm() {
 
     const variables = {
       title: data.title,
+      // Capture the submission timestamp; the database exposes its year via created_date.
+      created_date: new Date().toISOString(),
       creator_email: `${user?.email}`,
       short_description: data.blurb,
       long_description: data.description,
