@@ -189,7 +189,7 @@ function BigForm() {
 
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Competition
+              Competition <span className="font-normal text-gray-500">(optional)</span>
             </label>
             {competitionOptions.length > 0 ? (
               <div className="max-h-60 space-y-2 overflow-auto rounded-md border border-gray-300 p-3">
