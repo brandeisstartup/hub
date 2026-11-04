@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import Heading from "@/ui/components/brandeisBranding/headings/heading";
@@ -7,6 +7,24 @@ import EditableFieldList from "../inputs/editable-field-list";
 import ImageUploader from "@/ui/components/forms/inputs/image-uploader";
 import { UPDATE_PROJECT_FIELD } from "@/lib/graphql/mutations";
 import EditableVideoField from "../inputs/editable-video-field";
+import { useCompetitions } from "@/context/EventContext";
+
+const ALLOWED_COMPETITIONS = [
+  "Ain Family Start-Up Award",
+  "Brandeis Pitch",
+  "Brandeis Social Impact Startup Challenge",
+  "Builders and Backers Incubator",
+  "Tech-Bash"
+];
+
+const normalizeCompetitionTitle = (title: string) =>
+  title.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const parseCompetitionValues = (value: string) =>
+  value
+    .split(/[,;\n]+/)
+    .map((competition) => competition.trim())
+    .filter(Boolean);
 
 interface EditProjectProps {
   id: number;
@@ -36,6 +54,38 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
   // Prepare the mutation hook using the provided UPDATE_PROJECT_FIELD mutation
   const [updateProjectField] = useMutation(UPDATE_PROJECT_FIELD);
   const [currentVideoUrl, setCurrentVideoUrl] = useState(project.video_url);
+  const { competitions } = useCompetitions();
+  const contentfulTitles = useMemo(
+    () => new Map(
+      competitions.map((competition) => [
+        normalizeCompetitionTitle(competition.title.trim()),
+        competition.title.trim()
+      ])
+    ),
+    [competitions]
+  );
+  const selectedCompetitions = parseCompetitionValues(project.competition);
+  const selectedCompetitionKeys = new Set(
+    selectedCompetitions.map(normalizeCompetitionTitle)
+  );
+
+  const saveCompetitions = async (values: string[]) => {
+    const contentfulValues = values.map(
+      (title) => contentfulTitles.get(normalizeCompetitionTitle(title)) ?? title
+    );
+    const competition = contentfulValues.join(", ");
+
+    try {
+      await updateProjectField({
+        variables: { id: props.id, key: "competition", newValue: competition }
+      });
+      setProject((prev) => ({ ...prev, competition }));
+      toast.success("Competitions updated successfully!");
+    } catch (error) {
+      console.error("Competition update failed:", error);
+      toast.error("Could not update competitions. Please try again.");
+    }
+  };
 
   // Handler to update the video URL in the parent state once EditableVideoField successfully updates
   const handleVideoUpdate = (newVideoUrl: string) => {
@@ -106,13 +156,45 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
         onChange={handleFieldUpdate}
         projectId={props.id}
       />
-      <EditableField
-        label="Competitions (optional)"
-        fieldKey="competition"
-        value={project.competition}
-        onChange={handleFieldUpdate}
-        projectId={props.id}
-      />
+      <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <div>
+          <p className="text-sm font-medium leading-6 text-gray-900">
+            Competitions <span className="font-normal text-gray-500">(optional)</span>
+          </p>
+          <p className="text-xs text-gray-500">Changes save automatically.</p>
+        </div>
+        <div className="mt-1 space-y-2 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+          <div className="rounded-md border border-gray-300 p-3">
+            {ALLOWED_COMPETITIONS.map((option) => {
+              const optionKey = normalizeCompetitionTitle(option);
+              const isSelected = selectedCompetitionKeys.has(optionKey);
+
+              return (
+                <label key={option} className="flex items-center gap-2 py-1">
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={(event) => {
+                      const nextValues = event.target.checked
+                        ? [...selectedCompetitions, option]
+                        : selectedCompetitions.filter(
+                            (item) => normalizeCompetitionTitle(item) !== optionKey
+                          );
+                      void saveCompetitions(nextValues);
+                    }}
+                  />
+                  <span>{option}</span>
+                </label>
+              );
+            })}
+          </div>
+          {selectedCompetitions.length > 0 && (
+            <p className="text-xs text-gray-500">
+              Selected: {selectedCompetitions.join(", ")}
+            </p>
+          )}
+        </div>
+      </div>
 
       {/* Image uploader row */}
       <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
