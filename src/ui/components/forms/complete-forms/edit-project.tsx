@@ -106,6 +106,13 @@ const EditProject: React.FC<EditProjectProps> = (props) => {
         onChange={handleFieldUpdate}
         projectId={props.id}
       />
+      <EditableField
+        label="Competitions (optional)"
+        fieldKey="competition"
+        value={project.competition}
+        onChange={handleFieldUpdate}
+        projectId={props.id}
+      />
 
       {/* Image uploader row */}
       <div className="mt-6 border-t divide-gray-100 pt-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
