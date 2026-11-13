@@ -24,11 +24,11 @@ interface FormValues extends Record<string, unknown> {
 
 const ALLOWED_COMPETITIONS = [
   "Ain Family Start-Up Award",
+  "Asper Startup Grant",
   "Brandeis Pitch",
   "Brandeis Social Impact Startup Challenge",
   "Builders and Backers Incubator",
-  "Tech-Bash",
-  "Asper Startup Grant"
+  "Tech-Bash"
 ];
 
 const normalizeCompetitionTitle = (title: string) =>
