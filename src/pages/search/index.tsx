@@ -18,7 +18,8 @@ const REQUIRED_COMPETITIONS = [
   "Brandeis Pitch",
   "Brandeis Social Impact Startup Challenge",
   "Builders and Backers Incubator",
-  "Tech-Bash"
+  "Tech-Bash",
+  "Asper Startup Grant"
 ];
 
 const normalizeCompetition = (competition: string) =>
