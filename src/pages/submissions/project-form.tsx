@@ -27,7 +27,8 @@ const ALLOWED_COMPETITIONS = [
   "Brandeis Pitch",
   "Brandeis Social Impact Startup Challenge",
   "Builders and Backers Incubator",
-  "Tech-Bash"
+  "Tech-Bash",
+  "Asper Startup Grant"
 ];
 
 const normalizeCompetitionTitle = (title: string) =>
@@ -87,6 +88,10 @@ function BigForm() {
       return;
     }
 
+    const selectedCompetitionValues = selectedCompetitions.map(
+      (title) => contentfulTitles.get(normalizeCompetitionTitle(title)) ?? title
+    );
+
     const variables = {
       title: data.title,
       // Capture the submission timestamp; the database exposes its year via created_date.
@@ -94,7 +99,7 @@ function BigForm() {
       creator_email: `${user?.email}`,
       short_description: data.blurb,
       long_description: data.description,
-      competition: data.competition || "",
+      competition: selectedCompetitionValues.join(", "),
       team_members_emails: [`${user?.email}`],
       video_url: data.videoUrl ? String(data.videoUrl).trim() : null,
       image_url: uploadedImageUrl || null
